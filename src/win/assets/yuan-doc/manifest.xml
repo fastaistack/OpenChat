@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
+    <Id>e5c22602-1b56-46d5-abae-4d0d03470809</Id>
+    <Version>1.0.0.0</Version>
+    <ProviderName>sigmarising</ProviderName>
+    <DefaultLocale>zh-CN</DefaultLocale>
+    <DisplayName DefaultValue="YuanChat4WordDev2"/>
+    <Description DefaultValue="YuanChat in Office Word dev2"/>
+    <IconUrl DefaultValue="http://10.129.48.118:5050/yuan-doc/avatar-yuan.png"/>
+    <HighResolutionIconUrl DefaultValue="http://10.129.48.118:5050/yuan-doc/avatar-yuan.png"/>
+    <SupportUrl DefaultValue="https://github.com/sigmarising/Office-Addin-Vue3-Vite-TS/issues"/>
+    <AppDomains>
+        <AppDomain>AppDomain1</AppDomain>
+        <AppDomain>AppDomain2</AppDomain>
+        <AppDomain>AppDomain3</AppDomain>
+    </AppDomains>
+    <Hosts>
+        <Host Name="Document"/>
+    </Hosts>
+    <DefaultSettings>
+        <SourceLocation DefaultValue="http://10.129.48.118:5050/yuan-doc/index.html"/>
+    </DefaultSettings>
+    <Permissions>ReadWriteDocument</Permissions>
+    <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+        <Hosts>
+            <Host xsi:type="Document">
+                <DesktopFormFactor>
+                    <GetStarted>
+                        <Title resid="GetStarted.Title"/>
+                        <Description resid="GetStarted.Description"/>
+                        <LearnMoreUrl resid="GetStarted.LearnMoreUrl"/>
+                    </GetStarted>
+                    <ExtensionPoint xsi:type="PrimaryCommandSurface">
+                        <OfficeTab id="TabHome">
+                            <Group id="CommandsGroup">
+                                <Label resid="CommandsGroup.Label"/>
+                                <Icon>
+                                    <bt:Image size="16" resid="Icon.16x16"/>
+                                    <bt:Image size="32" resid="Icon.32x32"/>
+                                    <bt:Image size="80" resid="Icon.80x80"/>
+                                </Icon>
+                                <Control xsi:type="Button" id="TaskpaneButton">
+                                    <Label resid="TaskpaneButton.Label"/>
+                                    <Supertip>
+                                        <Title resid="TaskpaneButton.Label"/>
+                                        <Description resid="TaskpaneButton.Tooltip"/>
+                                    </Supertip>
+                                    <Icon>
+                                        <bt:Image size="16" resid="Icon.16x16"/>
+                                        <bt:Image size="32" resid="Icon.32x32"/>
+                                        <bt:Image size="80" resid="Icon.80x80"/>
+                                    </Icon>
+                                    <Action xsi:type="ShowTaskpane">
+                                        <TaskpaneId>ButtonId1</TaskpaneId>
+                                        <SourceLocation resid="Taskpane.Url"/>
+                                    </Action>
+                                </Control>
+                            </Group>
+                        </OfficeTab>
+                    </ExtensionPoint>
+                </DesktopFormFactor>
+            </Host>
+        </Hosts>
+        <Resources>
+            <bt:Images>
+                <bt:Image id="Icon.16x16" DefaultValue="http://10.129.48.118:5050/yuan-doc/avatar-yuan.png"/>
+                <bt:Image id="Icon.32x32" DefaultValue="http://10.129.48.118:5050/yuan-doc/avatar-yuan.png"/>
+                <bt:Image id="Icon.80x80" DefaultValue="http://10.129.48.118:5050/yuan-doc/avatar-yuan.png"/>
+            </bt:Images>
+            <bt:Urls>
+                <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
+                <bt:Url id="Taskpane.Url" DefaultValue="http://10.129.48.118:5050/yuan-doc/index.html"/>
+            </bt:Urls>
+            <bt:ShortStrings>
+                <bt:String id="GetStarted.Title" DefaultValue="Get started with your sample add-in!"/>
+                <bt:String id="CommandsGroup.Label" DefaultValue="Commands Group"/>
+                <bt:String id="TaskpaneButton.Label" DefaultValue="Show Taskpane"/>
+            </bt:ShortStrings>
+            <bt:LongStrings>
+                <bt:String id="GetStarted.Description" DefaultValue="Your sample add-in loaded successfully. Go to the HOME tab and click the 'Show Taskpane' button to get started."/>
+                <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Show a Taskpane"/>
+            </bt:LongStrings>
+        </Resources>
+    </VersionOverrides>
+</OfficeApp>

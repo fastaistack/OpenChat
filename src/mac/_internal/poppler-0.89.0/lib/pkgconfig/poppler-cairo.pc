@@ -1,0 +1,8 @@
+prefix=D:/bld/poppler_1593364964900/_h_env/Library
+libdir=D:/bld/poppler_1593364964900/_h_env/Library/lib
+includedir=D:/bld/poppler_1593364964900/_h_env/Library/include
+
+Name: poppler-cairo
+Description: Cairo backend for Poppler PDF rendering library
+Version: 0.89.0
+Requires: poppler = 0.89.0 cairo >= 1.10.0

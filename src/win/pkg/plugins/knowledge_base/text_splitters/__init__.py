@@ -1,0 +1,1 @@
+from pkg.plugins.knowledge_base.text_splitters.custom_json_splitter import CustomRecursiveJsonSplitter
