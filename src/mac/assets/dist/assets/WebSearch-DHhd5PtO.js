@@ -1,0 +1,34 @@
+import{b as A}from"./slider.esm-D2C1pmBb.js";import{a as K,g as L}from"./knowledge-JFy0f9oy.js";import{S as I,O as F,P as O,ai as R,r as f,f as G,e as c,c as P,o as w,a as t,l as $,t as _,d as u,b as l,m as z,x as C,s as H,j,V as J}from"./index-C4IDSyN5.js";import{_ as Q,s as X}from"./_plugin-vue_export-helper-D899kGel.js";import{s as Y}from"./dropdown.esm-BbE1jaVP.js";import{u as Z}from"./dayjs.min-1nbVSqdk.js";import{c as ee,b as te,a as y,u as se}from"./vee-validate-CVrEcMF8.js";import{M as le}from"./Markdown-CW5nZ-ZV.js";function ae(i){return I({url:"/plugin-param/web-search/list",method:"get",params:i})}function ie(i){return I({url:`/plugin-param/web-search/update/${i.session_id}`,method:"put",data:i})}const oe=F("webSearch",()=>{const i=O({}),b=Z();async function v(m){const{resData:d}=await ae({session_id:b.currentConversationId,plugin_id:m});return i.serper_key=d.serper_key,i.embedding_model_path=d.embedding_model_path,i.retrieve_topk=d.retrieve_topk,i.template=d.template,d}return{params:i,getParams:v,setParam:m=>ie(Object.assign({},m,{session_id:b.currentConversationId}))}}),ne={class:"space-y-4 flex flex-col w-full items-center tabs-item"},re={class:"w-full flex flex-col items-start justify-between"},de={class:"label text-slate-500 dark:text-slate-400 font-semibold"},me={class:"flex w-full flex-col items-start justify-start mt-1"},_e={class:"text-red-400 mt-1"},ue={key:0,class:"w-full flex flex-col items-start justify-between"},pe={class:"flex w-full flex-col items-start justify-start mt-1"},ce={class:"text-red-400 mt-1"},be={class:"w-full flex flex-col items-start justify-between"},fe={class:"label shrink-0 w-48 text-slate-500 dark:text-slate-400 font-semibold"},ve={class:"content-box"},ge={class:"flex w-full flex-col items-start justify-start mt-1"},we={class:"text-red-400 mt-1"},ye={class:"w-full flex flex-col items-start justify-between"},ke={class:"label shrink-0 w-48 text-slate-500 dark:text-slate-400 font-semibold"},xe={class:"flex w-full flex-row items-center justify-start mt-1 space-x-4"},he={class:"w-full flex flex-col items-start justify-between"},Se={class:"label shrink-0 w-48 text-slate-500 dark:text-slate-400 font-semibold"},Ve={class:"flex flex-row items-center justify-start mt-1 space-x-4"},Pe=`
+  ### 推荐下载模型
+\`\`\`bash
+  ollama run nomic-embed-text
+\`\`\`
+  ### ollama安装流程
+
+  #### 步骤 1：在本地安装并启动 Ollama
+
+  确保您的计算机上已安装 Ollama。如果尚未安装，请访问[官方网站](https://ollama.com/download) 进行下载和安装。
+
+  #### 步骤 2：配置 Ollama 的跨域访问
+
+  由于浏览器安全限制，您需要配置 Ollama 的跨域访问权限，以确保其正常运行。
+
+  1. 在 Windows 上，打开**控制面板**，并编辑系统环境变量。
+  2. 创建一个新的环境变量，命名为\`OLLAMA_ORIGINS\`（适用于当前用户）。
+  3. 将该变量的值设置为\`*\`，然后点击 **OK/Apply**以保存更改。
+
+  #### 步骤 3：拉取最新的模型
+
+  在终端中运行以下命令下载模型：
+\`\`\`bash
+ollama pull nomic-embed-text
+\`\`\`
+
+  ### 其他Embedding模型推荐
+\`\`\`bash
+ollama run mxbai-embed-large
+ollama run snowflake-arctic-embed
+ollama run granite-embedding
+\`\`\`
+
+  `,$e={__name:"WebSearch",props:{pluginId:{type:[String,Number],default:0},initParams:{type:Object,default:()=>null},isSettingDefault:{type:Boolean,default:!1}},setup(i,{expose:b}){const v=R(),o=i,m=f([]),d=f(!1);function D(){return L().then(a=>{m.value=a.resData,m.value.length&&(e.embedding_model_id=m.value[0].id)})}D();const r=f("serper"),T=G(()=>ee({style_search:y().required(c("lang.noEmpty")),web_api_key:(r==null?void 0:r.value)==="bing_bs4"?null:y().required(c("lang.noEmpty")).label("Serper API Key"),embedding_model_id:y().required(c("lang.noEmpty")).label(c("lang.embedding_model_id")),retrieve_topk:te().required(c("lang.noEmpty"))})),{defineField:g,handleSubmit:k,errors:p}=se({validationSchema:T,initialValues:{style_search:"serper",web_api_key:"",embedding_model_id:"",retrieve_topk:3}});r.value=g("style_search")[0];const e=O({web_api_key:g("web_api_key")[0],embedding_model_id:g("embedding_model_id")[0],retrieve_topk:3,template:""}),x=oe();async function h(){if(o.isSettingDefault)return r.value=o.initParams.style_search,e.web_api_key=o.initParams.web_api_key,e.embedding_model_path=o.initParams.embedding_model_path,e.retrieve_topk=o.initParams.retrieve_topk,e.template=o.initParams.template,o.initParams;{const a=await x.getParams(o.pluginId);r.value=a.style_search,e.web_api_key=a.web_api_key,e.embedding_model_id=a.embedding_model_id,e.retrieve_topk=a.retrieve_topk,e.template=a.template}}h();const W=f(["serper","bing_bs4"]),E=k(()=>{x.setParam({style_search:r.value,web_api_key:e.web_api_key,embedding_model_id:e.embedding_model_id,retrieve_topk:e.retrieve_topk,template:e.template,plugin_id:o.pluginId}).then(()=>{h(),v.add({severity:"success",summary:c("lang.saveSuccess"),life:3e3})})}),N=k(()=>({style_search:r.value,web_api_key:e.web_api_key,embedding_model_id:e.embedding_model_id,retrieve_topk:e.retrieve_topk,template:e.template,plugin_id:o.pluginId}));return b({exposeSubmit:N}),(a,s)=>{const S=Y,q=X,V=H,B=J,M=K,U=A;return w(),P("div",ne,[t("div",re,[t("div",de,_(a.$t("lang.searchType")),1),t("div",me,[u(S,{invalid:!!l(p).style_search,class:"w-full",options:W.value,modelValue:r.value,"onUpdate:modelValue":s[0]||(s[0]=n=>r.value=n)},null,8,["invalid","options","modelValue"]),t("small",_e,_(l(p).style_search),1)])]),r.value!=="bing_bs4"?(w(),P("div",ue,[s[7]||(s[7]=t("div",{class:"label text-slate-500 dark:text-slate-400 font-semibold"},"API Key",-1)),t("div",pe,[u(q,{invalid:!!l(p).web_api_key,class:"w-full border",type:"text",modelValue:l(e).web_api_key,"onUpdate:modelValue":s[1]||(s[1]=n=>l(e).web_api_key=n)},null,8,["invalid","modelValue"]),t("small",ce,_(l(p).web_api_key),1)])])):$("",!0),t("div",be,[t("div",fe,[C(_(a.$t("lang.embeddingModelPath"))+" ",1),u(V,{text:"",icon:"pi pi-question-circle",onClick:s[2]||(s[2]=n=>d.value=!0),class:"h-5 !px-2"}),u(B,{visible:d.value,"onUpdate:visible":s[3]||(s[3]=n=>d.value=n),header:"请使用ollama下载模型",style:{width:"800px"},modal:!0},{default:j(()=>[t("div",ve,[u(le,{content:Pe})])]),_:1},8,["visible"]),t("div",ge,[u(S,{class:"w-full",invalid:!!l(p).embedding_model_id,options:m.value,modelValue:l(e).embedding_model_id,"onUpdate:modelValue":s[4]||(s[4]=n=>l(e).embedding_model_id=n),optionLabel:"name",optionValue:"id"},null,8,["invalid","options","modelValue"]),t("small",we,_(l(p).embedding_model_id),1)])]),t("div",ye,[t("div",ke,_(a.$t("lang.sourceTopK")),1),t("div",xe,[u(M,{class:"w-full",inputClass:"w-full border",modelValue:l(e).retrieve_topk,"onUpdate:modelValue":s[5]||(s[5]=n=>l(e).retrieve_topk=n),min:1,max:8},null,8,["modelValue"])])]),t("div",he,[t("div",Se,_(a.$t("lang.llmTemplate")),1),t("div",Ve,[u(U,{class:"w-full border leading-5",modelValue:l(e).template,"onUpdate:modelValue":s[6]||(s[6]=n=>l(e).template=n),rows:"3",cols:"30"},null,8,["modelValue"])])]),o.isSettingDefault?$("",!0):(w(),z(V,{key:0,class:"self-end",onClick:l(E)},{default:j(()=>[C(_(a.$t("lang.save")),1)]),_:1},8,["onClick"]))])])}}},Ne=Q($e,[["__scopeId","data-v-727e6672"]]);export{Ne as default};
