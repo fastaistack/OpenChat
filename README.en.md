@@ -1,7 +1,46 @@
+<p align="right">
+  <a href="./README.md">中文</a> | English
+
+Here is the client installation package officially released by OpenChat. It is open source based on the MIT protocol and supports fast installation and use on multiple platforms. For most users, it is recommended to directly use the official version provided by us. The installation is simple and convenient, and it ensures that you can experience the latest and most complete functions. You can select the installation package suitable for your device in the link below to download:
+
+### Download for Desktop
+<table style="width: 100%">
+  <tr>
+    <td width="25%" align="center">
+      <b>Windows</b>
+    </td>
+    <td width="25%" align="center">
+      <b>MacOS</b>
+    </td>
+    
+  </tr>
+  <tr style="text-align: center">
+    <td align="center" valign="middle">
+      <a href='https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup.exe'>
+        <img src='./data/images/windows.png' style="height:30px; width: 30px" />
+        <br />
+        <b>Setup.exe</b>
+      </a>
+    </td>
+    <td align="center" valign="middle">
+      <a href='https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg'>
+        <img src='./data/images/MAC.png' style="height:35px; width: 35px" />
+        <br />
+        <b>Intel</b>
+      </a>
+    </td>
+    
+    
+  </tr>
+</table>
+
+---
+
+
+
 # OpenChat - Your All-in-One AI Platform
 
-<p align="left">
-  <a href="./README.md">中文</a> | English
+
 
 OpenChat is a client application that provides a conversational AI experience powered by large models. It allows users to easily interact with multiple AI models for knowledge-based Q&A, web information retrieval, knowledge management, and document-based conversations.
 
@@ -72,8 +111,8 @@ Operating System: Windows 10/11 (64-bit) & macOS (Intel chip)
 ### 2. Installation
 #### Step 1: Download OpenChat Installer
 - OpenChat User Guide (this document) provides download, installation, and usage instructions.
-- OpenChat Installer (Windows): `OpenChatSetup.exe` ，download link：https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup.exe 
-- OpenChat Installer (macOS): `OpenChat.dmg`，download link: https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChat_Intel.dmg.zip
+- OpenChat Installer (Windows): `OpenChatSetup.exe`
+- OpenChat Installer (macOS): `OpenChat.dmg`
 
 #### Step 2: Install OpenChat Client
 After downloading `OpenChatSetup.exe`, double-click the file, accept the user agreement, select the installation path (e.g., `X:\...\OpenChat`), and wait for the automatic installation to complete.

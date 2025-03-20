@@ -1,7 +1,48 @@
+<p align="right">
+  中文 | <a href="./README.en.md">English</a> 
+
+
+这里是 OpenChat 官方发布的客户端安装包，基于MIT协议开源，支持多平台快速安装使用。对于大多数用户而言，推荐直接使用我们提供的官方版本，安装简单方便，并确保能够体验最新最全的功能。你可以在下方链接中选择适合你设备的安装包进行下载：
+
+### 客户端下载
+<table style="width: 100%">
+  <tr>
+    <td width="25%" align="center">
+      <b>Windows</b>
+    </td>
+    <td width="25%" align="center">
+      <b>MacOS</b>
+    </td>
+    
+  </tr>
+  <tr style="text-align: center">
+    <td align="center" valign="middle">
+      <a href='https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup.exe'>
+        <img src='./data/images/windows.png' style="height:30px; width: 30px" />
+        <br />
+        <b>Setup.exe</b>
+      </a>
+    </td>
+    <td align="center" valign="middle">
+      <a href='https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg'>
+        <img src='./data/images/MAC.png' style="height:35px; width: 35px" />
+        <br />
+        <b>Intel</b>
+      </a>
+    </td>
+    
+    
+  </tr>
+</table>
+
+
+
+---
+
+
 # OpenChat - 你的一站式AI平台
 
-<p align="left">
-  中文 | <a href="./README.en.md">English</a> 
+
 
 OpenChat为客户端应用，提供一种基于大模型对话式交互模式，可以让用户很轻松的使用多种 AI 大模型，进行知识问答、网络信息检索、知识库以及文档对话等功能。
 
@@ -72,8 +113,8 @@ OpenChat为客户端应用，提供一种基于大模型对话式交互模式，
 ### 2. 安装
 #### 步骤1：下载OpenChat安装包
 * OpenChat使用指南（本文档），提供下载、安装、操作指南；
-* OpenChat安装包（Windows），OpenChatSetup.exe，客户端软件下载链接：https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup.exe ；
-* OpenChat安装包（Apple_Intel芯片），OpenChat.dmg，客户端软件下载链接：https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChat_Intel.dmg.zip ；
+* OpenChat安装包（Windows），OpenChatSetup.exe，客户端软件；
+* OpenChat安装包（Apple_Intel芯片），OpenChat.dmg，客户端软件 ；
 
 #### 步骤2：OpenChat客户端安装
 完成应用程序（OpenChatSetup.exe）下载后，双击文件并同意用户使用协议，选择安装路径（自定义安装路径X:\\...\OpenChat），等待OpenChat自动安装程序完成。
