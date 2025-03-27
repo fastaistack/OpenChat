@@ -168,7 +168,7 @@ Upload documents using the **directory selection method** or drag and drop local
 
 ![](../../data/images/intro/知识库构建2.png)
 
-Select an **embedding model**, and choose **storage and retrieval configurations**. If no models are available in the embedding model list, please refer to **Step 5** to configure it. Once done, click **Create** to complete the setup.
+Select an **embedding model**, and choose **storage and retrieval configurations**. If no models are available in the embedding model list, please refer to **Step 3** to configure it. Once done, click **Create** to complete the setup.
 
 ![](../../data/images/intro/知识库构建3.png)
 
