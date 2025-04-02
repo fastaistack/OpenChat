@@ -91,7 +91,7 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
 #         "web_retrieve_args": {
 #             "retrieve_topk": 3,
 #             "template": "说明：您是一位认真的研究者。使用提供的网络搜索结果，对给定的问题写一个全面而详细的回复。",
-#             "embedding_model_path": "D:\\E\\Code\\NLP\\yuan_checkpoints\\text2vec-base-chinese",
+#             "embedding_model_path": "D:\\E\\Code\\NLP\\OPENCHAT_checkpoints\\text2vec-base-chinese",
 #             "web_api_key": "",
 #             "style_search": "serper",
 #             "formatted_relevant_docs": "\nWebpage[1], url: https://download.cntv.cn/travel/guide/travel_cntv_cn/2013-07-29/4225_taishan_20130729_0.pdf:\n泰山：五岳独尊. 一、泰山简介及门票信息. (图片由网友@木棉花提供). 泰山，通常指我国的五岳之首，有“天下第一山”之美誉，又称东岳，中国最美的、令人震撼的. 十大名山之 ...\n\nWebpage[2], url: http://travel.sina.com.cn/taian_taishan-basicinfo-lvyou/:\n泰山简介\n东岳泰山，初名岱山，亦名岱宗，为我国五岳之首，号称“天下第一山”。它拔地通天，巍然屹立于山东东部，总面积426平方千米，最高峰玉皇顶海拔1545米。1987年5月被联合国定为世界自然文化遗产。泰山巍峨，雄奇，沉浑，峻秀的自然景观常令世人慨叹，更有数不清的名胜古迹，摩崖碑碣，使泰山成了世界少有的历史文化游览胜地。\n泰山节庆\n泰山国际登山节举办时间：每年9月中旬主要活动：泰山登山比赛、环泰山万人马拉松比赛、泰山乡村金秋采摘活动，宁阳蟋蟀节、泰山金秋摄影大赛和部分展览活动。泰山国际登山节从举办至今，已成功举办21届，每次登山节都有来自中、英、法、美、韩、日等多个国家的登山爱好者参加。目前，\n\nWebpage[3], url: http://www.intotaishan.com/html/2006/0828/70.html:\n气势磅礴的泰山，是中华民族的象征，从司马迁的名言：“人固有一死，或重于泰山，或轻于鸿毛。”到“有眼不识泰山”， “泰山压顶不弯腰”……，都在不断加深着我们对泰山的向往。登临泰山，犹如攀登长城一样，成为许多中国人的梦想。\n泰山最引人入胜的地方就是泰山是中国历史上唯一受过皇帝封禅的名山。同时泰山也是佛、道两教兴盛之地，是历代帝王朝拜之山。历代帝王所到之处，建庙塑像，刻石题字，留下了众多文物古迹。历代名人宗师对泰山亦仰慕备至，纷纷到此游览。历代赞颂泰山的诗词、歌赋多达一千余首。\n走进泰山，就是走进历史。从泰城西南祭地的社首山、蒿里山至告天的玉皇顶，数不胜数的名胜古迹、摩崖碑碣遍布山中。岱庙内，汉武帝\n\n",

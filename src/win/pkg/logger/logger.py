@@ -15,6 +15,6 @@ class Log(object):
                 if not hasattr(Log, "_instance"):
                     Log._instance = object.__new__(cls)
                     Log._logger = logger
-                    Log._logger.add(gvar.get_cache_path() + "/" + const.YUAN_LOG_NAME, rotation=const.YUAN_LOG_ROTATION, retention=const.YUAN_LOG_RETENTION, compression="zip")
+                    Log._logger.add(gvar.get_cache_path() + "/" + const.OPENCHAT_LOG_NAME, rotation=const.OPENCHAT_LOG_ROTATION, retention=const.OPENCHAT_LOG_RETENTION, compression="zip")
                     
         return Log._instance._logger

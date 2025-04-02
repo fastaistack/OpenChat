@@ -14,7 +14,7 @@ Before using OpenChat's conversational AI features, you need to apply for an API
 
 Click the `Settings` icon in the lower left corner to enter the `Model Management` interface.
 
-YuanChat now supports multiple cloud-based large models. Before using the services of different AI providers, you need to configure API access. Click `Get API` to visit the providers' official websites and follow the steps to apply for an API key.
+OpenChat now supports multiple cloud-based large models. Before using the services of different AI providers, you need to configure API access. Click `Get API` to visit the providers' official websites and follow the steps to apply for an API key.
 
 ### ☁️ Currently Supported Cloud-based AI Services
 OpenChat supports multiple **cloud-based AI models** that can be quickly integrated via API:
@@ -109,7 +109,7 @@ Network retrieval and knowledge base functions require local **Ollama embedded m
 ### Using Server-Hosted Models in OpenChat (Optional)
 
 #### Server Deployment Requirements
-1. **Prepare a server or cluster** (Recommended: **Inspur YuanBrain R1 Inference Server**)
+1. **Prepare a server or cluster** 
 2. **Deploy DeepSeek or other AI models**
 3. **Expose the API service** (Recommended: [OpenStation](https://openstation.com))
 
@@ -168,7 +168,7 @@ Upload documents using the **directory selection method** or drag and drop local
 
 ![](../../data/images/intro/知识库构建2.png)
 
-Select an **embedding model**, and choose **storage and retrieval configurations**. If no models are available in the embedding model list, please refer to **Step 5** to configure it. Once done, click **Create** to complete the setup.
+Select an **embedding model**, and choose **storage and retrieval configurations**. If no models are available in the embedding model list, please refer to **Step 3** to configure it. Once done, click **Create** to complete the setup.
 
 ![](../../data/images/intro/知识库构建3.png)
 

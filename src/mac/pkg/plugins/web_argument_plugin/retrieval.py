@@ -4,7 +4,7 @@ from langchain.vectorstores import Chroma
 # from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 import time
 # import torch
-from langchain_community.embeddings import OllamaEmbeddings,OpenAIEmbeddings
+from langchain_community.embeddings import OllamaEmbeddings
 embeddings_model = any
 
 class EmbeddingRetriever:
@@ -47,17 +47,9 @@ class EmbeddingRetriever:
         metadatas = [{'url': link} for link in link_list]
         texts = self.text_splitter.create_documents(contents_list, metadatas=metadatas)
         global embeddings_model
-        # print(f"self.embeddings_model_path:----------------------------{self.embeddings_model_path}-------------------------------")
         try:
-            # raise ValueError(1)
-            # if 'client' not in dir(embeddings_model):  #若模型未加载
-            #     DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-            #     embeddings_model = SentenceTransformerEmbeddings(model_name=self.embeddings_model_path, model_kwargs={'device': DEVICE})
+            
             # Create a Chroma database from the documents using specific embeddings
-            # embedding = OpenAIEmbeddings(model = 'BAAI/bge-large-zh-v1.5',
-            #                              openai_api_base = 'https://api.siliconflow.cn/v1',
-            #                              openai_api_key = 'k-jyjrpgkwlitulmzgfpaabqmhaycobiuzkmvobrbhjsivdayc',
-            #                              )
             db = Chroma.from_documents(
                 texts,
 
@@ -65,7 +57,6 @@ class EmbeddingRetriever:
                 # OpenAIEmbeddings(model='text-embedding-ada-002', openai_api_key=self.config["openai_api_key"])
                 # embeddings_model
                 OllamaEmbeddings(model=self.embeddings_model_path)
-                # embedding
             )
 
             # Create a retriever from the database to find relevant documents

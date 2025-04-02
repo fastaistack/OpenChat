@@ -118,7 +118,7 @@ async def get_current_load_status_info():
     model_list = process_model.get_model_info_by_status([ModelStatus.LOAD_SUCCESS.status, ModelStatus.LOADING.status, ModelStatus.LOAD_FAILED.status])
     if len(model_list) > 0:
         if model_list[0].status == ModelStatus.LOAD_FAILED.status:
-            return result.fail(status.YUAN_MODEL_LOAD_FAILED_ERROR.code, status.YUAN_MODEL_LOAD_FAILED_ERROR.errmsg)
+            return result.fail(status.OPENCHAT_MODEL_LOAD_FAILED_ERROR.code, status.OPENCHAT_MODEL_LOAD_FAILED_ERROR.errmsg)
         model_info = ModelBaseInfo(id=model_list[0].id, name=model_list[0].name, status=model_list[0].status)
         # model_info.id = model_list[0].id
         # model_info.name=model_list[0].name
@@ -138,20 +138,20 @@ class ModelIdInfo(BaseModel):
 async def load_model(info: ModelIdInfo):
     result = server_schemas.CommonResponse
     if info.id is None or info.type is None or info.type not in [1, 2]:
-        return result.fail(status.YUAN_MODEL_PARAM_INVALID_ERROR.code, status.YUAN_MODEL_PARAM_INVALID_ERROR.errmsg)
+        return result.fail(status.OPENCHAT_MODEL_PARAM_INVALID_ERROR.code, status.OPENCHAT_MODEL_PARAM_INVALID_ERROR.errmsg)
     model_list = process_model.get_download_model_list()
     exist_flag = False
     for model in model_list:
         if model.id == info.id:
             exist_flag = True
     if not exist_flag:
-        return result.fail(status.YUAN_MODEL_NOT_EXIST_ERROR.code, status.YUAN_MODEL_NOT_EXIST_ERROR.errmsg)
+        return result.fail(status.OPENCHAT_MODEL_NOT_EXIST_ERROR.code, status.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg)
     # for model in model_list:
     #     if model.status == ModelStatus.LOADING.status and model.id != info.id:
-    #         return result.fail(status.YUAN_MODEL_LOAD_FAILED_ERROR.code, status.YUAN_MODEL_LOAD_FAILED_ERROR.errmsg)
+    #         return result.fail(status.OPENCHAT_MODEL_LOAD_FAILED_ERROR.code, status.OPENCHAT_MODEL_LOAD_FAILED_ERROR.errmsg)
     load_flag = process_model.load_model(info.id, info.precision_selected, info.type)
     if not load_flag:
-        return result.fail(status.YUAN_MODEL_LOAD_FAILED_ERROR.code, status.YUAN_MODEL_LOAD_FAILED_ERROR.errmsg)
+        return result.fail(status.OPENCHAT_MODEL_LOAD_FAILED_ERROR.code, status.OPENCHAT_MODEL_LOAD_FAILED_ERROR.errmsg)
     return result.success({"result": True})
 
 # 下载载模型
@@ -159,12 +159,12 @@ async def load_model(info: ModelIdInfo):
 async def download_model(info: ModelIdInfo):
     result = server_schemas.CommonResponse
     if info.id is None:
-        return result.fail(status.YUAN_MODEL_PARAM_INVALID_ERROR.code, \
-                                                  status.YUAN_MODEL_PARAM_INVALID_ERROR.errmsg)
+        return result.fail(status.OPENCHAT_MODEL_PARAM_INVALID_ERROR.code, \
+                                                  status.OPENCHAT_MODEL_PARAM_INVALID_ERROR.errmsg)
     download_flag, exception_msg  = process_model.download_model(info.id)
     if not download_flag:
-        return result.fail(status.YUAN_MODEL_DOWNLOAD_FAILED_ERROR.name, \
-                                    f"{status.YUAN_MODEL_PARAM_INVALID_ERROR.errmsg}  {exception_msg}")
+        return result.fail(status.OPENCHAT_MODEL_DOWNLOAD_FAILED_ERROR.name, \
+                                    f"{status.OPENCHAT_MODEL_PARAM_INVALID_ERROR.errmsg}  {exception_msg}")
     else:
         return result.success(None)
 
@@ -188,8 +188,8 @@ async def download_start(info: ModelIdInfo):
     result = server_schemas.CommonResponse
     flag,message = process_model.download_start(info.id)
     if flag is False:
-        return result.fail(status.YUAN_MODEL_DOWNLOAD_FAILED_ERROR.name, \
-                           f"{status.YUAN_MODEL_DOWNLOAD_FAILED_ERROR.errmsg}  {message}")
+        return result.fail(status.OPENCHAT_MODEL_DOWNLOAD_FAILED_ERROR.name, \
+                           f"{status.OPENCHAT_MODEL_DOWNLOAD_FAILED_ERROR.errmsg}  {message}")
     else:
         return result.success(None)
 

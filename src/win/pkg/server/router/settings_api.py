@@ -85,7 +85,7 @@ async def update_system_default_path(item: SettingSystemPathInfo):
         # 更新数据库配置
         operate_flag = process_setting.update_system_default_path(item.config_value)
         if not operate_flag:
-            return result.fail(StatusCodeEnum.YUAN_BIZ_DATA_UPDATE_FAILED_ERROR.code, StatusCodeEnum.YUAN_BIZ_DATA_UPDATE_FAILED_ERROR.errmsg)
+            return result.fail(StatusCodeEnum.OPENCHAT_BIZ_DATA_UPDATE_FAILED_ERROR.code, StatusCodeEnum.OPENCHAT_BIZ_DATA_UPDATE_FAILED_ERROR.errmsg)
         # 迁移知识库和模型
         if system_default_path.config_value is not None and system_default_path.config_value != "":
             knowledge_move_result = knowledge.mv_knowledge_file(system_default_path.config_value, item.config_value)

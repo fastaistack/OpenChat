@@ -118,7 +118,7 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
 # def create_item(item: ChatMessageInfo):
 #     setting = {# 检索相关参数
 #                    "retrieve_topk": 3, "template": "说明：您是一位认真的研究者。使用提供的网络搜索结果，对给定的问题写一个全面而详细的回复。",
-#                    "embedding_model_path": r"D:\E\Code\NLP\yuan_checkpoints\text2vec-base-chinese",
+#                    "embedding_model_path": r"D:\E\Code\NLP\OPENCHAT_checkpoints\text2vec-base-chinese",
 #                    "web_api_key": "",
 #                    "style_search": "serper"
 #                }

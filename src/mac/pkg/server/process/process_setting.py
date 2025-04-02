@@ -3,10 +3,9 @@ from pkg.database import models
 from pkg.database.database import SessionLocal
 
 log = Log()
-
 from pkg.projectvar import *
-gvar=Projectvar()
-path=gvar.get_cache_path()
+gvar= Projectvar()
+path= gvar.get_cache_path()
 
 def get_system_default_path():
     try:

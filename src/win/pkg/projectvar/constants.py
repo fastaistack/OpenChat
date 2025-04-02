@@ -1,18 +1,18 @@
 # Environment variables
-YUAN_CACHEPATH = ".openchat"
-YUAN_WEBUI_PATH = "assets/dist"
+OPENCHAT_CACHEPATH = ".openchat"
+OPENCHAT_WEBUI_PATH = "assets/dist"
 #  444 与前端部署互斥
-# YUAN_WEBUI_DOC_PATH = "assets/yuan-doc"
+# OPENCHAT_WEBUI_DOC_PATH = "assets/OPENCHAT-doc"
 #  444 与前端部署互斥
 # 以下代码为空
 #  444 end
 
 # Log variables
-YUAN_LOG_NAME = "openchat.log"
-YUAN_LOG_ROTATION = "1 day"
-YUAN_LOG_RETENTION = "1 day"
+OPENCHAT_LOG_NAME = "openchat.log"
+OPENCHAT_LOG_ROTATION = "1 day"
+OPENCHAT_LOG_RETENTION = "1 day"
 
-YUAN_SERVER_PORT = 5050
+OPENCHAT_SERVER_PORT = 5050
 API_SERVER_PORT = 5051
 
 # Database variables

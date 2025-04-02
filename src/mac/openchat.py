@@ -73,7 +73,7 @@ def init():
     gvar.set_home_path(os.getcwd())
     # check cache dir, if not exist, create it
     user_basepath = os.path.expanduser("~")
-    cache_path = os.path.join(user_basepath, YUAN_CACHEPATH)
+    cache_path = os.path.join(user_basepath, OPENCHAT_CACHEPATH)
     # print("cache_path", cache_path)
     os.makedirs(cache_path, exist_ok=True)
     gvar.set_cache_path(cache_path)

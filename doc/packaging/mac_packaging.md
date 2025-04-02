@@ -15,7 +15,7 @@ pip install -r requirements.txt
 
 ![](../../data/images/packaging/1.png)
 
-Before testing, download the packaged frontend **dist** folder and place it inside the **assets** folder at the root directory. The main entry file is `yuanchat.py`. Ensure the following modifications are made to adapt to the macOS system.
+Before testing, download the packaged frontend **dist** folder and place it inside the **assets** folder at the root directory. The main entry file is `openchat.py`. Ensure the following modifications are made to adapt to the macOS system.
 
 ### 1. Modify Database Path
 macOS does not support paths with a leading dot (`.`) in database directories, as it hides the folder. Remove the dot (`.`) before `openchat` to avoid issues.
@@ -66,7 +66,7 @@ Since macOS restricts writing within the app bundle, store the knowledge base ou
 ![](../../data/images/packaging/6.png)
 
 ### 6. Fix Multiple Window Issues(optional)
-On macOS, running the program might cause multiple windows to open continuously. Add the following line to `yuanchat.py` inside `main`:
+On macOS, running the program might cause multiple windows to open continuously. Add the following line to `openchat.py` inside `main`:
 
 ```python
 multiprocessing.freeze_support()
@@ -74,7 +74,7 @@ multiprocessing.freeze_support()
 
 Also, import `multiprocessing` at the beginning of the file.
 
-**Location:** `yuanchat.py`
+**Location:** `openchat.py`
 
 ![](../../data/images/packaging/7.png)
 
@@ -94,7 +94,7 @@ pyinstaller --clean --onedir --windowed --name "OpenChat" \
   --add-data "assets:assets" \
   --osx-bundle-identifier com.example.openchat \
   --hidden-import=imghdr \
-  yuanchat.py
+  openchat.py
 ```
 
 The packaging process takes **7-8 minutes**. Once completed, you will see `dist` and `build` folders in the root directory.

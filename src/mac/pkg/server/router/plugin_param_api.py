@@ -84,13 +84,13 @@ async def update_websearch_plugin_param(session_id: str, item: schemas.UserPlugi
                 return result.fail(statuscode.StatusCodeEnum.DB_NOTFOUND_ERR.code, statuscode.StatusCodeEnum.DB_NOTFOUND_ERR.errmsg)
         if item.style_search is not None and len(item.style_search) > 0:
             if item.style_search not in ["serper", "bing_api", "bing_bs4"]:
-                return result.fail(statuscode.StatusCodeEnum.YUAN_MODEL_PARAM_INVALID_ERROR.code,
-                                   statuscode.StatusCodeEnum.YUAN_MODEL_PARAM_INVALID_ERROR.errmsg)
+                return result.fail(statuscode.StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.code,
+                                   statuscode.StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.errmsg)
         update_result = process_plugin_param.update_web_search(headers[const.HTTP_HEADER_USER_ID], session_id, item)
         if update_result:
             return result.success(True)
         else:
-            return result.fail(statuscode.StatusCodeEnum.YUAN_BIZ_DATA_UPDATE_FAILED_ERROR.code, statuscode.StatusCodeEnum.YUAN_BIZ_DATA_UPDATE_FAILED_ERROR.errmsg)
+            return result.fail(statuscode.StatusCodeEnum.OPENCHAT_BIZ_DATA_UPDATE_FAILED_ERROR.code, statuscode.StatusCodeEnum.OPENCHAT_BIZ_DATA_UPDATE_FAILED_ERROR.errmsg)
     except Exception as ex:
         log.error(f"plugin_param_api update_websearch_plugin_param error, {str(ex)}")
         return result.fail(statuscode.StatusCodeEnum.UNKNOWN.code, str(ex))
@@ -101,20 +101,20 @@ async def update_sensitive_plugin_param(item: schemas.SensitiveSettingUpdateInfo
     result = server_schema.CommonResponse
     try:
         if item.local_model is not None and item.local_model.model_id is not None and len(item.local_model.filter_model_list) <= 0:
-            return result.fail(statuscode.StatusCodeEnum.YUAN_MODEL_PARAM_INVALID_ERROR.code,
-                               statuscode.StatusCodeEnum.YUAN_MODEL_PARAM_INVALID_ERROR.errmsg)
+            return result.fail(statuscode.StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.code,
+                               statuscode.StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.errmsg)
         if item.local_model is not None and item.local_model.model_id is not None:
             embedding_model_list = process_model.list([item.local_model.model_id])
             if len(embedding_model_list) <= 0:
-                return result.fail(statuscode.StatusCodeEnum.YUAN_MODEL_PARAM_INVALID_ERROR.code,
-                               statuscode.StatusCodeEnum.YUAN_MODEL_PARAM_INVALID_ERROR.errmsg)
+                return result.fail(statuscode.StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.code,
+                               statuscode.StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.errmsg)
         if "local_model" in item.style_filter_list and (len(item.local_model.filter_model_list) <= 0 or item.local_model.model_id is None):
-            return result.fail(statuscode.StatusCodeEnum.YUAN_MODEL_PARAM_INVALID_ERROR.code, statuscode.StatusCodeEnum.YUAN_MODEL_PARAM_INVALID_ERROR.errmsg)
+            return result.fail(statuscode.StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.code, statuscode.StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.errmsg)
         update_result = process_plugin_param.update_sensitive_setting_info(headers[const.HTTP_HEADER_USER_ID], session_id, item)
         if update_result:
             return result.success(True)
         else:
-            return result.fail(statuscode.StatusCodeEnum.YUAN_BIZ_DATA_UPDATE_FAILED_ERROR.code, statuscode.StatusCodeEnum.YUAN_BIZ_DATA_UPDATE_FAILED_ERROR.errmsg)
+            return result.fail(statuscode.StatusCodeEnum.OPENCHAT_BIZ_DATA_UPDATE_FAILED_ERROR.code, statuscode.StatusCodeEnum.OPENCHAT_BIZ_DATA_UPDATE_FAILED_ERROR.errmsg)
     except Exception as ex:
         log.error(f"plugin_param_api update_sensitive_plugin_param error, {str(item)}, {str(ex)}")
         return result.fail(statuscode.StatusCodeEnum.UNKNOWN.code, str(ex))
