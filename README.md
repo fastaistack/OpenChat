@@ -27,7 +27,7 @@
       <a href='https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg'>
         <img src='./data/images/MAC.png' style="height:35px; width: 35px" />
         <br />
-        <b>Intel芯片</b>
+        <b>Intel</b>
       </a>
     </td>
     
