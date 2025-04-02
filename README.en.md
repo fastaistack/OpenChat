@@ -16,17 +16,17 @@ Here is the client installation package officially released by OpenChat. It is o
   </tr>
   <tr style="text-align: center">
     <td align="center" valign="middle">
-      <a href='https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup.exe'>
+      <a href='https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe'>
         <img src='./data/images/windows.png' style="height:30px; width: 30px" />
         <br />
         <b>Setup.exe</b>
       </a>
     </td>
     <td align="center" valign="middle">
-      <a href='https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg'>
+      <a href='https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg'>
         <img src='./data/images/MAC.png' style="height:35px; width: 35px" />
         <br />
-        <b>Intel</b>
+        <b>Intel_chip</b>
       </a>
     </td>
     
@@ -141,7 +141,7 @@ OpenChat supports packaging and distribution on **macOS** and **Windows**. Below
      --add-data "assets:assets" \
      --osx-bundle-identifier com.example.openchat \
      --hidden-import=imghdr \
-     yuanchat.py
+     openchat.py
    ```
 4. **Manually Add Missing Dependencies**: Copy missing `site-packages` dependencies to the `Frameworks` directory.
 5. **Create a DMG Package** (Optional):

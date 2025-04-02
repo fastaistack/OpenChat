@@ -314,15 +314,3 @@ if __name__ == '__main__':
         print(out_text)
 
     pass
-
-    # #读取文档测试
-    # with open(r'D:\E\Code\NLP\yuan-zhanting-update\yuan-algorithm\test_files\chi_all_true_res_new.txt', 'r', encoding='UTF-8') as fr:
-    #     lines = fr.readlines()
-    #
-    # for line in lines[0:100]:
-    #     in_text = line.strip()
-    #     out_text = add_dollor_to_formula(in_text)
-    #
-    #     # print(out_text)
-    #     print('-------------------')
-

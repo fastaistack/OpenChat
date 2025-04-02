@@ -83,7 +83,7 @@ async def get_new_session_info(headers=Depends(get_headers)):
     try:
         create_result = process_chat.create_session(headers[const.HTTP_HEADER_USER_ID])
         if create_result is None:
-            return result.fail(StatusCodeEnum.YUAN_BIZ_DATA_CREATE_FAILED_ERROR.code, StatusCodeEnum.YUAN_BIZ_DATA_CREATE_FAILED_ERROR.errmsg)
+            return result.fail(StatusCodeEnum.OPENCHAT_BIZ_DATA_CREATE_FAILED_ERROR.code, StatusCodeEnum.OPENCHAT_BIZ_DATA_CREATE_FAILED_ERROR.errmsg)
         create_session = schemas.ChatSessionInfo(id=create_result.id, user_id=create_result.user_id, session_name=create_result.session_name,
             create_time=int(time.mktime(create_result.create_time.timetuple()))*1000, update_time=int(time.mktime(create_result.update_time.timetuple()))*1000)
         # 初始化用户默认插件
@@ -160,7 +160,7 @@ async def set_chat_record_like(item: ChatItemLikeRequestInfo, headers=Depends(ge
     result = server_schema.CommonResponse
     try:
         if item.like_type not in [0, 1, 2]:
-            return result.fail(StatusCodeEnum.YUAN_MODEL_PARAM_INVALID_ERROR.code, StatusCodeEnum.YUAN_MODEL_PARAM_INVALID_ERROR.errmsg)
+            return result.fail(StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.code, StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.errmsg)
         chat_item = process_chat.get_chat_item(item.id, headers[const.HTTP_HEADER_USER_ID])
         if chat_item is None:
             return result.fail(StatusCodeEnum.DB_NOTFOUND_ERR.code, StatusCodeEnum.DB_NOTFOUND_ERR.errmsg)

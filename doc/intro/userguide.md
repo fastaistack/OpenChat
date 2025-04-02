@@ -14,7 +14,7 @@ Before using OpenChat's conversational AI features, you need to apply for an API
 
 Click the `Settings` icon in the lower left corner to enter the `Model Management` interface.
 
-YuanChat now supports multiple cloud-based large models. Before using the services of different AI providers, you need to configure API access. Click `Get API` to visit the providers' official websites and follow the steps to apply for an API key.
+OpenChat now supports multiple cloud-based large models. Before using the services of different AI providers, you need to configure API access. Click `Get API` to visit the providers' official websites and follow the steps to apply for an API key.
 
 ### ☁️ Currently Supported Cloud-based AI Services
 OpenChat supports multiple **cloud-based AI models** that can be quickly integrated via API:
@@ -109,7 +109,7 @@ Network retrieval and knowledge base functions require local **Ollama embedded m
 ### Using Server-Hosted Models in OpenChat (Optional)
 
 #### Server Deployment Requirements
-1. **Prepare a server or cluster** (Recommended: **Inspur YuanBrain R1 Inference Server**)
+1. **Prepare a server or cluster** 
 2. **Deploy DeepSeek or other AI models**
 3. **Expose the API service** (Recommended: [OpenStation](https://openstation.com))
 

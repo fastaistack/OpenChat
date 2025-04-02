@@ -390,11 +390,6 @@
 #             # ),
 #             # KnowledgeFile(
 #             #     kb_name="kb_test_1_1",
-#             #     file_name="./tests/yuan2_readme.md",
-#             #     file_id="md_1",
-#             # ),
-#             # KnowledgeFile(
-#             #     kb_name="kb_test_1_1",
 #             #     file_name="./tests/人工智能.pptx",
 #             #     file_id="pptx_1",
 #             # ),

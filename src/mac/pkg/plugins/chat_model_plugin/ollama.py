@@ -95,7 +95,7 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
             output_all = ''
             for output in stream:
                 output_all += output['message']['content']
-                print(output_all)
+                # print(output_all)
                 content_setting["output_think"] = ''
                 content_setting["output_answer"] = output_all
                 yield content_setting

@@ -173,7 +173,7 @@ def chat_model_infer(item: schemas.ChatMessageInfo, setting: {}, content_setting
         think_cost = 0
         model_list = process_model.get_loaded_model_info()
         if len(model_list) <= 0:
-            item_result = {"result_flag": False, "result_content": StatusCodeEnum.YUAN_MODEL_NOT_EXIST_ERROR.errmsg, "tokens": round(0.00, 2)}
+            item_result = {"result_flag": False, "result_content": StatusCodeEnum.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg, "tokens": round(0.00, 2)}
             yield item_result
         else:
             model_info = model_list[0]

@@ -17,14 +17,14 @@
   </tr>
   <tr style="text-align: center">
     <td align="center" valign="middle">
-      <a href='https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup.exe'>
+      <a href='https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe'>
         <img src='./data/images/windows.png' style="height:30px; width: 30px" />
         <br />
         <b>Setup.exe</b>
       </a>
     </td>
     <td align="center" valign="middle">
-      <a href='https://metabrain.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg'>
+      <a href='https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg'>
         <img src='./data/images/MAC.png' style="height:35px; width: 35px" />
         <br />
         <b>Intel</b>
@@ -59,14 +59,14 @@ OpenChat为客户端应用，提供一种基于大模型对话式交互模式，
 - 🖥 **支持本地化模型部署**：适配 Ollama，服务器部署等本地运行方案  
 
 ### 🧠 **多功能智能助手**  
-- 🤖 **智能助手应用**：集成Kimi，密塔AI搜索，文心一言，豆包等应用，让你一站式访问国内多个大模型平台
+- 🤖 **智能助手应用**：集成Kimi，秘塔AI搜索，文心一言，豆包等应用，让你一站式访问国内多个大模型平台
 - 🔍 **敏感词检测**：精准识别敏感内容，确保文本合规  
-- 📚 **知识问答**：智能解析各类问题，快速提供可靠解答  
+- 📚 **知识问答**：智能解析各类文件，快速提供可靠解答  
 
 ### 🌍 **强大信息检索与知识管理**  
 - 🔗 **网络信息检索**：实时查找最新数据，助力决策分析  
 - 📖 **智能知识库**：个性化知识存储，便捷管理、随时调用  
-- 📝 **文档对话**：支持文本、PDF、Office 交互式问答，高效阅读  
+- 📝 **文档对话**：支持文本、PDF、word、ppt交互式问答，高效阅读  
 
 ###  🧩 **实用工具与扩展功能**  
 - 🔎 **智能搜索**：快速定位信息，提高工作效率  
@@ -76,9 +76,9 @@ OpenChat为客户端应用，提供一种基于大模型对话式交互模式，
 ### ✨ **卓越体验，畅快使用**  
 - 🖥 **跨平台支持**：适配 Windows、Mac  
 - ⚡ **即装即用**：无需复杂配置，开箱即用  
-- 📑 **Markdown 解析**，文档呈现更清晰  
+- 📑 **Markdown 解析**: 文档呈现更清晰  
 - 🚀 **高效稳定**：强大性能保障流畅体验
-- 💡 **多模型协同交互**，不同视角助力深入分析  
+- 💡 **多模型协同交互**: 不同视角助力深入分析  
 
 <br>
 
@@ -86,11 +86,10 @@ OpenChat为客户端应用，提供一种基于大模型对话式交互模式，
 
 ### 📃 即将实现的功能
 
-- [x] 多模型结果对比，获取多样化视角
+- [x] 多模型结果对比
 - [x] 添加智能助手应用
-- [x] 个性化数据备份
+- [x] 对话数据备份
 - [x] 敏感词检测功能更新
-- [x] 全模型联网支持 
 - [x] 网络检索功能更新
 - [x] 知识库与文档对话功能更新
 - [x] 首个正式版本发布
@@ -109,7 +108,7 @@ OpenChat为客户端应用，提供一种基于大模型对话式交互模式，
 
 ### 1. 配置要求
 内存：8GB以上
-系统：Windows10/11 64位 & MacOS系统（Intel芯片）
+系统：Windows10/11 64位 & MacOS系统 12.5以上（Intel芯片）
 ### 2. 安装
 #### 步骤1：下载OpenChat安装包
 * OpenChat使用指南（本文档），提供下载、安装、操作指南；
@@ -144,7 +143,7 @@ Mac版OpenChat.dmg打开后将看到OpenChat.app，将其拖动到应用文件�
      --add-data "assets:assets" \
      --osx-bundle-identifier com.example.openchat \
      --hidden-import=imghdr \
-     yuanchat.py
+     openchat.py
    ```
 4. **手动补充依赖**：将缺失的 `site-packages` 依赖复制到 `Frameworks` 目录。
 5. **创建 DMG 安装包**（可选）：

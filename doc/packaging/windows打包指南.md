@@ -147,8 +147,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 // 此处请填入通过pyinstaller打包后的完整路径
-Source: "xxx\dist\yuanchat\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "xxx\dist\yuanchat\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "xxx\dist\openchat\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "xxx\dist\openchat\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

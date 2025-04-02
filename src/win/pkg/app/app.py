@@ -18,7 +18,7 @@ def run():
     width = root.winfo_screenwidth()
     height= root.winfo_screenheight()
     root.destroy()
-    url = 'http://localhost:' + str(const.YUAN_SERVER_PORT)
+    url = 'http://localhost:' + str(const.OPENCHAT_SERVER_PORT)
     webview.settings['ALLOW_DOWNLOADS'] = True
     window = webview.create_window(
         title= "OpenChat",

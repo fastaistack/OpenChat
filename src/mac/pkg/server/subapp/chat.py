@@ -47,11 +47,11 @@ def chat_message(item: schemas.ChatMessageInfo, headers=Depends(get_headers)):
             process_chat.update_session_time(user_id, item.session_id)
             model_list = process_model.get_loaded_model_info()
             if len(model_list) <= 0:
-                # yield json.dumps(get_result_dict(True, "", "", get_result_info(StatusCodeEnum.YUAN_MODEL_NOT_EXIST_ERROR.errmsg, "",
+                # yield json.dumps(get_result_dict(True, "", "", get_result_info(StatusCodeEnum.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg, "",
                 #     [], [], int(time.time() * 1000), False, str(uuid.uuid4()), str(uuid.uuid4()), None, "", None, 0)))
-                yield json.dumps(get_result_dict(True, "", "", get_result_info(StatusCodeEnum.YUAN_MODEL_NOT_EXIST_ERROR.errmsg, "",
+                yield json.dumps(get_result_dict(True, "", "", get_result_info(StatusCodeEnum.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg, "",
                     [], [], int(time.time() * 1000), True, str(uuid.uuid4()), str(uuid.uuid4()), None, "", None, 0)))
-                request_id = process_chat.insert_message(user_id, StatusCodeEnum.YUAN_MODEL_NOT_EXIST_ERROR.errmsg,
+                request_id = process_chat.insert_message(user_id, StatusCodeEnum.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg,
                     item.session_id, ChatItemRole.SYSTEM.role, None, ChatItemStatus.ERROR.status, question_id, None)
             else:
                 model_info = model_list[0]
@@ -111,11 +111,11 @@ def chat_message(re_item: schemas.ReChatMessageInfo, headers=Depends(get_headers
                 model_list = process_model.get_loaded_model_info()
                 process_chat.update_session_time(user_id, chat_item.session_id)
                 if len(model_list) <= 0:
-                    yield json.dumps(get_result_dict(True, "", "", get_result_info(StatusCodeEnum.YUAN_MODEL_NOT_EXIST_ERROR.errmsg, "",
+                    yield json.dumps(get_result_dict(True, "", "", get_result_info(StatusCodeEnum.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg, "",
                         [], [], int(time.time() * 1000), False, str(uuid.uuid4()), re_item.question_id, None, "", None, 0)))
-                    yield json.dumps(get_result_dict(True, "", "", get_result_info(StatusCodeEnum.YUAN_MODEL_NOT_EXIST_ERROR.errmsg, "",
+                    yield json.dumps(get_result_dict(True, "", "", get_result_info(StatusCodeEnum.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg, "",
                         [], [], int(time.time() * 1000), True, str(uuid.uuid4()), re_item.question_id, None, "", None, 0)))
-                    process_chat.insert_message(user_id, StatusCodeEnum.YUAN_MODEL_NOT_EXIST_ERROR.errmsg,
+                    process_chat.insert_message(user_id, StatusCodeEnum.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg,
                         chat_item.session_id, ChatItemRole.SYSTEM.role, None, ChatItemStatus.ERROR.status, re_item.question_id, None)
                 else:
                     model_info = model_list[0]

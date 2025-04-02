@@ -51,32 +51,14 @@ app.include_router(account_api.router)
 # app.include_router(openai_api.router)
 
 #  111 与前端部署互斥
-dir = os.path.join(os.path.dirname(sys.argv[0]), const.YUAN_WEBUI_PATH)
-app.mount("/yuan-chat", StaticFiles(directory=dir), name="dist")
+dir = os.path.join(os.path.dirname(sys.argv[0]), const.OPENCHAT_WEBUI_PATH)
+app.mount("/open-chat", StaticFiles(directory=dir), name="dist")
 templates = Jinja2Templates(directory=dir)
 
-#  111 与前端部署互斥
-# dir = os.path.join(gvar.get_home_path(), const.YUAN_WEBUI_PATH)
-# doc_dir = os.path.join(gvar.get_home_path(), const.YUAN_WEBUI_DOC_PATH)
-# app.mount("/yuan-chat", StaticFiles(directory=dir), name="dist")
-# app.mount("/yuan-doc", StaticFiles(directory=doc_dir), name="dist_doc")
-# templates = Jinja2Templates(directory=dir)
-# templates_doc = Jinja2Templates(directory=doc_dir)
-#  111 end
 
 #  222 与前端部署互斥
 def is_login(path: str):
-    # print("path = ", path)
-    # print("need authorization ? : ", path=="/account/login" or path=="/account/user/login" or path=="/" or path.startswith("/yuan-chat"))
-    return path=="/account/login" or path=="/account/user/login" or path=="/" or path.startswith("/yuan-chat")
-
-#  222 与前端部署互斥
-# def is_login(path: str):
-#     # print("path = ", path)
-#     # print("need authorization ? : ", path=="/account/login" or path=="/account/user/login" or path=="/" or path.startswith("/yuan-chat"))
-#     return path=="/account/login" or path=="/account/user/login" or path=="/" or path.startswith("/yuan-chat") or path.startswith("/yuan-doc")
-#  222 end
-
+    return path=="/account/login" or path=="/account/user/login" or path=="/" or path.startswith("/open-chat")
 
 
 @app.middleware("http")
@@ -132,7 +114,7 @@ async def home(request: Request):
 
 import uvicorn
 def start_thread():
-    uvicorn.run(app, host="0.0.0.0", port=const.YUAN_SERVER_PORT, log_level="error")
+    uvicorn.run(app, host="0.0.0.0", port=const.OPENCHAT_SERVER_PORT, log_level="error")
 
 
 def unexpected_exit():

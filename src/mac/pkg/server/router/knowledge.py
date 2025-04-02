@@ -1519,7 +1519,7 @@ async def api_get_knowledge_current_embedding_info(
         if not embedding_list:
             log.error(
                 f"No available embedding model, please download in model market first.")
-            return response.fail(status.YUAN_MODEL_NOT_EXIST_ERROR.code, status.YUAN_MODEL_NOT_EXIST_ERROR.errmsg)
+            return response.fail(status.OPENCHAT_MODEL_NOT_EXIST_ERROR.code, status.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg)
         log.debug(f"Getting [{len(embedding_list)}] embedding model(s).")
         # res_data.setdefault("embedding_list", embedding_list)
 

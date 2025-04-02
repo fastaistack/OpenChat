@@ -1,5 +1,5 @@
 import webview
-
+import tkinter as tk
 
 from ..projectvar import constants as const
 from ..logger import Log
@@ -18,13 +18,13 @@ def run():
     # width = root.winfo_screenwidth()
     # height= root.winfo_screenheight()
     # root.destroy()
-    url = 'http://localhost:' + str(const.YUAN_SERVER_PORT)
+    url = 'http://localhost:' + str(const.OPENCHAT_SERVER_PORT)
     webview.settings['ALLOW_DOWNLOADS'] = True
     window = webview.create_window(
         title= "OpenChat",
         url=url,
         width=1200,
-        height=900,
+        height=800,
         confirm_close= True
     )
     window.events.closed += closed

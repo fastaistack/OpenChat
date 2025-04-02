@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 ![](../../data/images/packaging/1.png)
 
-在测试之前，请下载打包好的前端 **dist** 文件夹，并将其放入根目录下的 **assets** 文件夹中。程序的入口文件为 `yuanchat.py`。请确保完成以下修改，以适配 macOS 系统。
+在测试之前，请下载打包好的前端 **dist** 文件夹，并将其放入根目录下的 **assets** 文件夹中。程序的入口文件为 `openchat.py`。请确保完成以下修改，以适配 macOS 系统。
 
 ### 1. 修改数据库路径
 macOS 不支持数据库路径中包含 `.`（点），否则该文件夹会被隐藏，导致无法查看或删除数据库。
@@ -68,7 +68,7 @@ macOS 打包后的应用无法写入内部路径，因此需要将知识库存�
 ![](../../data/images/packaging/6.png)
 
 ### 6. 解决多窗口问题（可选）
-在 macOS 上，打开程序可能会出现多窗口持续弹出的情况。可在 `yuanchat.py` 的 `main` 函数中加入：
+在 macOS 上，打开程序可能会出现多窗口持续弹出的情况。可在 `openchat.py` 的 `main` 函数中加入：
 
 ```python
 multiprocessing.freeze_support()
@@ -76,7 +76,7 @@ multiprocessing.freeze_support()
 
 并在文件开头导入 `multiprocessing`。
 
-**文件位置:** `yuanchat.py`
+**文件位置:** `openchat.py`
 
 ![](../../data/images/packaging/7.png)
 
@@ -96,7 +96,7 @@ pyinstaller --clean --onedir --windowed --name "OpenChat" \
   --add-data "assets:assets" \
   --osx-bundle-identifier com.example.openchat \
   --hidden-import=imghdr \
-  yuanchat.py
+  openchat.py
 ```
 
 打包过程预计 **7-8 分钟**，成功后将在根目录下生成 `dist` 和 `build` 文件夹。

@@ -43,7 +43,7 @@ def get_default_settings():
 
 # def load_model(device='', model_path='', filter_model_list=["politic", "porn", "insult", "violence"])->bool:
 #     """
-#     加载源hf模型，https://modelscope.cn/models/YuanLLM/Yuan2-2B-Janus-hf/files
+#     加载源hf模型，https://modelscope.cn/models/OPENCHATLLM/OPENCHAT2-2B-Janus-hf/files
 #     Args:
 #         device: 模型运行设备
 #         model_path: 模型存放路径
@@ -168,7 +168,7 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
 # from fastapi import FastAPI
 # import asyncio
 # app = FastAPI()
-# load_model(device='', model_path=r'D:\E\Code\NLP\yuan_checkpoints\SensitiveFiltermodels', filter_model_list=["politic", "porn", "insult", "violence"])
+# load_model(device='', model_path=r'D:\E\Code\NLP\OPENCHAT_checkpoints\SensitiveFiltermodels', filter_model_list=["politic", "porn", "insult", "violence"])
 # @app.post("/items1/")
 # def create_item(item: ChatMessageInfo):
 #     setting = {
