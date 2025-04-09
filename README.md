@@ -4,38 +4,74 @@
 
 这里是 OpenChat 官方发布的客户端安装包，基于MIT协议开源，支持多平台快速安装使用。对于大多数用户而言，推荐直接使用我们提供的官方版本，安装简单方便，并确保能够体验最新最全的功能。你可以在下方链接中选择适合你设备的安装包进行下载：
 
+
+
+
 ### 客户端下载
-<table style="width: 100%">
-  <tr>
-    <td width="25%" align="center">
-      <b>Windows</b>
-    </td>
-    <td width="25%" align="center">
-      <b>MacOS</b>
-    </td>
-    
-  </tr>
-  <tr style="text-align: center">
-    <td align="center" valign="middle">
-      <a href='https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe'>
-        <img src='./data/images/windows.png' style="height:30px; width: 30px" />
-        <br />
-        <b>Setup.exe</b>
-      </a>
-    </td>
-    <td align="center" valign="middle">
-      <a href='https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg'>
-        <img src='./data/images/MAC.png' style="height:35px; width: 35px" />
-        <br />
-        <b>Intel</b>
-      </a>
-    </td>
-    
-    
-  </tr>
-</table>
+
+<br>
+
+<div style="display: flex; justify-content: center; gap: 32px; margin-top: 24px;">
+
+  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe" 
+     style="
+       display: inline-block;
+       background: linear-gradient(145deg, #f77070, #f45d5d);
+       color: white;
+       padding: 14px 32px;
+       border-radius: 999px;
+       text-decoration: none;
+       font-weight: 600;
+       font-size: 16px;
+       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+       transition: all 0.2s ease-in-out;
+     "
+     onmouseover="this.style.transform='scale(1.05)'"
+     onmouseout="this.style.transform='scale(1)'"
+     >Windows下载（64位）
+  </a>
 
 
+  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat_AppleSilicon.dmg" 
+     style="
+       display: inline-block;
+       background: linear-gradient(145deg, #f77070, #f45d5d);
+       color: white;
+       padding: 14px 32px;
+       border-radius: 999px;
+       text-decoration: none;
+       font-weight: 600;
+       font-size: 16px;
+       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+       transition: all 0.2s ease-in-out;
+     "
+     onmouseover="this.style.transform='scale(1.05)'"
+     onmouseout="this.style.transform='scale(1)'"
+     >MacOS下载（Apple 芯片）
+  </a>
+
+  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg" 
+     style="
+       display: inline-block;
+       background: linear-gradient(145deg, #f77070, #f45d5d);
+       color: white;
+       padding: 14px 32px;
+       border-radius: 999px;
+       text-decoration: none;
+       font-weight: 600;
+       font-size: 16px;
+       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+       transition: all 0.2s ease-in-out;
+     "
+     onmouseover="this.style.transform='scale(1.05)'"
+     onmouseout="this.style.transform='scale(1)'"
+     >MacOS下载（Intel 芯片）
+  </a>
+
+</div>
+
+<br>
+<br><br>
 
 ---
 
