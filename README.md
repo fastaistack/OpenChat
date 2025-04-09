@@ -15,15 +15,7 @@
 
 <div style="display: flex; justify-content: center; gap: 32px; margin-top: 24px;">
 
-  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe">
-    <img src="data/images/win.png" alt="Windows 下载（64位）" style="height: 48px;" />
-  </a>
-  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat_apple.dmg">
-    <img src="data/images/apple.png" alt="MacOS 下载（Apple 芯片）" style="height: 48px;" />
-  </a>
-  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg">
-    <img src="data/images/intel.png" alt="MacOS 下载（Intel 芯片）" style="height: 48px;" />
-  </a>
+  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe"><img src="data/images/win.png" alt="Windows 下载（64位）" style="height: 48px;" /></a><a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat_apple.dmg"><img src="data/images/apple.png" alt="MacOS 下载（Apple 芯片）" style="height: 48px;" /></a><a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg"><img src="data/images/intel.png" alt="MacOS 下载（Intel 芯片）" style="height: 48px;" /></a>
 
 </div>
 
