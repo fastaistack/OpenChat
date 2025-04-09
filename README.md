@@ -11,67 +11,26 @@
 
 <br>
 
+
+
 <div style="display: flex; justify-content: center; gap: 32px; margin-top: 24px;">
 
-  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe" 
-     style="
-       display: inline-block;
-       background: linear-gradient(145deg, #f77070, #f45d5d);
-       color: white;
-       padding: 14px 32px;
-       border-radius: 999px;
-       text-decoration: none;
-       font-weight: 600;
-       font-size: 16px;
-       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-       transition: all 0.2s ease-in-out;
-     "
-     onmouseover="this.style.transform='scale(1.05)'"
-     onmouseout="this.style.transform='scale(1)'"
-     >Windows下载（64位）
+  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe">
+    <img src="data/images/win.png" alt="Windows 下载（64位）" style="height: 48px;" />
   </a>
 
-
-  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat_AppleSilicon.dmg" 
-     style="
-       display: inline-block;
-       background: linear-gradient(145deg, #f77070, #f45d5d);
-       color: white;
-       padding: 14px 32px;
-       border-radius: 999px;
-       text-decoration: none;
-       font-weight: 600;
-       font-size: 16px;
-       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-       transition: all 0.2s ease-in-out;
-     "
-     onmouseover="this.style.transform='scale(1.05)'"
-     onmouseout="this.style.transform='scale(1)'"
-     >MacOS下载（Apple 芯片）
+  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat_apple.dmg">
+    <img src="data/images/apple.png" alt="MacOS 下载（Apple 芯片）" style="height: 48px;" />
   </a>
 
-  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg" 
-     style="
-       display: inline-block;
-       background: linear-gradient(145deg, #f77070, #f45d5d);
-       color: white;
-       padding: 14px 32px;
-       border-radius: 999px;
-       text-decoration: none;
-       font-weight: 600;
-       font-size: 16px;
-       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-       transition: all 0.2s ease-in-out;
-     "
-     onmouseover="this.style.transform='scale(1.05)'"
-     onmouseout="this.style.transform='scale(1)'"
-     >MacOS下载（Intel 芯片）
+  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg">
+    <img src="data/images/intel.png" alt="MacOS 下载（Intel 芯片）" style="height: 48px;" />
   </a>
 
 </div>
 
+
 <br>
-<br><br>
 
 ---
 
