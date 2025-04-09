@@ -3,36 +3,22 @@
 
 Here is the client installation package officially released by OpenChat. It is open source based on the MIT protocol and supports fast installation and use on multiple platforms. For most users, it is recommended to directly use the official version provided by us. The installation is simple and convenient, and it ensures that you can experience the latest and most complete functions. You can select the installation package suitable for your device in the link below to download:
 
-### Download for Desktop
-<table style="width: 100%">
-  <tr>
-    <td width="25%" align="center">
-      <b>Windows</b>
-    </td>
-    <td width="25%" align="center">
-      <b>MacOS</b>
-    </td>
-    
-  </tr>
-  <tr style="text-align: center">
-    <td align="center" valign="middle">
-      <a href='https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe'>
-        <img src='./data/images/windows.png' style="height:30px; width: 30px" />
-        <br />
-        <b>Setup.exe</b>
-      </a>
-    </td>
-    <td align="center" valign="middle">
-      <a href='https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg'>
-        <img src='./data/images/MAC.png' style="height:35px; width: 35px" />
-        <br />
-        <b>Intel_chip</b>
-      </a>
-    </td>
-    
-    
-  </tr>
-</table>
+
+
+
+### Desktop Download
+
+<br>
+
+<div style="display: flex; justify-content: center; gap: 75px; margin-top: 24px;">
+
+  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe"><img src="data/images/win_en.png" alt="Windows（64-bit）" style="height: 48px;" /></a><a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat_apple.dmg"><img src="data/images/apple_en.png" alt="MacOS（Apple Silicon）" style="height: 48px;" /></a><a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg"><img src="data/images/intel_en.png" alt="MacOS（Intel Chip）" style="height: 48px;" /></a>
+
+</div>
+
+
+<br>
+
 
 ---
 
