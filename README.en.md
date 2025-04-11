@@ -1,36 +1,59 @@
-<p align="right">
-  <a href="./README.md">中文</a> | English
+<br />
+<div align="center">
+  <a>
+    <img src="./data/images/OpenChat_logo.png" alt="Logo" width="160" height="160">
+  </a>
 
-Here is the client installation package officially released by OpenChat. It is open source based on the MIT protocol and supports fast installation and use on multiple platforms. For most users, it is recommended to directly use the official version provided by us. The installation is simple and convenient, and it ensures that you can experience the latest and most complete functions. You can select the installation package suitable for your device in the link below to download:
+  <p align="center">
+    Open Source LLMs Chat Application
 
+  </p>
 
-
-
-### Desktop Download
-
-<br>
-
-<div style="display: flex; justify-content: center; gap: 75px; margin-top: 24px;">
-
-  <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe"><img src="data/images/win_en.png" alt="Windows（64-bit）" style="height: 48px;" /></a><a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat_apple.dmg"><img src="data/images/apple_en.png" alt="MacOS（Apple Silicon）" style="height: 48px;" /></a><a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg"><img src="data/images/intel_en.png" alt="MacOS（Intel Chip）" style="height: 48px;" /></a>
+  English | <a href="./README.md">中文</a> 
 
 </div>
-
-
-<br>
-
-
----
 
 
 
 # OpenChat - Your All-in-One AI Platform
 
+---
+
+Here is the client installation package officially released by OpenChat. It is open source based on the MIT protocol and supports fast installation and use on multiple platforms. For most users, it is recommended to directly use the official version provided by us. The installation is simple and convenient, and it ensures that you can experience the latest and most complete functions. 
+
+**OpenChat** does **not collect any of your personal information**.  
+The source code is open-sourced under the **MIT license**, and **all your chat records and files are stored locally** on your device.
+
+If you encounter an error when launching OpenChat for the first time on macOS—such as:
+
+- **“Cannot be opened because the developer cannot be verified”**
+- **“The file is damaged and should be moved to the Trash”**
+
+This is caused by macOS security mechanisms blocking the app.
+
+👉 Please refer to the 《[macOS Launch Fix Guide](doc/intro/MAC_en.md)》.  
+Simply follow the steps once, and OpenChat will run normally.
+
+You can select the installation package suitable for your device in the link below to download:
 
 
-OpenChat is a client application that provides a conversational AI experience powered by large models. It allows users to easily interact with multiple AI models for knowledge-based Q&A, web information retrieval, knowledge management, and document-based conversations.
+### <img src="./data/images/microsoft.png" alt="Logo" width="28" height="28"> Download Windows Installer 
+
+- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe) (Installer)
+
+
+
+### <img src="./data/images/apple.png" alt="Logo" width="28" height="28"> Download MacOS Installer
+
+- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat_apple.dmg) (Apple Silicon)
+- [OpenChat.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg) (Intel chips)
+
+
+<br>
+<br>
 
 ![](./data/images/intro/主页.png)
+
 
 ---
 
