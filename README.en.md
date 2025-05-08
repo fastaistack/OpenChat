@@ -13,7 +13,8 @@
 
 </div>
 
-
+# Welcome Your feedback
+We welcome you to actively participate and offer valuable feedback and suggestions for the project. Please leave comments in the project's issue area. Looking forward to building a greater open - source project with you.
 
 # OpenChat - Your All-in-One AI Platform
 
@@ -110,6 +111,76 @@ You can select the installation package suitable for your device in the link bel
 More features coming soon...
 
 ---
+
+## 📝 Changelog | OpenChat v1.0.2
+
+> Release Date: May 8, 2025  
+> Version: v1.0.2
+
+This is a major update that introduces three core features: **Agent System**, **Immersive Translation Module**, and **Auto-Update Support**, significantly enhancing OpenChat’s personalization, multilingual capabilities, and user experience.
+
+---
+
+### ✨ New Highlights
+
+#### 🤖 Agent System
+
+Users can now create and manage personalized agents with customized behavior logic:
+
+- **Custom Agents**: Easily build your exclusive agents by setting a name, category, description, and system prompt.
+
+- **Pre-built Assistant Agents**: Instantly activate specialized agents (e.g., coding, learning, product management) with pre-defined prompts—no manual setup required.
+
+- **Dedicated Chat Window**: Each agent has its own conversation window supporting model switching, context memory, and suggested prompts.
+
+---
+
+#### 🌐 Immersive Translation Module
+
+An integrated experience for document and text translation, supporting five languages: Chinese, English, Japanese, Korean, and French.
+
+- **Multi-format Document Support**: Upload and translate PDF, DOCX, and TXT files with automatic content recognition.
+
+- **Immersive UI Layout**:
+  - **Left Panel**: File translation history, preview, and status
+  - **Right Panel**: Text translation input, glossary configuration, and translation logs
+
+- **Flexible View Modes**:
+  - Side-by-side original and translated text
+  - Translation-only mode to hide source content
+  - Optional synchronized scrolling between views
+
+---
+
+#### 🔄 Auto-Update Support
+
+OpenChat now includes a built-in update checker and installer for seamless upgrades:
+
+- **Startup Check**: The system checks for new versions on launch.
+- **Popup Notification**: If an update is available, a dialog will appear with version details and changelog.
+- **One-Click Update**:
+  1. Downloads the new version
+  2. Automatically replaces the old installation
+  3. Relaunches OpenChat
+
+⚠️ On macOS, system permission prompts will appear—users must manually confirm to proceed with installation.
+
+---
+
+### 🛠 Other Improvements
+
+- State memory is now supported in both Agent and Translation modules
+- Fixed model-switching issues across platforms
+- Improved multilingual interface prompts and component compatibility
+
+---
+
+### 📌 Where to View the Changelog
+
+- View full update details and operation guide 👉 [View Changelog](./doc/intro/v1.0.2_en.md)
+
+---
+
 
 ## 💻 Configuration & Usage
 
