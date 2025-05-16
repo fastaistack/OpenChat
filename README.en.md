@@ -46,7 +46,7 @@ You can select the installation package suitable for your device in the link bel
 
 ### <img src="./data/images/microsoft.png" alt="Logo" width="28" height="28"> Download Windows Installer 
 
-- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.2_win.exe) (Installer)
+- [OpenChat_windows.exe](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.2_win.exe) (Installer)
 
 
 
