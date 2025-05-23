@@ -26,6 +26,15 @@ class LLMAnswer:
         reference_url_list = [(relevant_docs_list[i].metadata)['url'] for i in range(self.TOP_K)]
         reference_content_list = [relevant_docs_list[i].page_content for i in range(self.TOP_K)]
 
+        # # 去除重复内容
+        # reference_content_list_new = []
+        # reference_url_list_new = []
+        # for i in range(self.TOP_K):
+        #     if reference_content_list[i] not in reference_content_list_new:
+        #         reference_content_list_new.append(reference_content_list[i])
+        #         reference_url_list_new.append(reference_url_list[i])
+        # reference_url_list = reference_url_list_new
+        # reference_content_list = reference_content_list_new
 
         try:
             reference_index_list = [link_list.index(link)+1 for link in reference_url_list]
@@ -53,3 +62,24 @@ class LLMAnswer:
                 rearranged_index_list.append(index_dict[index])
         return rearranged_index_list
 
+
+# Example usage
+if __name__ == "__main__":
+    paras_dict = {}
+    content_processor = LLMAnswer(paras_dict)
+    query = "What happened to Silicon Valley Bank"
+    output_format = "" # User can specify output format
+    profile = "" # User can define the role for LLM
+
+    # Fetch web content based on the query
+    web_contents_fetcher = WebContentFetcher(query)
+    web_contents, serper_response = web_contents_fetcher.fetch()
+
+    # Retrieve relevant documents using embeddings
+    retriever = EmbeddingRetriever()
+    relevant_docs_list = retriever.retrieve_embeddings(web_contents, serper_response['links'], query)
+    formatted_relevant_docs = content_processor._format_reference(relevant_docs_list, serper_response['links'])
+    print(formatted_relevant_docs)
+
+    # Measure the time taken to get an answer from the LLM model
+    start = time.time()

@@ -63,12 +63,6 @@ def init_vector_config():
         db.add(knowledge_config)
         db.commit()
         db.refresh(knowledge_config)
-    # process_setting.get_system_default_path().config_value
-    # from pkg.server.router import knowledge
-    # knowledge.mv_knowledge_file(process_setting.get_system_default_path().config_value,os.path.join(process_setting.get_system_default_path().config_value,'tmp_test'))
-    # knowledge.get_move_knowledge_process()
-    # knowledge.get_move_knowledge_volume()
-
 def init():
     gvar.set_home_path(os.getcwd())
     # check cache dir, if not exist, create it
@@ -92,16 +86,11 @@ def init():
     process_model.init_models_status()
     # 初始化登录账户
     init_acount()
-    # 初始化插件
-    # init_plugins()
+
     # 初始化向量库配置
     init_vector_config()
-    # from pkg.server.router.knowledge import get_knowledge_by_id
-    # params = get_knowledge_by_id("590c97cff54f11eeb85cbce92ffb436e")
-    # print(params)
-    # 更新文件状态
-    from pkg.server.router import knowledge
-    knowledge.change_file_status()
+    from pkg.plugins.translator.utils import checkout_translate_item
+    checkout_translate_item()
     
 def main():
     #0. Init environment

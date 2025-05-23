@@ -1,19 +1,19 @@
-from fastapi import APIRouter, Request, Depends
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel
 
-from ...projectvar import Projectvar
 from ...projectvar import constants as const
 from ..depends import get_headers
-import os
 
 from ...server.schemas import CommonResponse
-from typing import Union, List
+from typing import Union
 from ...projectvar.statuscode import StatusCodeEnum
 from ...logger import Log
 from ...database.schemas import *
 from ..process.process_account import AlchemyTool
 from pkg.server.process.plugin_process import plugins_init
+from pkg.server.process.agent_process import agents_init
+from pkg.server.process.process_model import models_init
 
 #gvar = Projectvar()
 
@@ -95,6 +95,15 @@ async def account_user_login(user_name:str = "hello"):
         
         # 初始化插件
         plugins_init(db_query.user_id)
+        # 初始化智能体
+        agents_init(db_query.user_id)
+        
+        # 初始化模型
+        models_init()
+        
+        # 数据库迁移
+        from pkg.server.router import update_api
+        update_api.data_migration_immediately()
         
         return result.success(TokenBase(access_token=access_token, refresh_token=refresh_token))
     except Exception as ex:
@@ -122,6 +131,15 @@ async def account_login(form_data: OAuth2PasswordRequestForm = Depends()):
         
         # 初始化插件
         plugins_init(db_query.user_id)
+        # 初始化智能体
+        agents_init(db_query.user_id)
+        
+        # 初始化模型
+        models_init()
+        
+        # 数据库迁移
+        from pkg.server.router import update_api
+        update_api.data_migration_immediately()
         
         return result.success(TokenBase(access_token=access_token, refresh_token=refresh_token))
     except Exception as ex:

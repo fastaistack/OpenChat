@@ -1,5 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, DateTime, BigInteger,Text,Float
 from datetime import datetime
+import uuid
 
 from sqlalchemy.orm import relationship
 
@@ -218,33 +219,125 @@ class OptLog(Base):
     inprocess = Column(String, nullable=False)
     createtime = Column(String,nullable=False)
 
-class ModelDownloadChunk(Base):
-    __tablename__ = "model_download_chunk"
+# class ModelDownloadChunk(Base):
+#     __tablename__ = "model_download_chunk"
 
-    id               = Column(String, primary_key=True)
-    modelscope_path  = Column(String,  nullable=False)
-    revision         = Column(String,  nullable=False)
-    file_path        = Column(String,  nullable=False)
-    file_size        = Column(Integer, nullable=False)
-    size             = Column(Integer, nullable=False)
-    index            = Column(Integer, nullable=False)
-    start_pos        = Column(Integer, nullable=False)
-    end_pos          = Column(Integer, nullable=False)
-    status           = Column(Integer, nullable=False)
-    md5              = Column(String,  nullable=True)
-    tmp_file         = Column(String,  nullable=True)
+#     id               = Column(String, primary_key=True)
+#     modelscope_path  = Column(String,  nullable=False)
+#     revision         = Column(String,  nullable=False)
+#     file_path        = Column(String,  nullable=False)
+#     file_size        = Column(Integer, nullable=False)
+#     size             = Column(Integer, nullable=False)
+#     index            = Column(Integer, nullable=False)
+#     start_pos        = Column(Integer, nullable=False)
+#     end_pos          = Column(Integer, nullable=False)
+#     status           = Column(Integer, nullable=False)
+#     md5              = Column(String,  nullable=True)
+#     tmp_file         = Column(String,  nullable=True)
 
-class ModelMoveProgress(Base):
-    __tablename__ = "model_move_progress"
+# class ModelMoveProgress(Base):
+#     __tablename__ = "model_move_progress"
 
-    id               = Column(String,  primary_key=True)
-    model_id         = Column(Integer,  nullable=False)
-    model_name       = Column(String,  nullable=False)
-    modelscope_path  = Column(String,  nullable=False)
-    revision         = Column(String,  nullable=True)
-    origin_file      = Column(String,  nullable=False)
-    destion_file     = Column(String,  nullable=False)
-    md5              = Column(String,  nullable=True)
-    status           = Column(Integer, nullable=False)
-    message          = Column(String,  nullable=True)
-    time_stamp       = Column(Integer,  nullable=False)
+#     id               = Column(String,  primary_key=True)
+#     model_id         = Column(Integer,  nullable=False)
+#     model_name       = Column(String,  nullable=False)
+#     modelscope_path  = Column(String,  nullable=False)
+#     revision         = Column(String,  nullable=True)
+#     origin_file      = Column(String,  nullable=False)
+#     destion_file     = Column(String,  nullable=False)
+#     md5              = Column(String,  nullable=True)
+#     status           = Column(Integer, nullable=False)
+#     message          = Column(String,  nullable=True)
+#     time_stamp       = Column(Integer,  nullable=False)
+
+class Agent(Base):
+    __tablename__ = 'Agent'
+
+    id = Column(String, primary_key=True)
+    name = Column(String, nullable=False)
+    prompt = Column(Text, nullable=False)
+    avatar = Column(String, nullable=True)  # 智能体头像URL
+    description = Column(Text, nullable=True)  # 智能体描述
+    category = Column(String, nullable=True)  # 智能体分类
+    welcome_message = Column(Text, nullable=True)  # 欢迎消息
+    recommended_questions = Column(String, nullable=True)  # 推荐问题
+    creator_id = Column(String, nullable=False)  # 创建者ID
+    plugin_param = Column(String, nullable=True)
+    kb = Column(String, nullable=True)  # 知识库ID
+    is_favorite = Column(Boolean, default=False, nullable=True)  # 是否收藏
+    
+    user_id = Column(String, nullable=False)
+    create_time = Column(DateTime, default=datetime.now(), nullable=True)
+    update_time = Column(DateTime, default=datetime.now(), nullable=True)
+
+class Assistants(Base):
+    __tablename__ = 'assistants'
+
+    session_id = Column(String, nullable=False)
+    agent_id = Column(String, nullable=False)
+    name = Column(String, nullable=False)
+    prompt = Column(Text, nullable=False)
+    welcome_message = Column(Text, nullable=True)  # 欢迎消息
+    recommended_questions = Column(String, nullable=True)  # 推荐问题
+    creator_id = Column(String, nullable=False)  # 创建者ID
+    
+    description = Column(String, nullable=True)  # 描述
+    avatar = Column(String, nullable=True)  # 头像
+    category = Column(String, nullable=True)  # 分类，JSON字符串数组格式
+    kb = Column(String, nullable=True)  # 知识库ID
+    category = Column(String, nullable=True)  # 分类
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    create_time = Column(DateTime, default=datetime.now(), nullable=True)
+    update_time = Column(DateTime, default=datetime.now(), nullable=True)
+    
+class ModelList(Base):
+    __tablename__ = "model_list"
+    
+    id          = Column(Integer,       primary_key=True, autoincrement="auto")
+    model_key   = Column(String,        nullable=False)
+    name        = Column(String,        nullable=False)
+    model_type  = Column(String,        nullable=False)
+
+class Glossary_item(Base):
+    __tablename__ = "glossary_item"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False, index=True)
+    total_num_words = Column(Integer, nullable=False)
+    field = Column(String, nullable=False)
+
+class Glossary_page(Base):
+    __tablename__ = "glossary_page"
+    id = Column(Integer, primary_key=True, index=True)
+    base_lang = Column(String, nullable=False)
+    target_lang = Column(String, nullable=False)
+    base_language = Column(String, nullable=False)
+    target_language = Column(String, nullable=False)
+    glossary_id = Column(Integer, ForeignKey("glossary_item.id"))
+
+class Translate_item(Base):
+    __tablename__ = "translated_item"
+    id = Column(Integer, primary_key=True, index=True)
+    fileid = Column(String, nullable=False,index=True)
+    file_name = Column(String, nullable=False)
+    base_lang = Column(String, nullable=True)
+    target_lang = Column(String, nullable=True)
+    source_file_path = Column(String, nullable=False)
+    translated_file_path = Column(String, nullable=True)
+    upload_time = Column(String, nullable=False)
+    translated_time = Column(String, nullable=True)
+    status = Column(Integer, nullable=False)
+    process = Column(Float, nullable=False)
+    ocr_status = Column(Boolean,default=False,nullable=True)
+    ocr_process = Column(Float,default=0.0, nullable=True)
+    pic = Column(String, nullable=True)
+
+class Translate_text_item(Base):
+    __tablename__ = "translated_text_item"
+    id = Column(Integer, primary_key=True, index=True)
+    origin_text = Column(String, nullable=False)
+    transed_text = Column(String, nullable=False)
+    base_lang = Column(String, nullable=False)
+    target_lang = Column(String, nullable=False)
+    create_time = Column(String, nullable=False)

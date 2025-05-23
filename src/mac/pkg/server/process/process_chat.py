@@ -94,6 +94,10 @@ def delete_session(session_id: str):
         # delete knowledge
         from pkg.server.router import knowledge
         knowledge.clean_konwledge_by_session(session_id)
+        # delete assistant
+        from pkg.server.process import agent_process
+        agent_process.delete_assistant_by_session(session_id=session_id)
+
         with SessionLocal() as db:
             db.query(models.ChatSession).filter(models.ChatSession.id == session_id).delete()
             db.query(models.ChatItem).filter(models.ChatItem.session_id == session_id).delete()
@@ -167,11 +171,23 @@ def insert_message(user_id: str, message: str, session_id: str, role_str: str, m
 
 def chat_model_infer(item: schemas.ChatMessageInfo, setting: {}, content_setting: {}):
     try:
+        # 获取会话的智能体
+        from .agent_process import is_agent_session, get_assistant
+        
+        # 检查是否是智能体会话
+        if is_agent_session(item.session_id):
+            assistant = get_assistant(item.session_id)
+            if assistant:
+                # 构建带有智能体提示词的系统消息
+                system_prompt = f"你是{assistant.name}。{assistant.prompt}"
+                content_setting["system_prompt"] = system_prompt
+                log.info(f"使用智能体系统提示词: {system_prompt}")
+
         # get current model info
         count_num = 0
         think_start = 0
         think_cost = 0
-        model_list = process_model.get_loaded_model_info()
+        model_list,_ = process_model.get_loaded_model_info()
         if len(model_list) <= 0:
             item_result = {"result_flag": False, "result_content": StatusCodeEnum.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg, "tokens": round(0.00, 2)}
             yield item_result

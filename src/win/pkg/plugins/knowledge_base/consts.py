@@ -1,7 +1,6 @@
 
 DEFAULT_VS_PATH = "./chromadb"
-# DEFAULT_EMBEDDING_MODEL = "/mnt/md0/wulixuan/models/bge-large-zh-v1.5/"
-DEFAULT_EMBEDDING_MODEL = "D:\\Program Files\\Python311\\workspace\\text2vec-base-chinese"
+DEFAULT_EMBEDDING_MODEL = ""
 DEFAULT_EMBEDDING_CUDA = "cuda:0"
 
 # milvus settings

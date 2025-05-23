@@ -1,5 +1,4 @@
 # -*- coding: utf-8  -*-
-import os
 import re
 from datetime import datetime
 from pkg.plugins.web_argument_plugin.fetch_web_content import WebContentFetcher
@@ -18,7 +17,8 @@ def get_default_settings():
         "embedding_model_id": None,
         "embedding_model_path": "",
         "web_api_key": "",
-        "style_search": ""
+        "style_search": "",
+        "searxng_url": ""
     }
     return settings
 
@@ -28,7 +28,7 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
    启用web检索插件，调用此函数获取web检索内容
     Args:
         reqeust: ChatMessageInfo对象，从中获取待检测信息
-        setting：输入超参数，包括检索相关超参数，包括"retrieve_topk", "template", "embedding_model_path", "serper_key", "style_search"
+        setting：输入超参数，包括检索相关超参数，包括"retrieve_topk", "template", "embedding_model_path", "serper_key", "style_search","searxng_url"
         "content_setting"：参数结构体，存贮中间变量，
     Returns:
         {"flag": False表示有检索异常情况，返回result异常信息至UI；True表示正常，继续代码
@@ -50,6 +50,7 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
 
     # 基于问题提取网页内容
     web_api_key = paras_dict.get("web_api_key", "")
+    searxng_url = paras_dict.get("searxng_url", "")
 
     if style_search=="serper" and re.fullmatch(r"[a-zA-Z0-9]{40,40}", web_api_key) is None:   #serper api key长度40，而且由字母和数字组成
         out_dict["content"] = "您提供的serper api key不合法，请重新输入"
@@ -59,6 +60,10 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
         # out_dict["content"] = "您提供的bing api key不合法，请重新输入"
         # return {"flag": False, "result": out_dict, "setting": setting}
         pass
+    elif style_search=="bocha" and re.fullmatch(r"sk-[a-zA-Z0-9]{10,}", web_api_key) is None:
+        out_dict["content"] = "您提供的博查 api key不合法，请重新输入"
+        return {"flag": False, "result": out_dict, "content_setting": content_setting}
+
 
     embeddings_model_path = paras_dict.get("embedding_model_path")
     # if embeddings_model_path == None or not os.path.exists(embeddings_model_path):
@@ -67,13 +72,18 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
 
     try:
         web_contents_fetcher = WebContentFetcher(input_query, web_api_key)
-        web_contents, web_response = web_contents_fetcher.fetch(style_search)
+        web_contents, web_response = web_contents_fetcher.fetch(style_search, searxng_url)
+        log.info(f"preprocess: style_search: {style_search}")
+        log.info(f"preprocess: searxng_url: {searxng_url}")
     except Exception as e:
         import traceback
         print(traceback.format_exc())
         log.info('\nweb fetch contents error: {}'.format(e))
         out_dict["content"] = "网络检索结果为空，请检查网络是否通畅或尝试其它关键字或切换其它网络检索方式"
         return {"flag": False, "result": out_dict, "content_setting": content_setting}
+
+    # 调用API异常返回
+    bocha_error_info = {"403": "余额不足", "400": "请求参数缺失", "401": "KEY无效", "429": "请求频达到率限制", "500": "请求异常"}
 
     if type(web_response) == str:
         out_dict["content"] = web_response
@@ -84,6 +94,11 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
     elif web_response.get('search_response').get('message') == 'Unauthorized.':
         out_dict["content"] = "您提供的serper api key未经授权，请检查重新输入"
         return {"flag": False, "result": out_dict, "content_setting": content_setting}
+    # bocha
+    elif style_search == "bocha" and web_response.get("code") in bocha_error_info.keys():
+        out_dict["content"] = f"您提供的bocha api {bocha_error_info[web_response.get('code')]}，请检查后再尝试"
+        return {"flag": False, "result": out_dict, "content_setting": content_setting}
+
     else:
         # ToDo:完善bing api key 未经授权时，检索输出异常
         pass
@@ -109,23 +124,3 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
     log.info('\nweb retriever use time:{0}, get relevant docs:{1}'.format(t2-t1, formatted_relevant_docs))
     return {"flag": True, "result": out_dict, "content_setting": content_setting}
 
-
-
-# from fastapi import FastAPI
-# import asyncio
-# app = FastAPI()
-# @app.post("/items1/")
-# def create_item(item: ChatMessageInfo):
-#     setting = {# 检索相关参数
-#                    "retrieve_topk": 3, "template": "说明：您是一位认真的研究者。使用提供的网络搜索结果，对给定的问题写一个全面而详细的回复。",
-#                    "embedding_model_path": r"D:\E\Code\NLP\OPENCHAT_checkpoints\text2vec-base-chinese",
-#                    "web_api_key": "",
-#                    "style_search": "serper"
-#                }
-#     result = asyncio.run(call(item, setting, {}))
-#     return result
-#
-#
-# if __name__ == '__main__':
-#     import uvicorn
-#     uvicorn.run(app, host="0.0.0.0", port=2000)

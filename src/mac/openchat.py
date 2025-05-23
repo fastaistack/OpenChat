@@ -69,6 +69,113 @@ def init_vector_config():
     # knowledge.get_move_knowledge_process()
     # knowledge.get_move_knowledge_volume()
 
+
+
+import sys, os, nltk, shutil, pytesseract
+
+def get_runtime_path(subpath=""):
+    """
+    获取资源在打包后运行时的路径，兼容 PyInstaller .app 中 Contents/Resources/，否则 fallback 到 MacOS 目录
+    """
+    if getattr(sys, 'frozen', False):
+        base_mac = os.path.abspath(os.path.dirname(sys.executable))
+        resources_path = os.path.abspath(os.path.join(base_mac, "../Resources"))
+        candidate = os.path.join(resources_path, subpath)
+        if os.path.exists(candidate):
+            return candidate
+        return os.path.join(base_mac, subpath)
+    else:
+        return os.path.join(os.path.abspath(os.path.dirname(__file__)), subpath)
+
+def setup_runtime():
+    """
+    设置运行时依赖路径，兼容 PyInstaller .app 环境。
+    """
+    if getattr(sys, 'frozen', False):
+        print("📦 正在初始化运行时依赖路径...")
+
+        # ✅ 1. 设置 PATH 补充
+        homebrew_bin = "/opt/homebrew/bin"
+        if homebrew_bin not in os.environ.get("PATH", ""):
+            os.environ["PATH"] = f"{homebrew_bin}:{os.environ.get('PATH', '')}"
+
+        # ✅ 2. 设置 libmagic
+        packed_magic = get_runtime_path("libmagic/magic.mgc")
+        libmagic_dylib = get_runtime_path("libmagic/libmagic.dylib")
+
+        if os.path.exists(packed_magic):
+            os.environ["MAGIC"] = packed_magic
+            print(f"✅ 使用打包内置 libmagic 数据库: {packed_magic}")
+        else:
+            print(f"❌ 未找到 libmagic 数据文件: {packed_magic}，请检查是否正确打包或放置")
+
+        if os.path.exists(libmagic_dylib):
+            dyld_dir = os.path.dirname(libmagic_dylib)
+            old_dyld = os.environ.get("DYLD_LIBRARY_PATH", "")
+            os.environ["DYLD_LIBRARY_PATH"] = f"{dyld_dir}:{old_dyld}"
+            print(f"✅ 设置 DYLD_LIBRARY_PATH 为: {os.environ['DYLD_LIBRARY_PATH']}")
+        else:
+            print(f"❌ 未找到 libmagic 动态库: {libmagic_dylib}，请检查是否正确打包或放置")
+
+
+        # ✅ 正确计算 libexpat 路径
+        libexpat_path = os.path.abspath(
+            os.path.join(sys.executable, "../../Frameworks/libexpat.1.dylib")
+        )
+        print(f"🧭 检查路径: Frameworks/libexpat.1.dylib → {libexpat_path} (存在: {os.path.exists(libexpat_path)})")
+
+        # ✅ 同时打印 pyexpat 的实际路径
+        try:
+            import pyexpat
+            print(f"📦 当前 pyexpat.so 路径: {pyexpat.__file__}")
+        except Exception as e:
+            print(f"❌ pyexpat 加载失败: {e}")
+
+
+        # ✅ 3. 检查 tesseract
+        if shutil.which("tesseract") is None:
+            print("❌ 未检测到 Tesseract OCR，请先运行：brew install tesseract")
+            return
+        else:
+            print("✅ 已安装 tesseract")
+
+        # ✅ 5. 设置 nltk 路径
+        nltk_path = get_runtime_path("nltk_data")
+        if os.path.exists(nltk_path):
+            nltk.data.path.append(nltk_path)
+            print(f"✅ 加载 nltk_data: {nltk_path}")
+        else:
+            print(f"⚠️ 未找到 nltk_data 目录: {nltk_path}")
+
+        # ✅ 6. 设置 huggingface hub 缓存路径（用于加载 onnx 模型）
+        hf_model_path = get_runtime_path("resources/models")  # 你打包进去的目录
+        if os.path.exists(hf_model_path):
+            os.environ["HUGGINGFACE_HUB_CACHE"] = hf_model_path
+            print(f"✅ 设置 HUGGINGFACE_HUB_CACHE = {hf_model_path}")
+        else:
+            print("⚠️ 未找到打包的 huggingface 模型目录")
+
+        # ✅ 7. 检查 pandoc（从 libmagic 文件夹中查找）
+        try:
+
+            local_pandoc = get_runtime_path("libmagic/pandoc")
+
+            if os.path.exists(local_pandoc):
+                if os.access(local_pandoc, os.X_OK):
+                    os.environ["PYPANDOC_PANDOC"] = local_pandoc
+                    os.environ["PATH"] = f"{os.path.dirname(local_pandoc)}:{os.environ.get('PATH', '')}"
+                    print(f"✅ 设置 PYPANDOC_PANDOC = {local_pandoc}")
+                else:
+                    print(f"⚠️ pandoc 存在但不可执行：{local_pandoc}")
+            else:
+                print(f"❌ 未找到 pandoc：{local_pandoc}")
+
+        except ImportError:
+            print("❌ 未安装 pypandoc，请运行：pip install pypandoc")
+
+
+
+
 def init():
     gvar.set_home_path(os.getcwd())
     # check cache dir, if not exist, create it
@@ -87,6 +194,8 @@ def init():
         from pkg.database.data_init import init_models
         init_models()
 
+    setup_runtime()
+
     from pkg.server.process import process_model
     
     process_model.init_models_status()
@@ -102,6 +211,8 @@ def init():
     # 更新文件状态
     from pkg.server.router import knowledge
     knowledge.change_file_status()
+    from pkg.plugins.translator.utils import checkout_translate_item
+    checkout_translate_item()
     
 def main():
     #0. Init environment
@@ -113,5 +224,9 @@ def main():
     #2. Create main app
     app_run()
 
+    
+
 if __name__ == "__main__":
+    import multiprocessing
+    multiprocessing.freeze_support()
     main()

@@ -1,7 +1,7 @@
-from typing import Optional
+from typing import Optional, List
 from fastapi import UploadFile
 
-from pydantic import BaseModel, Field, root_validator
+from pydantic import BaseModel, Field, root_validator, validator
 from datetime import datetime
 
 
@@ -194,6 +194,7 @@ class UserPluginWebSearchParamInfo(BaseModel):
     retrieve_topk: int
     template: str
     style_search: str
+    searxng_url: Optional[str] = None
 
 
 class UserPluginWebSearchParamUpdateInfo(BaseModel):
@@ -202,6 +203,7 @@ class UserPluginWebSearchParamUpdateInfo(BaseModel):
     retrieve_topk: int
     template: str
     style_search: str
+    searxng_url: Optional[str] = None
     plugin_id: int
 
 
@@ -491,3 +493,92 @@ class UpdateKnowledgeSessionConfigPayload(BaseModel):
     description: Optional[str]
     user: Optional[list[str]] = None
     knowledge_setting: Optional[str]
+
+# 智能体
+class AgentBase(BaseModel):
+    name: str = Field(..., example="编程助手")
+    prompt: str = Field(..., example="你是一个专业的编程助手...")
+    avatar: Optional[str] = Field(default="", example="https://example.com/avatar.png")
+    description: Optional[str] = Field(default="", example="帮助解决编程问题的智能助手")
+    category: Optional[List[str]] = Field(default=[], example=["development", "job"])
+    welcome_message: Optional[str] = Field(default="", example="欢迎使用编程助手！")
+    recommended_questions: List[str] = Field(default=[], example=["如何定义一个函数？", "如何使用循环？"])
+    creator_id: str = Field(..., example="system")
+    plugin_param: Optional[str] = Field(default="{}", example="[{'plugin_param': param1}]")# 插件参数
+    kb: Optional[str] = Field(default="", example="知识库ID")  # 知识库ID
+    is_favorite: bool = Field(default=False, example="False")  # 是否收藏
+    
+    class Config:
+        from_attributes = True
+
+class AgentInDB(AgentBase):
+    id: str = Field(..., example="d31bb459c513412db49dfbaf54e93402")
+    user_id: str = Field(..., example="user_id")  # 用户ID
+    create_time: datetime = Field(example="2024-03-25 15:33:00")
+    update_time: datetime = Field(example="2024-03-25 15:33:00")
+
+class AssistantBase(BaseModel):
+    session_id: str = Field(..., example="79e43f601fec4a3ea3232f306c07dfe0")    # session id
+    agent_id: str = Field(..., example="d31bb459c513412db49dfbaf54e93402")   # agentid
+    name: str = Field(..., example="编程助手")
+    prompt: str = Field(..., example="你是一个专业的编程助手...")
+
+    avatar: Optional[str] = Field(default="", example="https://example.com/avatar.png")
+    description: Optional[str] = Field(default="", example="帮助解决编程问题的智能助手")
+    category: Optional[List[str]] = Field(default=[], example=["development", "job"])
+    
+    welcome_message: Optional[str] = Field(default="", example="欢迎使用编程助手！")
+    recommended_questions: List[str] = Field(default=[], example=["如何定义一个函数？", "如何使用循环？"])
+    creator_id: str = Field(..., example="system")
+    kb: Optional[str] = Field(default="", example="知识库ID")  # 知识库ID
+
+    class Config:
+        from_attributes = True
+
+class AssistantInDB(AssistantBase):
+    id: Optional[int] = None
+    create_time: Optional[datetime] = None
+    update_time: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+class Glossary_item(BaseModel):
+
+    name:str
+    total_num_words:int
+    field:str
+
+class Glossary_page(BaseModel):
+
+    base_lang: str
+    base_language: str
+    target_lang: str
+    target_language: str
+    glossary_id: int
+
+class Translate_item(BaseModel):
+    fileid: str
+    file_name: str
+    base_lang: str
+    base_lang: str
+    source_file_path: str
+    translated_file_path: str
+    upload_time: str
+    translated_time: str
+    status: int
+    process: int
+    pic: str
+
+class Translate_text_item(BaseModel):
+    original_text:str
+    transed_text:str
+    base_lang:str
+    target_lang:str
+    create_time:str
+    
+class ModelBase(BaseModel):
+    model_key:str           = Field(default="", example="ollama")
+    name:str                = Field(default="", example="deepseek-r1:1.5b")
+    model_type:str          = Field(default="", example="chat")
+    class Config:
+        from_attributes = True

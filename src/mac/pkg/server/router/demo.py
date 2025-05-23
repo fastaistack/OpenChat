@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
 from ...projectvar import Projectvar
 from ...projectvar import constants as const
 from ..depends import get_headers
-import os
+
 
 gvar = Projectvar()
 

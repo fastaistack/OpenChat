@@ -1,9 +1,11 @@
 # coding=utf8
 
-import os
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlencode
+from pkg.logger import Log
+
+log = Log()
 
 
 class BingBs4Client:
@@ -29,6 +31,19 @@ class BingBs4Client:
         # Initialize lists to store the extracted components
         titles, links, snippets = [], [], []
         search_data = []
+        SITE_NAME_MAPPING = {
+            "zhihu": "知乎",
+            "baidu": "百度",
+            "csdn": "CSDN",
+            "jianshu": "简书",
+            "sina": "新浪",
+            "163": "网易",
+            "qq": "腾讯",
+            "weibo": "微博",
+            "sohu": "搜狐",
+            "bilibili": "哔哩哔哩",
+            "douban": "豆瓣",
+        }
 
         # print('len(results):',len(results))
         for i in range(len(results)):
@@ -37,12 +52,63 @@ class BingBs4Client:
                 continue
 
             h2 = row.find("h2")
+            log.info(f"h2:{h2}")
             title = h2.text
+            log.info(f"title:{title}")
             title = title.strip()
             link = h2.find("a").get("href").replace("baike.baidu.hk", "baike.baidu.com")
             if link in links:
                 continue
             # print(type(row))
+
+            # 获取网站名称
+            site_name = "网页搜索"
+            try:
+                # 从title中获取
+                domain = title.split("-")[-1].strip() or title.split("_")[-1].strip() or title.split(" - ")[-1].strip() or title.split(" | ")[-1].strip()
+                if len(domain) < 10:
+                    site_name = domain
+                        
+                # 从URL获取
+                else:
+                    site_name = link.split("//")[1].split("/")[0].split(".")[1]
+                    for part in site_name.split("."):
+                        if part in SITE_NAME_MAPPING:
+                            site_name = SITE_NAME_MAPPING[part]
+                            break
+                            
+            except Exception:
+                pass
+                
+            # 查找icon
+            icon_url = None
+            # 查找img标签
+            # icon = row.find(lambda tag: tag.name == 'img' and tag.get('class') and 
+            #               any(c for c in tag.get('class') if 'logo' in c.lower() or 'icon' in c.lower()))
+            # if icon:
+            #     icon_url = icon.get('src')
+            #     # 从alt属性获取网站名称
+            #     if icon.get('alt'):
+            #         site_name = icon.get('alt').strip()
+            # else:
+            #     # 查找svg标签
+            #     icon = row.find(lambda tag: tag.name == 'svg' and tag.get('class') and 
+            #                   any(c for c in tag.get('class') if 'logo' in c.lower() or 'icon' in c.lower()))
+            #     if icon:
+            #         icon_url = icon.get('src') or icon.get('data-url')
+            #         # 从title属性获取网站名称
+            #         if icon.get('title'):
+            #             site_name = icon.get('title').strip()
+            #     else:
+            #         # Try to get favicon from domain
+            #         try:
+            #             base_url = link.split("//")[0] + "//" + link.split("//")[1].split("/")[0]
+            #             icon_url = base_url + "/favicon.ico"
+            #         except:
+            #             icon_url = None
+            base_url = link.split("//")[0] + "//" + link.split("//")[1].split("/")[0]
+            icon_url = base_url + "/favicon.ico"
+
             content = row.find("p")
             if content is None:
                 continue
@@ -51,7 +117,13 @@ class BingBs4Client:
             titles.append(title)
             links.append(link)
             snippets.append(content_format)
-            search_data.append({"snippet": content_format, "title": title, "link": link})
+            search_data.append({
+                "snippet": content_format, 
+                "title": title, 
+                "link": link,
+                "icon_url": icon_url,
+                "site_name": site_name
+            })
 
         # Organize the extracted data into a dictionary and return
         output_dict = {

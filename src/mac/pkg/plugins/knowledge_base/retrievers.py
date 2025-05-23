@@ -1,4 +1,3 @@
-import json
 from typing import List
 from pkg.plugins.knowledge_base.base import KBServiceFactory
 from pkg.plugins.knowledge_base.consts import (

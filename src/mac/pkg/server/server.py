@@ -1,8 +1,7 @@
 from fastapi import FastAPI, Request, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-
-from .router import demo, plugins, model_api, settings_api, knowledge, account_api, chat_session_api, plugin_param_api, longcode_api
+from .router import demo, plugins, model_api, settings_api, knowledge, account_api, chat_session_api, plugin_param_api, longcode_api,translator_api, agent_api,update_api
 from .subapp import chat
 from ..projectvar import Projectvar
 from ..projectvar import constants as const
@@ -48,6 +47,9 @@ app.include_router(longcode_api.router)
 app.mount("/chat", chat.chatapi)
 app.include_router(plugins.router)
 app.include_router(account_api.router)
+app.include_router(agent_api.router)
+app.include_router(translator_api.router)
+app.include_router(update_api.router)
 # app.include_router(openai_api.router)
 
 #  111 与前端部署互斥
@@ -55,10 +57,10 @@ dir = os.path.join(os.path.dirname(sys.argv[0]), const.OPENCHAT_WEBUI_PATH)
 app.mount("/open-chat", StaticFiles(directory=dir), name="dist")
 templates = Jinja2Templates(directory=dir)
 
-
 #  222 与前端部署互斥
 def is_login(path: str):
     return path=="/account/login" or path=="/account/user/login" or path=="/" or path.startswith("/open-chat")
+
 
 
 @app.middleware("http")
@@ -112,13 +114,36 @@ async def home(request: Request):
         }
     )
 
+
 import uvicorn
 def start_thread():
     uvicorn.run(app, host="0.0.0.0", port=const.OPENCHAT_SERVER_PORT, log_level="error")
 
 
+
+
+def get_resource_path(filename: str):
+    """
+    获取 libmagic 目录下的资源文件路径。
+    打包后：从 .app/Contents/Resources/libmagic/
+    开发时：从 ./_internal/key/libmagic/
+    """
+    if getattr(sys, 'frozen', False):
+        # 打包后的路径：OpenChat.app/Contents/MacOS/ → ../Resources/libmagic/
+        app_root = os.path.dirname(sys.executable)
+        resources_path = os.path.abspath(os.path.join(app_root, '..', 'Resources', 'libmagic'))
+    else:
+        # 开发模式下
+        resources_path = os.path.abspath('./_internal/key')
+
+    return os.path.join(resources_path, filename)
+
+
+
+
 def unexpected_exit():
     log.info("守护线程退出")
+
     knowledge.change_file_status()
 
 def run():
@@ -126,6 +151,7 @@ def run():
     start_time = datetime.now()
 
     threading.Thread(target=start_thread, daemon=True).start()
+
 
     import atexit  #导入atexit  模块
     atexit.register(unexpected_exit)

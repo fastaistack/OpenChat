@@ -4,15 +4,14 @@
 a = Analysis(
     ['openchat.py'],
     pathex=[],
-    binaries=[],
-    datas=[],
-    hiddenimports=[],
+    binaries=[('libmagic/libexpat.1.dylib', 'Frameworks')],
+    datas=[('pkg', 'pkg'), ('/Users/xingchenhan/YOLO', 'resources/models')],
+    hiddenimports=['imghdr'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
     noarchive=False,
-    optimize=0,
 )
 pyz = PYZ(a.pure)
 
@@ -21,7 +20,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='openchat',
+    name='OpenChat',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -32,7 +31,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['icon.png']
+    icon=['icon.icns'],
 )
 coll = COLLECT(
     exe,
@@ -41,5 +40,11 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='openchat',
+    name='OpenChat',
+)
+app = BUNDLE(
+    coll,
+    name='OpenChat.app',
+    icon='icon.icns',
+    bundle_identifier='com.example.openchat',
 )

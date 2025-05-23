@@ -14,9 +14,23 @@
 </div>
 
 
+
+
+
+## 🎉 最近更新
+
+---
+
+
+-  **[📅 OpenChat v1.0.2 更新日志（2025-05-15）👉](#-更新日志)**
+
+
+
+<br>
+
 # OpenChat - 你的一站式AI平台
 
-
+---
 
 OpenChat为客户端应用，提供一种基于大模型对话式交互模式，可以让用户很轻松的使用多种 AI 大模型，进行知识问答、网络信息检索、知识库以及文档对话等功能。
 
@@ -27,14 +41,14 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 
 ### <img src="./data/images/microsoft.png" alt="Logo" width="28" height="28"> Download Windows Installer 
 
-- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetupV1.0.1.exe) (Installer)
+- [OpenChat_windows.exe](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.2_win.exe) (Installer)
 
 
 
 ### <img src="./data/images/apple.png" alt="Logo" width="28" height="28"> Download MacOS Installer
 
-- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat_apple.dmg) (Apple Silicon)
-- [OpenChat.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChat.dmg) (Intel chips)
+- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.2_apple.dmg) (Apple Silicon)
+- [OpenChat_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.2_intel.dmg) (Intel chips)
 
 
 <br>
@@ -42,6 +56,41 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 
 ![](./data/images/intro/主页.png)
 
+
+
+## 目录导航
+
+---
+
+
+- [功能亮点](#功能亮点)
+
+  - [智能 AI 助手平台](#智能-ai-助手平台)
+  - [多功能智能助手](#多功能智能助手)
+  - [信息检索与知识管理](#信息检索与知识管理)
+  - [实用工具与扩展功能](#实用工具与扩展功能)
+
+- [即将实现的功能](#即将实现的功能)
+
+- [更新日志](#更新日志)
+  - [OpenChat v1.0.2](#openchat-v102)
+    - 《[OpenChat_v1.0.2 新功能指南](./doc/intro/v1.0.2.md)》
+  - [模型支持更新](#模型支持更新)
+  - [智能体系统](#智能体系统agent-system)
+  - [沉浸式翻译模块](#ai沉浸式翻译模块immersive-translation)
+  - [自动更新功能](#自动更新功能)
+
+- [配置与使用](#配置与使用)
+  - [1. 配置要求](#1-配置要求)
+  - [2. 安装与使用](#2-安装)  
+    - 《<a href="./doc/intro/使用指南.md">OpenChat使用指南</a>》
+
+- [打包与部署](#打包与部署)
+  - [macOS 打包指南](#macos-打包指南)
+  - [Windows 打包指南](#windows-打包指南)
+  - [说明](#说明)
+
+- 《[MacOS 安全机制拦截修复说明](doc/intro/MAC运行.md)》👈 打开应用出现“无法打开”或“文件已损坏”提示时，请点击
 
 ---
 
@@ -99,16 +148,29 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 
 ---
 
-## 📝 更新日志 | OpenChat v1.0.2
+### 📝 更新日志
+
+#### OpenChat v1.0.2
 
 > 发布日期：2025年5月8日  
 > 版本代号：v1.0.2
 
-这是一次重要更新，新增三大核心功能：**智能体系统**、**沉浸式翻译模块** 和 **自动更新支持**，显著提升了 OpenChat 的个性化能力、多语言处理能力以及整体使用体验。
+这是一次重要更新，新增三大核心功能：**智能体系统**、**沉浸式翻译模块** 和 **自动更新支持**，并加入了最新发布的 “Qwen3” 模型支持，显著提升了 OpenChat 的个性化能力、多语言处理能力以及整体使用体验。
 
 ---
 
 ### ✨ 新功能亮点
+
+####  🌌 模型支持更新
+
+新增支持最新发布的 **Qwen3** 推理语言大模型：
+  - ☁️ 可通过以下平台在线体验：
+    -  **硅基流动**
+    -  **阿里云百炼**
+    -  **无问芯穹**
+  - 🖥️ 本地部署支持：
+    - 使用 **Ollama** 快速运行 Qwen3 模型
+    - 详见：**设置 → Ollama选项** 页面查看部署说明
 
 #### 🤖 智能体系统（Agent System）
 
@@ -122,7 +184,7 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 
 
 
-#### 🌐 沉浸式翻译模块（Immersive Translation）
+#### 🌐 AI沉浸式翻译模块（Immersive Translation）
 
 一体化文档翻译与文本翻译体验，支持中/英/日/韩/法五种语言互译：
 
@@ -187,7 +249,7 @@ Mac版OpenChat.dmg打开后将看到OpenChat.app，将其拖动到应用文件�
 
 ### 3. 使用
 
-关于客户端配置流程，程序具体功能的讲解和使用说明，请参照 <a href="./doc/intro/使用指南.md">OpenChat使用指南</a> 。
+关于客户端配置流程，程序具体功能的讲解和使用说明，请参照 《<a href="./doc/intro/使用指南.md">OpenChat使用指南</a> 》。
 
 <br>
 

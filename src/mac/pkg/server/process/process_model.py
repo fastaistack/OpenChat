@@ -1,17 +1,32 @@
 from .biz_enum import ModelStatus, ModelType
 from ...logger import Log
 from typing import List
-from sqlalchemy import or_
+from sqlalchemy import or_,and_
 import importlib
 from pkg.projectvar.projectvar import Projectvar
 import threading
 from pkg.projectvar import Projectvar
 from ollama import Client
 import json
+from ...database.models import ModelList
+from ...database import models,schemas
+from ...database.database import SessionLocal
+
 
 gvar = Projectvar()
 log = Log()
 gavr = Projectvar()
+
+
+ollama_support_embedding_model_list = ['nomic-embed-text',
+                                    'mxbai-embed-large',
+                                    'snowflake-arctic-embed',
+                                    'snowflake-arctic-embed2',
+                                    'granite-embedding',
+                                    'all-minilm',
+                                    'bge-large',
+                                    'jeffh/intfloat-multilingual-e5-large-instruct',
+                                    'shaw/dmeta-embedding-zh',]
 
 
 def get_download_model_list():
@@ -50,40 +65,79 @@ def get_download_embedding_model_list():
     except Exception as ex:
         log.error(f"get_embedding_model_list error,{str(ex)}")
 
-def get_download_ollama_embedding_model_list():
+def get_download_multiple_embedding_model_list():
     try:
         from pkg.database import models
         from pkg.database.database import SessionLocal
         result = []
         id = 1
         with SessionLocal() as db:
+            # 获取 Ollama 模型
             model_info = db.query(models.Model).filter(models.Model.key == 'ollama').first()
             ollama = Client(host=model_info.url)
             model_list = ollama.list()
-            ollama_support_embedding_model_list = ['nomic-embed-text',
-                                                'mxbai-embed-large',
-                                                'snowflake-arctic-embed',
-                                                'snowflake-arctic-embed2',
-                                                'granite-embedding',
-                                                'all-minilm',
-                                                'bge-large',
-                                                'jeffh/intfloat-multilingual-e5-large-instruct',
-                                                'shaw/dmeta-embedding-zh',
-                                                ]
             for model in model_list.models:
-                # print(model)
                 if model.model.split(':')[0] in ollama_support_embedding_model_list:
                     result.append({
                         "id": id,
                         "name": model.model,
-                        "local_path": model.model, # 直接给modelscope_path，而不是全路径，模型迁移后地址会变
+                        "local_path": model.model,  # 只用模型名，避免路径变化问题
+                        "key":'ollama',
+                        "cn_name":'ollama'
                     })
-                    id = id + 1
+                    id += 1
+
+            # 获取数据库中 model_type 为 embedding 且 model.api_key 不为空的模型
+
+            query = db.query(
+                models.ModelList,  # 返回的是 (ModelList, model_name)
+                models.Model.name.label("model_name")
+            ).join(
+                models.Model, models.ModelList.model_key == models.Model.key
+            ).filter(
+                models.ModelList.model_type == 'embedding',
+                models.Model.api_key != '',
+                models.ModelList.model_key != 'ollama',
+            )
+            print(query.all())
+
+            for row, model_name in query.all():
+                result.append({
+                    "id": id,
+                    "name": row.name,
+                    "local_path": row.name,
+                    "key":row.model_key,
+                    "cn_name": model_name
+                })
+                id += 1
+            print(result)
             return result
     except Exception as ex:
         import traceback
         print(traceback.format_exc())
-        log.error(f"get_embedding_model_list error,{str(ex)}")
+        log.error(f"get_embedding_model_list error, {str(ex)}")
+        
+def get_show_model_list():
+    try:
+        from pkg.database import models
+        from pkg.database.database import SessionLocal
+        result = []
+        id = 1
+        with SessionLocal() as db:
+            query = db.query(models.ModelList)
+            for row in query.all():
+                result.append({
+                    "id": id,
+                    "name": row.name,
+                    "type": row.model_type,
+                    "provider":row.model_key
+                })
+                id += 1
+            
+            return result
+    except Exception as ex:
+        log.error(f"get_model_list error,{str(ex)}")
+        return []
 
 def get_download_model_list_by_type(type: str):
     try:
@@ -103,8 +157,21 @@ def get_loaded_model_info():
         from pkg.database import models
         from pkg.database.database import SessionLocal
         with SessionLocal() as db:
-            models = db.query(models.Model).filter(models.Model.status == ModelStatus.LOAD_SUCCESS.status).all()
-            return models
+            models_list = []
+            platform = db.query(models.Model).filter(models.Model.status == ModelStatus.LOAD_SUCCESS.status).all()
+            if platform:
+                if platform[0].key == 'ollama': # 按照ollama client来处理，不走数据库
+                    ollama = Client(host=platform[0].url)
+                    ollama_model_list = ollama.list()
+                    for model in ollama_model_list.models:
+                        if model.model.split(':')[0] not in ollama_support_embedding_model_list:
+                            models_list.append(model.model)
+                else:
+                    model_item = db.query(models.ModelList).filter(models.ModelList.model_key == platform[0].key).all()
+                    for model in model_item:
+                        if model.model_type!="embedding":
+                            models_list.append(model.name)
+            return platform, models_list
     except Exception as ex:
         log.error(f"get_model_list error,{str(ex)}")
         return []
@@ -135,16 +202,6 @@ def load_model(model_id: int, precision_selected: str, type: int):
             url = model_info.url
             api_key = model_info.api_key
             precision_list= []
-            ollama_support_embedding_model_list = ['nomic-embed-text',
-                                            'mxbai-embed-large',
-                                            'snowflake-arctic-embed',
-                                            'snowflake-arctic-embed2',
-                                            'granite-embedding',
-                                            'all-minilm',
-                                            'bge-large',
-                                            'jeffh/intfloat-multilingual-e5-large-instruct',
-                                            'shaw/dmeta-embedding-zh',
-                                            ]
             if model_info.key == 'ollama':
                 ollama = Client(host=url)
                 model_list = ollama.list()
@@ -152,11 +209,13 @@ def load_model(model_id: int, precision_selected: str, type: int):
                     if model.model.split(':')[0] not in ollama_support_embedding_model_list:
                         precision_list.append(model.model)
                 if precision_selected in precision_list: # 解决ollama URL切换时selected与模型列表不一致问题
-                    db.query(models.Model).filter(models.Model.id == model_id).update({"precision_list": json.dumps(precision_list)})
-                else:
+                    # db.query(models.Model).filter(models.Model.id == model_id).update({"precision_list": json.dumps(precision_list)})
+                    pass
+                    
+                else: # 切换url
                     precision_selected = precision_list[0]
-                    db.query(models.Model).filter(models.Model.id == model_id).update({"precision_list": json.dumps(precision_list),"precision_selected":json.dumps(precision_selected)})
-            print(precision_list)
+                    # db.query(models.Model).filter(models.Model.id == model_id).update({"precision_list": json.dumps(precision_list),"precision_selected":json.dumps(precision_selected)})
+            log.info(f"load_model :{precision_list}")
                         
             if type == 1:
                 model_info.status = ModelStatus.LOADING.status
@@ -182,6 +241,8 @@ def update_url_and_api_key(model_id:int,url:str,api_key:str):
         from pkg.database.database import SessionLocal
         with SessionLocal() as db:
             model_info = db.query(models.Model).filter(models.Model.id == model_id).first()
+            if model_id == 2 and api_key == '': # 保证保存的ollama的apikey为空时，有固定的apikey赋值
+                api_key ='ollama'
             if url == '':
                 db.query(models.Model).filter(models.Model.id == model_id).update({"api_key": api_key})
             if api_key != '' and url != '':
@@ -270,3 +331,112 @@ def init_models_status():
     except Exception as ex:
         log.error(f"init_models_status error, {str(ex)}")
 
+#创建model
+def create_model(model:schemas.ModelBase):
+    with SessionLocal() as db:
+        try:
+            db_query = db.query(models.ModelList).filter(and_(models.ModelList.model_key == model.model_key, models.ModelList.name == model.name)).first()
+            if db_query:
+                log.info(f"create_model model_name: {model.name} is already exist.")
+                return None
+            db_model = models.ModelList(**model.dict())
+            db.add(db_model)
+            db.commit()
+            db.refresh(db_model)
+        except Exception as e:
+            import traceback
+            print(traceback.format_exc())
+            log.error(f"create_model Exception:{str(e)}")
+    return db_model
+
+def create_ollama_model():
+    ollama_model_list = []
+    with SessionLocal() as db:
+        try:
+            db_query = db.query(models.Model).filter(models.Model.key == 'ollama').first()
+            url = db_query.url
+            ollama = Client(host = url)
+            model_list = ollama.list()
+            for model in model_list.models:
+                model_name = model.model.split(':')[0]
+                if model_name not in ollama_support_embedding_model_list: # chat模型
+                    if "embed" in model_name: # embed模型
+                        model_type = "embedding"
+                    else:
+                        model_type = "chat"
+                else: # embedding模型
+                    model_type = "embedding"
+                ollama_model_list.append(
+                    {
+                        "model_key":"ollama",
+                        "name":model.model,
+                        "model_type":model_type,
+                    }
+                )
+        except Exception as e:
+            log.error(f"create_ollama_model:{str(e)}")
+        return ollama_model_list
+
+# 根据key值获取model_list
+def get_model_list_by_key(key:str):
+    model_list = []
+    with SessionLocal() as db:
+        try:
+            db_query = db.query(models.ModelList).filter(models.ModelList.model_key == key).all()
+            
+            for model in db_query:
+                model_list.append(model.name)
+        except Exception as e:
+            log.error(f"get_model_list_by_key:{str(e)}")
+        finally:
+            return model_list
+        
+def models_init():
+    models_list =[
+        {"model_key":"deepseek_local","name":"deepseek-r1","model_type":"chat",},
+        {"model_key":"deepseek_local","name":"deepseek-v3","model_type":"chat",},
+        {"model_key":"tencent","name":"deepseek-r1","model_type":"chat",},
+        {"model_key":"tencent","name":"deepseek-v3","model_type":"chat",},
+        {"model_key":"baidu","name":"deepseek-r1","model_type":"chat",},
+        {"model_key":"baidu","name":"deepseek-v3","model_type":"chat",},
+        {"model_key":"deepseek_office","name":"deepseek-chat","model_type":"chat",},
+        {"model_key":"deepseek_office","name":"deepseek-reasoner","model_type":"chat",},
+        {"model_key":"openai","name":"gpt-3.5-turbo","model_type":"chat",},
+        {"model_key":"openai","name":"gpt-4","model_type":"chat",},
+        {"model_key":"kimi","name":"moonshot-v1-8k","model_type":"chat",},
+        {"model_key":"kimi","name":"moonshot-v1-32k","model_type":"chat",},
+        {"model_key":"zhipu","name":"glm-4-plus","model_type":"chat",},
+        {"model_key":"zhipu","name":"glm-4-air","model_type":"chat",},
+        {"model_key":"hunyuan","name":"hunyuan-lite","model_type":"chat",},
+        {"model_key":"hunyuan","name":"hunyuan-pro","model_type":"chat",},
+        {"model_key":"hunyuan","name":"hunyuan-embedding","model_type":"embedding",},
+        {"model_key":"infini","name":"deepseek-r1","model_type":"chat",},
+        {"model_key":"infini","name":"qwen3-32b","model_type":"chat",},
+        {"model_key":"infini","name":"qwen2.5-32b-instruct","model_type":"chat",},
+        {"model_key":"infini","name":"bge-m3","model_type":"embedding",},
+        {"model_key":"siliconflow","name":"deepseek-ai/DeepSeek-R1-Distill-Qwen-7B","model_type":"chat",},
+        {"model_key":"siliconflow","name":"Qwen/Qwen3-8B","model_type":"chat",},
+        {"model_key":"siliconflow","name":"Qwen/Qwen2.5-7B-Instruct","model_type":"chat",},
+        {"model_key":"siliconflow","name":"BAAI/bge-large-zh-v1.5","model_type":"embedding",},
+        {"model_key":"siliconflow","name":"netease-youdao/bce-embedding-base_v1","model_type":"embedding",},
+        {"model_key":"siliconflow","name":"BAAI/bge-m3","model_type":"embedding",},
+        {"model_key":"aliyun","name":"qwen3-8b","model_type":"chat",},
+        {"model_key":"aliyun","name":"qwen-plus","model_type":"chat",},
+        {"model_key":"aliyun","name":"qwen-max","model_type":"chat",},
+        {"model_key":"aliyun","name":"text-embedding-v3","model_type":"embedding",},
+        {"model_key":"stepfun","name":"step-1-flash","model_type":"chat",},
+        {"model_key":"stepfun","name":"step-1-32k","model_type":"chat",},
+        {"model_key":"baichuan","name":"Baichuan2-Turbo","model_type":"chat",},
+        {"model_key":"baichuan","name":"Baichuan4-Air","model_type":"chat",},
+        {"model_key":"baichuan","name":"Baichuan-Text-Embedding","model_type":"embedding",},
+    ]
+    # ollama 模型列表更新
+    ollama_model_list = create_ollama_model()
+    models_list.extend(ollama_model_list)
+    # 根据模型默认列表初始化
+    for model in models_list:
+        model_base = schemas.ModelBase(**model)
+        db_create_model = create_model(model=model_base)
+        if db_create_model:
+            log.info(f"model {db_create_model.name} create SUCCESSFUL")
+        

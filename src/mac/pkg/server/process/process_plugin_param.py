@@ -96,6 +96,16 @@ def insert_default_web_search(user_id: str, session_id: str, plugin_id: int):
         style_search.param_value = web_search_info.get("style_search")
         style_search.session_id = session_id
         db.add(style_search)
+        searxng_url = models.UserPluginParam()
+        searxng_url.id = str(uuid.uuid4()).replace("-", "")
+        searxng_url.user_id = user_id
+        searxng_url.param_key = "web_search.searxng_url"
+        if web_search_info.get("searxng_url") is not None:
+            searxng_url.param_value = web_search_info.get("searxng_url")
+        else:
+            searxng_url.param_value = ''
+        searxng_url.session_id = session_id
+        db.add(searxng_url)
         db.commit()
         db.flush()
 
@@ -241,8 +251,10 @@ def update_web_search(user_id: str, session_id, item: schemas.UserPluginWebSearc
                     param_info.param_value = item.template
                 elif param_info.param_key.split(".")[1] == "style_search" and param_info.param_value != item.style_search:
                     param_info.param_value = item.style_search
+                elif param_info.param_key.split(".")[1] == "searxng_url" and param_info.param_value != item.searxng_url:
+                    param_info.param_value = item.searxng_url
             db.commit()
-        plugin_param_json = get_web_search_plugin_param_json(item.retrieve_topk, item.template, item.style_search, item.embedding_model_id, item.web_api_key)
+        plugin_param_json = get_web_search_plugin_param_json(item.retrieve_topk, item.template, item.style_search, item.embedding_model_id, item.web_api_key, item.searxng_url)
         from .plugin_process import update_session_tool
         session_updates = {"session_id": session_id, "plugin_id": item.plugin_id, "update_val": {"plugin_param": json.dumps(plugin_param_json)}}
         db_update = update_session_tool([SessionUpdateReq(**session_updates)])
@@ -252,7 +264,7 @@ def update_web_search(user_id: str, session_id, item: schemas.UserPluginWebSearc
         return False
 
 
-def get_web_search_plugin_param_json(retrieve_topk: int, template: str, style_search: str, embedding_model_id: int, web_api_key: str):
+def get_web_search_plugin_param_json(retrieve_topk: int, template: str, style_search: str, embedding_model_id: int, web_api_key: str, searxng_url: str):
     embedding_model_path = ""
     # embedding_models = process_model.list([embedding_model_id])
     # if len(embedding_models) > 0:
@@ -260,13 +272,13 @@ def get_web_search_plugin_param_json(retrieve_topk: int, template: str, style_se
     #         if model_item.get("id") == embedding_model_id:
     #             embedding_model_path = model_item.get("local_path")
     #             break
-    embedding_model_list= process_model.get_download_ollama_embedding_model_list()
+    embedding_model_list= process_model.get_download_multiple_embedding_model_list()
     if len(embedding_model_list)>0:
         for embedding_model in embedding_model_list:
             if embedding_model.get('id') == embedding_model_id:
                 embedding_model_path = embedding_model.get('local_path').split(":")[0]
     return {"retrieve_topk": retrieve_topk, "template": template, "web_api_key": web_api_key,
-                                  "style_search": style_search, "embedding_model_path": embedding_model_path,
+                                  "style_search": style_search, "embedding_model_path": embedding_model_path, "searxng_url": searxng_url,
                                   }
 
 

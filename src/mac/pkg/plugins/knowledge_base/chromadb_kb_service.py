@@ -24,6 +24,46 @@ from pkg.plugins.knowledge_base.utils import KnowledgeFile
 logger = Log()
 pj_vars = Projectvar()
 
+def ensure_tesseract_installed():
+    import subprocess
+    import sys
+    import shutil
+    
+    """
+    检查 tesseract 是否已安装。如果未安装，则执行 update.sh 启动终端安装。
+    """
+    # ✅ 优先用 shutil.which() 检查
+    if shutil.which("tesseract"):
+        print("✅ 检测到 Tesseract 已安装，无需处理。")
+        return  # 已经存在，直接退出函数
+
+    print("🚫 检测到系统未安装 Tesseract，准备启动安装脚本...")
+
+    # 获取当前运行目录（打包后是 MacOS/）
+    base_path = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.getcwd()
+
+    # 脚本路径（与可执行文件同级）
+    script_path = os.path.join(base_path, 'install_tesseract.sh')
+
+    # ✅ 先确认脚本是否存在
+    if not os.path.exists(script_path):
+        print(f"⚠️ 安装脚本不存在: {script_path}")
+        return  # 没脚本就退出，避免出错
+
+    # ✅ 给脚本加执行权限（冗余但安全）
+    subprocess.run(['chmod', '+x', script_path], check=False)
+
+    # ✅ 启动脚本，在独立会话中运行
+    try:
+        subprocess.Popen(
+            ['bash', script_path],
+            cwd=base_path,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True  # ✅ 脱离当前 app 控制
+        )
+    except Exception as e:
+        print(f"🚨 启动安装脚本失败: {e}")
 
 def _get_result_to_documents(get_result: GetResult) -> List[Document]:
     if not get_result['documents']:
@@ -132,7 +172,8 @@ class ChromaKBService(KBService):
                             from PIL import Image
                             from io import BytesIO
                             from PyPDF2 import PdfReader
-
+                            
+                            ensure_tesseract_installed()
                             pdf_file = kb_file.file_name
                             # inputpdf = PdfReader(open(pdf_file, "rb"))
                             with open(pdf_file, "rb") as file: # 保证文件读写完毕后可以正常释放资源
@@ -148,15 +189,15 @@ class ChromaKBService(KBService):
                                     data[i].page_content += text.replace('\n','').replace('\n\n','').replace(" ",'')
                                     image.close()
                                     datas.close()
-                                if len(data[i].page_content.replace(" ", "").replace("\n", "").replace("\n\n", ""))<=10:  ##如果不存在图片信息则将PDF转换为图片然后提取PDF内容
-                                    from pdf2image import convert_from_path
-                                    poppler_path = r"./_internal/poppler-0.89.0/bin"
-                                    local_time = time.time()
-                                    images = convert_from_path(pdf_path=pdf_file,first_page=i+1, last_page=i+1, poppler_path=poppler_path)
-                                    print("Time taken to convert pdf to images: ", time.time() - local_time)
-                                    for image in images:
-                                        text = pytesseract.image_to_string(image, lang='chi_sim')
-                                        data[i].page_content += text.replace('\n','').replace('\n\n','').replace(" ",'')
+                                # if len(data[i].page_content.replace(" ", "").replace("\n", "").replace("\n\n", ""))<=10:  ##如果不存在图片信息则将PDF转换为图片然后提取PDF内容
+                                #     # from pdf2image import convert_from_path
+                                #     # poppler_path = r"./_internal/poppler-0.89.0/bin"
+                                #     # local_time = time.time()
+                                #     # images = convert_from_path(pdf_path=pdf_file,first_page=i+1, last_page=i+1, poppler_path=poppler_path)
+                                #     print("Time taken to convert pdf to images: ", time.time() - local_time)
+                                #     for image in images:
+                                #         text = pytesseract.image_to_string(image, lang='chi_sim')
+                                #         data[i].page_content += text.replace('\n','').replace('\n\n','').replace(" ",'')
 
                 logger.debug(f"load file [{kb_file.file_name}], get [{len(data)}] documents.")
                 # for doc in data:
@@ -185,7 +226,7 @@ class ChromaKBService(KBService):
         logger.debug(f"After load files time: {end_time1 - start_time} seconds")
         if len(doc_infos) == 0:
             return
-
+        
         # doc_infos = [doc.metadata.update({
         #     "file_id": kb_file.file_id,
         #     "file_name": kb_file.file_name,
@@ -205,6 +246,7 @@ class ChromaKBService(KBService):
             collection_name=self.kb_name,
             client=self.client,
         )
+        print(self.vs)
         end_time3 = time.perf_counter()
         logger.debug(f"After add_documents [{len(doc_infos)}] docs, spent time: {end_time3 - start_time} seconds")
         return self.vs

@@ -159,14 +159,6 @@ class ChromaKBService(KBService):
                                         data[i].page_content += text.replace('\n','').replace('\n\n','').replace(" ",'')
 
                 logger.debug(f"load file [{kb_file.file_name}], get [{len(data)}] documents.")
-                # for doc in data:
-                #     # 创建一个新的 metadata 字典
-                #     new_metadata = {k: v for k, v in doc.metadata.items() if k in DEFAULT_METADATAS}
-                #     # 将新的 metadata 字典赋值给 doc.metadata
-                #     doc.metadata = new_metadata
-                #     doc.metadata['file_id'] = kb_file.file_id
-                #     doc.metadata['file_name'] = kb_file.file_name
-                #     kb_file_docs.append(doc)
                 logger.debug("Start split documents...")
                 documents = kb_file.split_documents(
                     data,
@@ -185,7 +177,7 @@ class ChromaKBService(KBService):
         logger.debug(f"After load files time: {end_time1 - start_time} seconds")
         if len(doc_infos) == 0:
             return
-
+        
         # doc_infos = [doc.metadata.update({
         #     "file_id": kb_file.file_id,
         #     "file_name": kb_file.file_name,
@@ -205,6 +197,7 @@ class ChromaKBService(KBService):
             collection_name=self.kb_name,
             client=self.client,
         )
+        print(self.vs)
         end_time3 = time.perf_counter()
         logger.debug(f"After add_documents [{len(doc_infos)}] docs, spent time: {end_time3 - start_time} seconds")
         return self.vs

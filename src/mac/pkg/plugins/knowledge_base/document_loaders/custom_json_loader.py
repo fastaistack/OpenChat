@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterator, Optional, Union, List
+from typing import Any, Callable, Dict, Optional, Union, List
 
 from langchain_core.documents import Document
 

@@ -1,5 +1,4 @@
 from pkg.database.schemas import ChatMessageInfo
-from ollama import Client
 import ollama
 from pkg.projectvar import Projectvar
 
@@ -29,7 +28,6 @@ def get_default_settings() -> list:
 
 
 def load_model(device='', url="", api_key="",precise_select="")->bool:
-    print(url, api_key,precise_select)
     gvar.set_model_info({"url":url, "api_key":api_key,"model_selected":precise_select})
     return True
 def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
@@ -45,7 +43,10 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
     his_dialogs = reqeust.dialogs_history[:setting.get("multi_turn", 5)]  # 获取历史对话并按 multi_turn 限制
 
     # 创建聊天消息列表，包括历史对话和当前用户输入
-    messages = [{"role": "system", "content": "你是一个非常有帮助的助手。"}]  # 初始化系统消息，定义对话背景
+    # messages = [{"role": "system", "content": "你是一个非常有帮助的助手。"}]  # 初始化系统消息，定义对话背景
+    # 使用智能体系统提示词或默认提示词
+    system_prompt = content_setting.get("system_prompt", "你是一个非常有帮助的助手。")
+    messages = [{"role": "system", "content": system_prompt}]
 
     # 将历史对话添加到 messages 列表中
     for QA in his_dialogs:
@@ -75,7 +76,8 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
         },
         stream=setting.get("stream", True)
     )
-    if 'deepseek-r1' in model:
+    # print("\n" + "=" * 20 + "思考过程" + "=" * 20 + "\n")
+    if 'deepseek-r1' in model or 'qwen3' in model:
         content_setting["output_think"] = ''
         content_setting["output_answer"]=''
         for chunk in stream:
@@ -95,7 +97,6 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
             output_all = ''
             for output in stream:
                 output_all += output['message']['content']
-                print(output_all)
                 content_setting["output_think"] = ''
                 content_setting["output_answer"] = output_all
                 yield content_setting

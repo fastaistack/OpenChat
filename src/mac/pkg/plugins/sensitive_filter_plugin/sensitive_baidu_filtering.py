@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import time
 import base64
 import requests
 import json

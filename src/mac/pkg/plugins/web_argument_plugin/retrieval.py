@@ -4,7 +4,10 @@ from langchain.vectorstores import Chroma
 # from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 import time
 # import torch
-from langchain_community.embeddings import OllamaEmbeddings
+from langchain_community.embeddings import OllamaEmbeddings,OpenAIEmbeddings
+from ...logger import Log
+log = Log()
+
 embeddings_model = any
 
 class EmbeddingRetriever:
@@ -47,16 +50,64 @@ class EmbeddingRetriever:
         metadatas = [{'url': link} for link in link_list]
         texts = self.text_splitter.create_documents(contents_list, metadatas=metadatas)
         global embeddings_model
+        # print(f"self.embeddings_model_path:----------------------------{self.embeddings_model_path}-------------------------------")
+
+        from pkg.database import models
+        from pkg.database.database import SessionLocal
+
+        ollama_support_embedding_model_list = [
+            'nomic-embed-text',
+            'mxbai-embed-large',
+            'snowflake-arctic-embed',
+            'snowflake-arctic-embed2',
+            'granite-embedding',
+            'all-minilm',
+            'bge-large',
+            'jeffh/intfloat-multilingual-e5-large-instruct',
+            'shaw/dmeta-embedding-zh',
+        ]
+
+        if self.embeddings_model_path in ollama_support_embedding_model_list:
+            embedding_model = OllamaEmbeddings(model=self.embeddings_model_path)
+        else:
+            try:
+                with SessionLocal() as db:
+                    # 先通过 name 找到 model_key
+                    model_list_info = db.query(models.ModelList).filter(
+                        models.ModelList.name == self.embeddings_model_path
+                    ).first()
+                    # 再通过 model_key 找 api_key 和 url
+                    model_info = db.query(models.Model).filter(
+                        models.Model.key == model_list_info.model_key
+                    ).first()
+            except Exception as ex:
+                log.error(f"online embedding error, {str(ex)}")
+                return None
+
+            embedding_model = OpenAIEmbeddings(
+                model=self.embeddings_model_path,
+                openai_api_key=model_info.api_key,
+                openai_api_base=model_info.url
+            )
+
         try:
-            
+            # raise ValueError(1)
+            # if 'client' not in dir(embeddings_model):  #若模型未加载
+            #     DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            #     embeddings_model = SentenceTransformerEmbeddings(model_name=self.embeddings_model_path, model_kwargs={'device': DEVICE})
             # Create a Chroma database from the documents using specific embeddings
+            # embedding = OpenAIEmbeddings(model = 'BAAI/bge-large-zh-v1.5',
+            #                              openai_api_base = 'https://api.siliconflow.cn/v1',
+            #                              openai_api_key = 'k-jyjrpgkwlitulmzgfpaabqmhaycobiuzkmvobrbhjsivdayc',
+            #                              )
             db = Chroma.from_documents(
                 texts,
 
                 # Select one of the models from OpenAIEmbeddings and text2vec-base-chinese to suit your needs:
                 # OpenAIEmbeddings(model='text-embedding-ada-002', openai_api_key=self.config["openai_api_key"])
                 # embeddings_model
-                OllamaEmbeddings(model=self.embeddings_model_path)
+                embedding_model
+                # embedding
             )
 
             # Create a retriever from the database to find relevant documents

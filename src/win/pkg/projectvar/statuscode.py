@@ -17,7 +17,7 @@ class StatusCodeEnum(Enum):
     OPENCHAT_MODEL_LOAD_FAILED_ERROR = (5, "模型加载失败，请检查")
     OPENCHAT_BIZ_DATA_UPDATE_FAILED_ERROR = (6, "数据更新失败，请检查")
     KNOWLEDGE_EXIST_ERROR = (7, "知识库已存在，请检查")
-
+    
     AUTHORIZATION_FIALEDS = (8, "鉴权失败")
 
     OPENCHAT_BIZ_DATA_CREATE_FAILED_ERROR = (9, "创建失败，请检查")
@@ -28,6 +28,7 @@ class StatusCodeEnum(Enum):
     API_SERVER_NOT_START_ERROR = (14, "api server 未开启，请检查")
     SYSTEM_PATH_MOVE_FAIL = (15, "系统路径迁移失败，请检查")
     SYSTEM_PATH_SPACE_NOT_ENOUGH = (16, "系统路径空间不足，请检查")
+    OPENCHAT_TRNASLATED_ERROR = (17, "翻译失败，是否配置模型或网络中断，请检查")
 
     @property
     def code(self):

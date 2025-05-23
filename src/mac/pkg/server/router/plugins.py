@@ -1,11 +1,10 @@
 import os
 
-from fastapi import Depends, APIRouter, Request
+from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
-from typing import Union, List, Dict, Optional
+from typing import Union, List
 from pydantic import BaseModel
 from ...projectvar import Projectvar
-from ...projectvar.statuscode import StatusCodeEnum as status
 from ...logger import Log
 from ...database import models, schemas
 from ..process import plugin_process as dbcrud
@@ -355,14 +354,15 @@ async def getsettings(model: ModelGetRequest, db: Session = Depends(dbcrud.get_d
 
         # 查询模型列表中数据：
         model_search_results = db.query(models.Model).filter_by(id=model_id).first()
+        
         # model_download = ModelDownload()
         # model_search_results = model_download._get_model_info(id=model_id)
         # 组建路径和插件名
         plugin_path = model_search_results.plugin
         plugin_key = plugin_path.split('.')[-1]
-
+        name=model_search_results.key
         # 根据名称判断模型插件是否存在（默认：模型插件不改名）
-        db_query_plugin = dbcrud.query_plugin_by_key_and_type(plugin_key=plugin_key, plugin_type="model", user_id=user_id)
+        db_query_plugin = dbcrud.query_plugin_by_key_and_type(plugin_key=name, plugin_type="model", user_id=user_id)
         if not db_query_plugin:
             log.info(f"Model Plugin: {plugin_key} is NOT exist.")
             return result.success(None)
@@ -420,9 +420,9 @@ async def setsettings(model: ModelPluginSetRequest, db: Session = Depends(dbcrud
         # 组建路径和插件名
         plugin_path = model_search_results.plugin
         plugin_key = plugin_path.split('.')[-1]
-
+        name=model_search_results.key
         # 根据名称判断模型插件是否存在（默认：模型插件不改名）
-        db_query_plugin = dbcrud.query_plugin_by_key_and_type(plugin_key=plugin_key, plugin_type="model", user_id=user_id)
+        db_query_plugin = dbcrud.query_plugin_by_key_and_type(plugin_key=name, plugin_type="model", user_id=user_id)
         if not db_query_plugin:
             log.info(f"Model Plugin: {plugin_key} is NOT exist.")
             return result.success(None)

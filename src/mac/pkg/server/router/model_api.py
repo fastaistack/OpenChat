@@ -37,13 +37,22 @@ class ModelPreciseInfo(BaseModel):
     id: int
     name: str
     model_pic: str
-    precise_option: list[str]
+    precise_option: list[str] = None
     precise_load: Optional[str] = None
     url:Optional[str] = None
     api_key:Optional[str] = None
     key:Optional[str] = None
 
-
+class ModelListInfo(BaseModel):
+    id: int
+    name: str
+    model_pic: str
+    model_list: list[str]
+    model_load: Optional[str] = None
+    url:Optional[str] = None
+    api_key:Optional[str] = None
+    key:Optional[str] = None
+    
 class ModelBaseInfoResponse(server_schemas.CommonResponse):
     resData: Union[list[ModelPreciseInfo], None]
 
@@ -59,18 +68,18 @@ async def download_list():
     for model in model_list:
         #model_precise = ModelPreciseInfo(id=model.id, name=model.name, precise_option=[], precise_load="")
         precise_option = []
+        url = ''
+        api_key = ''
+        if model.api_key:
+            api_key = model.api_key
+        if model.url:
+            url = model.url
         if model.precision_list is not None and len(model.precision_list) > 0:
             precise_option = json.loads(model.precision_list)
-            # print(model.api_key)
-            if model.api_key:
-                api_key = model.api_key
-            else:
-                api_key = ''
-            if model.url:
-                url = model.url
-            else:
-                url = ''
-        model_precise = ModelPreciseInfo(id=model.id, name=model.name, model_pic=model.pic, precise_option=precise_option, precise_load=model.precision_selected,url=url,api_key=api_key,key=model.key)
+        # 根据model_list表获取各平台模型，前端列表展示
+        current_platform_model_list = process_model.get_model_list_by_key(model.key)
+        
+        model_precise = ModelPreciseInfo(id=model.id, name=model.name, model_pic=model.pic, precise_option=current_platform_model_list, precise_load=model.precision_selected,url=url,api_key=api_key,key=model.key)
         model_precise_list.append(model_precise)
     return result.success(model_precise_list)
 
@@ -87,9 +96,15 @@ async def update_url_and_api_key(modelurlinfo:ModelUrlInfo):
 async def download_embedding_list():
     result = server_schemas.CommonResponse
     # model_list = process_model.get_download_embedding_model_list()
-    model_list = process_model.get_download_ollama_embedding_model_list()
+    model_list = process_model.get_download_multiple_embedding_model_list()
     return result.success(model_list)
 
+# 已支持所有模型列表
+@router.get("/download/show/list")
+async def download_all_list():
+    result = server_schemas.CommonResponse
+    model_list = process_model.get_show_model_list()
+    return result.success(model_list)
 
 @router.get("/download/sensitive/list")
 async def download_sensitive_list():
@@ -102,11 +117,13 @@ async def download_sensitive_list():
 @router.get("/loaded/info")
 async def get_loaded_model_info():
     result = server_schemas.CommonResponse
-    model_list = process_model.get_loaded_model_info()
-    if len(model_list) > 0:
-        model = model_list[0]
-        model_precise = ModelPreciseInfo(id=model.id, name=model.name, model_pic=model.pic,
-            precise_option=json.loads(model.precision_list), precise_load=model.precision_selected)
+    platform, model_list = process_model.get_loaded_model_info()
+    if len(platform) > 0:
+        platform = platform[0]
+        model_precise = ModelPreciseInfo(id=platform.id, name=platform.name, model_pic=platform.pic,
+            precise_option=model_list, precise_load=platform.precision_selected)
+        # model_info = ModelListInfo(id=platform.id, name=platform.name, model_pic=platform.pic,
+        #     model_list=model_list, model_load=platform.precision_selected)
         return result.success(model_precise)
     return result.success(None)
 

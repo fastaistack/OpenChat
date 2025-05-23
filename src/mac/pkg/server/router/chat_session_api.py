@@ -1,9 +1,8 @@
-
 import json
 from pathlib import Path
 from typing import Union, List
 
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
 from ..process.biz_enum import ChatItemRole
@@ -262,8 +261,21 @@ async def download_session_item_list(session_id: str, headers=Depends(get_header
                 if model_id_map.get(item.model_id) is not None:
                     model_name = model_id_map.get(item.model_id).get("name")
                 chat_item[item.question_id].get("answer").append({"text": item.text, "create_time": item.create_time, "model_name": model_name})
+        
+        from pkg.server.process import process_setting
+        import os
+
+        now_str = time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
+        file_name = f"{session_info.session_name}_{now_str}.md"
+
+        # 获取默认路径并拼接 session 子目录
+        global_path = process_setting.get_system_default_path().config_value
+        session_dir = os.path.join(global_path, "session")
+        os.makedirs(session_dir, exist_ok=True)  # 确保目录存在
+        file_path = os.path.join(session_dir, file_name)
+        
         # 写入文件
-        with open(session_info.session_name + "_" + now_str + ".md", 'w', encoding='utf-8') as file:
+        with open(file_path, 'w', encoding='utf-8') as file:
             file.write("### 会话名称：" + session_info.session_name + "\n\n")
             file.write("### 会话内容：\n\n")
             # 循环所有chat_item记录，对以question_id为分组的对话内容进行拼接
@@ -303,7 +315,6 @@ async def download_session_item_list(session_id: str, headers=Depends(get_header
                         file.write("<font size=2.5>时间：" + chat_item.get(item.question_id).get("answer")[0].get("create_time").strftime("%Y-%m-%d %H:%M:%S") + "</font>\n\n")
                         file.write("> 模型名称：" + chat_item.get(item.question_id).get("answer")[0].get("model_name") + "\n\n")
                 chat_item.pop(item.question_id)
-        file_path = Path(file.name)
         response = FileResponse(file_path, media_type="text/markdown", filename=f'{session_info.session_name}_{now_str}.md')
         # file_path.unlink()
         return response
