@@ -1,7 +1,6 @@
 # -*- coding: utf-8  -*-
 from pkg.database.schemas import ChatMessageInfo
 from pkg.projectvar import Projectvar
-import threading
 import os
 
 

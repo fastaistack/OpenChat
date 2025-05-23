@@ -7,8 +7,7 @@ from langchain_text_splitters import (
 )
 
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
-from langchain_community.embeddings import OllamaEmbeddings
-from langchain_community.embeddings import OllamaEmbeddings
+from langchain_community.embeddings import OllamaEmbeddings,OpenAIEmbeddings
 
 from pkg.plugins.knowledge_base.utils import KnowledgeFile
 from pkg.logger import Log
@@ -94,7 +93,46 @@ class KBService(ABC):
         # self.embed_model = os.path.normpath(embed_model_origin)
         # self.embeding_fn = SentenceTransformerEmbeddingsLoader.load_model(self.embed_model)
         self.embed_model = embed_model_name
-        self.embeding_fn = OllamaEmbeddings(model=self.embed_model.split(':')[0])
+        from pkg.database import models
+        from pkg.database.database import SessionLocal
+        ollama_support_embedding_model_list = ['nomic-embed-text',
+                                                'mxbai-embed-large',
+                                                'snowflake-arctic-embed',
+                                                'snowflake-arctic-embed2',
+                                                'granite-embedding',
+                                                'all-minilm',
+                                                'bge-large',
+                                                'jeffh/intfloat-multilingual-e5-large-instruct',
+                                                'shaw/dmeta-embedding-zh',
+                                                ]
+        
+        if self.embed_model.split(':')[0] in ollama_support_embedding_model_list:
+            embedding_model = OllamaEmbeddings(model=self.embed_model.split(':')[0])
+        else:
+            try:
+                with SessionLocal() as db:
+                    # 先通过 name 找到 model_key
+                    model_list_info = db.query(models.ModelList).filter(
+                        models.ModelList.name == embed_model_name
+                    ).first()
+                    # 再通过 model_key 找 api_key 和 url
+                    model_info = db.query(models.Model).filter(
+                        models.Model.key == model_list_info.model_key
+                    ).first()
+            except Exception as ex:
+                logger.error(f"online embedding error, {str(ex)}")
+                return None
+            embedding_model = OpenAIEmbeddings(
+                model=embed_model_name,
+                openai_api_key=model_info.api_key,
+                openai_api_base=model_info.url
+            )
+        
+        
+        
+        
+        
+        self.embeding_fn = embedding_model
         
         # from langchain_community.embeddings import OpenAIEmbeddings
         # print('class KBService(ABC):      使用硅基流动的embedding')

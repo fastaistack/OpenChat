@@ -1,7 +1,7 @@
 import requests
 import re
 from bs4 import BeautifulSoup
-from trafilatura import fetch_url, extract
+from trafilatura import extract
 from trafilatura.meta import reset_caches
 
 

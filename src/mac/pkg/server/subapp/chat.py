@@ -1,9 +1,9 @@
 import json
 import time
 import uuid
-from typing import Union, List
+from typing import Union
 import traceback
-from fastapi import FastAPI, Request, Depends
+from fastapi import FastAPI, Depends
 from sse_starlette import EventSourceResponse
 from ...database import schemas
 from ...logger import Log
@@ -45,7 +45,7 @@ def chat_message(item: schemas.ChatMessageInfo, headers=Depends(get_headers)):
             process_chat.insert_message(user_id, item.message, item.session_id, ChatItemRole.USER.role,
                 None, ChatItemStatus.SUCCESS.status, question_id, ext_info)
             process_chat.update_session_time(user_id, item.session_id)
-            model_list = process_model.get_loaded_model_info()
+            model_list,_ = process_model.get_loaded_model_info()
             if len(model_list) <= 0:
                 # yield json.dumps(get_result_dict(True, "", "", get_result_info(StatusCodeEnum.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg, "",
                 #     [], [], int(time.time() * 1000), False, str(uuid.uuid4()), str(uuid.uuid4()), None, "", None, 0)))
@@ -108,7 +108,7 @@ def chat_message(re_item: schemas.ReChatMessageInfo, headers=Depends(get_headers
                 item = schemas.ChatMessageInfo(user_id=user_id, session_id=chat_item.session_id, message=chat_item.text,
                     dialogs_history=process_chat.get_history_list(user_id, chat_item.session_id, chat_item.question_id, 5),
                     reference_info=reference_info)
-                model_list = process_model.get_loaded_model_info()
+                model_list,_ = process_model.get_loaded_model_info()
                 process_chat.update_session_time(user_id, chat_item.session_id)
                 if len(model_list) <= 0:
                     yield json.dumps(get_result_dict(True, "", "", get_result_info(StatusCodeEnum.OPENCHAT_MODEL_NOT_EXIST_ERROR.errmsg, "",

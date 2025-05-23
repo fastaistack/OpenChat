@@ -1,6 +1,4 @@
 import threading
-import time
-import os
 
 
 class Projectvar(object):
@@ -18,7 +16,11 @@ class Projectvar(object):
                     Projectvar._stop_id_ = []
                     Projectvar._model = None
                     Projectvar._tokenizer = None
-                    Projectvar._model_info= {}
+                    Projectvar._model_info= {} # {"url":url, "api_key":api_key,"model_selected":precise_select}
+                    Projectvar.glossary= -1
+                    Projectvar._translator_model_info = {} # {"url":url, "api_key":api_key,"model_selected":precise_select}
+                    Projectvar._needstop = []  #结束翻译线程
+                    Projectvar._update_progress = ''
         return Projectvar._instance
     def set_db_filename(self, name):
         self._db_filename = name
@@ -76,4 +78,33 @@ class Projectvar(object):
 
     def get_model_info(self):
         return self._model_info
+    
+    def set_glossary(self, glossary_id):
+        self.glossary = glossary_id
 
+    def get_glossary(self):
+        return self.glossary
+    
+    def get_trans_model_info(self):
+        return self._translator_model_info
+    
+    def set_trans_model_info(self, _translator_model_info):
+        self._translator_model_info = _translator_model_info
+
+    def set_needstop(self, needstop):
+        self._needstop.append(needstop)
+
+    def get_needstop(self):
+        return self._needstop
+    
+    def delete_needstop(self, needstop):
+        for item in self._needstop:
+            if item == needstop:
+                self._needstop.remove(needstop)
+        return True
+    
+    def set_update_progress(self, progress):
+        self._update_progress = progress
+
+    def get_update_progress(self):
+        return self._update_progress

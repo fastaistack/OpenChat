@@ -5,7 +5,6 @@ from pkg.plugins.sensitive_filter_plugin.sensitive_baidu_filtering import fetch_
 from pkg.logger import Log
 from pkg.database.schemas import ChatMessageInfo
 import time
-import os
 
 log = Log()
 # out_count=0  #输出token数目
@@ -39,34 +38,6 @@ def get_default_settings():
         }
     }
     return settings
-
-
-# def load_model(device='', model_path='', filter_model_list=["politic", "porn", "insult", "violence"])->bool:
-#     """
-#     加载源hf模型，https://modelscope.cn/models/OPENCHATLLM/OPENCHAT2-2B-Janus-hf/files
-#     Args:
-#         device: 模型运行设备
-#         model_path: 模型存放路径
-#     Returns:
-#         bool
-#     """
-#     global model_politic, model_porn, model_insult, model_violence
-
-#     if not os.path.exists(model_path):
-#         raise ValueError("安全审核模型路径不存在，请重新输入")
-
-#     for name in filter_model_list:
-#         if name == "politic" and 'bert' not in dir(model_politic):
-#             model_politic = load_roberta_model_single(model_path, filter_model_name=name)
-#         elif name == "porn" and 'bert' not in dir(model_porn):
-#             model_porn = load_roberta_model_single(model_path, filter_model_name=name)
-#         elif name == "insult" and 'bert' not in dir(model_insult):
-#             model_insult = load_roberta_model_single(model_path, filter_model_name=name)
-#         elif name == "violence" and 'bert' not in dir(model_violence):
-#             model_violence = load_roberta_model_single(model_path, filter_model_name=name)
-
-#     log.info("load model success")
-#     return True
 
 
 def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
@@ -164,26 +135,3 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
 
     return {"flag": True, "result": out_dict, "content_setting": content_setting}   #不包含敏感信息
 
-
-# from fastapi import FastAPI
-# import asyncio
-# app = FastAPI()
-# load_model(device='', model_path=r'D:\E\Code\NLP\OPENCHAT_checkpoints\SensitiveFiltermodels', filter_model_list=["politic", "porn", "insult", "violence"])
-# @app.post("/items1/")
-# def create_item(item: ChatMessageInfo):
-#     setting = {
-#                "style_filter_list": ["local_words", "local_model"],
-#                "local_words": {"interval_tokens":10},
-#                "baidu_api": {"interval_tokens":20, "api_key":"", "secret_key":""},
-#                "local_model": {"interval_tokens":20, "filter_model_list":[{"type":"politic", "threshold":0.8}, {"type":"porn", "threshold":0.8},
-#                                                                           {"type":"insult", "threshold":0.8}, {"type":"violence", "threshold":0.8}]}
-#                }
-#     t1 = time.time()
-#     result = asyncio.run(call(item, setting, content_setting={}))
-#     print('use time: ', time.time()-t1)
-#     return result
-#
-#
-# if __name__ == '__main__':
-#     import uvicorn
-#     uvicorn.run(app, host="0.0.0.0", port=2000)

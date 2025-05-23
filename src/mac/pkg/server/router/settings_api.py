@@ -3,9 +3,8 @@ import shutil
 from typing import Optional
 
 from ...logger import Log
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
-from ..depends import get_headers
 from ..process import process_setting
 from ...projectvar.statuscode import StatusCodeEnum
 from ...server import schemas as server_schema

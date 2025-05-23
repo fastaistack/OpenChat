@@ -1,8 +1,7 @@
 from ...logger import Log
 
-from sqlalchemy import or_, and_, func
+from sqlalchemy import and_, func
 from sqlalchemy.exc import SQLAlchemyError
-from pkg.database import models, schemas
 from pkg.database.database import SessionLocal
 from ...database.schemas import *
 from ...database.models import *

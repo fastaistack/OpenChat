@@ -84,10 +84,6 @@ async def authorizaiton(req: Request, call_next):
             log.error(f"authorizaiton access_perm error role_id:{db_query[2].role_id} role_name:{db_query[2].role_name} path:{req.url.path}")
             return Response(json.dumps({"flag": False, "errCode": status.StatusCodeEnum.AUTHORIZATION_FIALEDS.code, "errMsg": status.StatusCodeEnum.AUTHORIZATION_FIALEDS.errmsg}))
 
-        # userid, userrole = ...
-        # update header
-        # user_id = "userid-" + db_query[0].user_id
-        # user_role = "user-role-" + db_query[2].role_name
         headers[const.HTTP_HEADER_USER_ID] = db_query[0].user_id
         headers[const.HTTP_HEADER_USER_NAME] = db_query[0].user_name
         headers[const.HTTP_HEADER_ROLE_ID] = db_query[2].role_id

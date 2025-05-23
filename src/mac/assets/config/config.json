@@ -27,6 +27,7 @@
 {"role_name":"owner","perm_uri":"/models/move_start","perm_name":"模型文件迁移启动"},
 {"role_name":"owner","perm_uri":"/models/download/list","perm_name":"已下载模型列表"},
 {"role_name":"owner","perm_uri":"/models/download/embedding/list","perm_name":"已下载embedding模型列表"},
+{"role_name":"owner","perm_uri":"/models/download/show/list","perm_name":"已支持的所有模型列表"},
 {"role_name":"owner","perm_uri":"/models/loaded/info","perm_name":"当前加载模型信息"},
 {"role_name":"owner","perm_uri":"/models/load","perm_name":"加载、卸载模型"},
 {"role_name":"owner","perm_uri":"/chat/session/list","perm_name":"会话列表"},

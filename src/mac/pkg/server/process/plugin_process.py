@@ -1,10 +1,9 @@
-from sqlalchemy.orm import Session
-from ...database.database import SessionLocal, engine
+from ...database.database import SessionLocal
 from ...database import models,schemas
 from ...database.models import SessionPlugins, PluginMo
 from ...database.schemas import PluginBaseMo
 from ...logger import Log
-from typing import Union, List, Dict
+from typing import List
 from sqlalchemy import and_
 import importlib
 import json
@@ -257,6 +256,8 @@ def run_plugin_setting_script(plugin_path):
         exec_result = load_model_result.get_default_settings()
         return exec_result
     except Exception as e:
+        import traceback
+        log.info(traceback.format_exc())
         log.error(f"Error executing plugin '{plugin_path}': {str(e)}")
         return None
 
@@ -546,9 +547,9 @@ async def set_model_setting(session_id: str, user_id: str, model_id: int):
         # 组建路径和插件名
         plugin_path = model_search_results.plugin
         plugin_key = plugin_path.split('.')[-1]
-
+        name=model_search_results.key
         # 根据名称判断模型插件是否存在（默认：模型插件不改名）
-        db_query_plugin = query_plugin_by_key_and_type(plugin_key=plugin_key, plugin_type="model", user_id=user_id)
+        db_query_plugin = query_plugin_by_key_and_type(plugin_key=name, plugin_type="model", user_id=user_id)
         if not db_query_plugin:
             log.error(f"Model Plugin: {plugin_key} is NOT exist.")
             return None
@@ -657,7 +658,7 @@ def plugins_init(user_id: str):
          "plugin_key": "deepseek_local",
          "plugin_name_en": "deepseek_local",
          "plugin_name_cn": "deepseek_local",
-         "plugin_path": "pkg.plugins.chat_model_plugin.deepseek_local",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
          "plugin_order": 0,
          "plugin_type": "model",
          "plugin_status": False,
@@ -677,7 +678,7 @@ def plugins_init(user_id: str):
          "plugin_key": "tencent",
          "plugin_name_en": "tencent",
          "plugin_name_cn": "tencent",
-         "plugin_path": "pkg.plugins.chat_model_plugin.tencent",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
          "plugin_order": 0,
          "plugin_type": "model",
          "plugin_status": False,
@@ -687,7 +688,7 @@ def plugins_init(user_id: str):
          "plugin_key": "baidu",
          "plugin_name_en": "baidu",
          "plugin_name_cn": "baidu",
-         "plugin_path": "pkg.plugins.chat_model_plugin.baidu",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
          "plugin_order": 0,
          "plugin_type": "model",
          "plugin_status": False,
@@ -697,7 +698,7 @@ def plugins_init(user_id: str):
          "plugin_key": "deepseek_office",
          "plugin_name_en": "deepseek_office",
          "plugin_name_cn": "deepseek_office",
-         "plugin_path": "pkg.plugins.chat_model_plugin.deepseek_office",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
          "plugin_order": 0,
          "plugin_type": "model",
          "plugin_status": False,
@@ -707,7 +708,7 @@ def plugins_init(user_id: str):
          "plugin_key": "openai",
          "plugin_name_en": "openai",
          "plugin_name_cn": "openai",
-         "plugin_path": "pkg.plugins.chat_model_plugin.openai",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
          "plugin_order": 0,
          "plugin_type": "model",
          "plugin_status": False,
@@ -717,7 +718,7 @@ def plugins_init(user_id: str):
          "plugin_key": "kimi",
          "plugin_name_en": "kimi",
          "plugin_name_cn": "kimi",
-         "plugin_path": "pkg.plugins.chat_model_plugin.kimi",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
          "plugin_order": 0,
          "plugin_type": "model",
          "plugin_status": False,
@@ -727,12 +728,72 @@ def plugins_init(user_id: str):
          "plugin_key": "zhipu",
          "plugin_name_en": "zhipu",
          "plugin_name_cn": "zhipu",
-         "plugin_path": "pkg.plugins.chat_model_plugin.zhipu",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
          "plugin_order": 0,
          "plugin_type": "model",
          "plugin_status": False,
          "description_en": "zhipu model",
          "description_cn": "zhipu模型"},
+         {"plugin_logo": "extension",
+         "plugin_key": "hunyuan",
+         "plugin_name_en": "hunyuan",
+         "plugin_name_cn": "hunyuan",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
+         "plugin_order": 0,
+         "plugin_type": "model",
+         "plugin_status": False,
+         "description_en": "hunyuan model",
+         "description_cn": "腾讯混元模型"},
+         {"plugin_logo": "extension",
+         "plugin_key": "siliconflow",
+         "plugin_name_en": "siliconflow",
+         "plugin_name_cn": "siliconflow",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
+         "plugin_order": 0,
+         "plugin_type": "model",
+         "plugin_status": False,
+         "description_en": "siliconflow model",
+         "description_cn": "硅基流动模型"},
+         {"plugin_logo": "extension",
+         "plugin_key": "infini",
+         "plugin_name_en": "infini",
+         "plugin_name_cn": "infini",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
+         "plugin_order": 0,
+         "plugin_type": "model",
+         "plugin_status": False,
+         "description_en": "infini model",
+         "description_cn": "无问芯穹模型"},
+         {"plugin_logo": "extension",
+         "plugin_key": "aliyun",
+         "plugin_name_en": "aliyun",
+         "plugin_name_cn": "aliyun",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
+         "plugin_order": 0,
+         "plugin_type": "model",
+         "plugin_status": False,
+         "description_en": "aliyun model",
+         "description_cn": "阿里云百炼模型"},
+         {"plugin_logo": "extension",
+         "plugin_key": "baichuan",
+         "plugin_name_en": "baichuan",
+         "plugin_name_cn": "baichuan",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
+         "plugin_order": 0,
+         "plugin_type": "model",
+         "plugin_status": False,
+         "description_en": "baichuan model",
+         "description_cn": "百川智能模型"},
+         {"plugin_logo": "extension",
+         "plugin_key": "stepfun",
+         "plugin_name_en": "stepfun",
+         "plugin_name_cn": "stepfun",
+         "plugin_path": "pkg.plugins.chat_model_plugin.default_openai",
+         "plugin_order": 0,
+         "plugin_type": "model",
+         "plugin_status": False,
+         "description_en": "stepfun model",
+         "description_cn": "阶跃星辰模型"},
         {"plugin_logo": "pi pi-shield",
          "plugin_key": "postprocess_sensitive_filter",
          "plugin_name_en": "postprocess_sensitive_filter",

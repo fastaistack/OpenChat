@@ -9,14 +9,13 @@ from threading import Thread
 from typing import Optional, Union
 
 from fastapi.responses import StreamingResponse
-from fastapi import APIRouter, Request, Depends, Form, UploadFile, File, Header, Body
-from sqlalchemy import select, and_, text, desc
+from fastapi import APIRouter, Request, Depends, Form, UploadFile, File
+from sqlalchemy import and_, text, desc
 from sqlalchemy.orm import Session
 
 from pkg.server.process import process_setting
 from pkg.server.process import process_model
 from pkg.plugins.knowledge_base.base import KBServiceFactory
-
 from pkg.projectvar import Projectvar
 from pkg.projectvar import constants as const
 from pkg.server.depends import get_headers
@@ -1515,7 +1514,7 @@ async def api_get_knowledge_current_embedding_info(
     user_id = headers[const.HTTP_HEADER_USER_ID]
     try:
         # embedding_list = process_model.get_download_embedding_model_list()
-        embedding_list = process_model.get_download_ollama_embedding_model_list()
+        embedding_list = process_model.get_download_multiple_embedding_model_list()
         if not embedding_list:
             log.error(
                 f"No available embedding model, please download in model market first.")

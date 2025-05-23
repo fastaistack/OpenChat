@@ -1,5 +1,4 @@
 from typing import Union
-import os
 from ...logger import Log
 from fastapi import APIRouter, Depends
 from ...database import schemas
@@ -48,6 +47,8 @@ async def get_web_search_plugin_param(session_id: str, plugin_id: int, headers=D
                 result_param.template = userPluginParam.param_value
             elif userPluginParam.param_key == "web_search.web_api_key":
                 result_param.web_api_key = userPluginParam.param_value
+            elif userPluginParam.param_key == "web_search.searxng_url":
+                result_param.searxng_url = userPluginParam.param_value
             else:
                 continue
         return result.success(result_param)
@@ -75,7 +76,7 @@ async def update_websearch_plugin_param(session_id: str, item: schemas.UserPlugi
     try:
         model_exist = False
         # embedding_model_list = process_model.get_download_embedding_model_list()
-        embedding_model_list = process_model.get_download_ollama_embedding_model_list()
+        embedding_model_list = process_model.get_download_multiple_embedding_model_list()
         if item.embedding_model_id is not None:
             for model_item in embedding_model_list:
                 if model_item.get("id") == item.embedding_model_id:
@@ -83,7 +84,7 @@ async def update_websearch_plugin_param(session_id: str, item: schemas.UserPlugi
             if not model_exist:
                 return result.fail(statuscode.StatusCodeEnum.DB_NOTFOUND_ERR.code, statuscode.StatusCodeEnum.DB_NOTFOUND_ERR.errmsg)
         if item.style_search is not None and len(item.style_search) > 0:
-            if item.style_search not in ["serper", "bing_api", "bing_bs4"]:
+            if item.style_search not in ["serper", "bing_api", "bing_bs4", "bocha", "searxng"]:
                 return result.fail(statuscode.StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.code,
                                    statuscode.StatusCodeEnum.OPENCHAT_MODEL_PARAM_INVALID_ERROR.errmsg)
         update_result = process_plugin_param.update_web_search(headers[const.HTTP_HEADER_USER_ID], session_id, item)

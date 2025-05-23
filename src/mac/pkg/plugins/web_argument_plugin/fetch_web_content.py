@@ -4,6 +4,8 @@ import re
 from pkg.plugins.web_argument_plugin.web_crawler import WebScraper
 from pkg.plugins.web_argument_plugin.serper_service import SerperClient
 from pkg.plugins.web_argument_plugin.bing_bs4_service import BingBs4Client
+from pkg.plugins.web_argument_plugin.bocha_api_service import BochaClient
+from pkg.plugins.web_argument_plugin.searxng_api_service import searXNGClient
 
 
 class WebContentFetcher:
@@ -15,6 +17,7 @@ class WebContentFetcher:
         self.web_contents_lock = threading.Lock()  # Lock for thread-safe operations on web_contents
         self.error_urls_lock = threading.Lock()  # Lock for thread-safe operations on error_urls
         self.serper_api_key = serper_api_key
+        self.web_api_key = serper_api_key  # 使用相同的 API key 作为 web_api_key
 
     def _web_crawler_thread(self, thread_id: int, urls: list):
         # Thread function to crawl each URL
@@ -67,6 +70,17 @@ class WebContentFetcher:
         bing_bs4_client = BingBs4Client()
         results = bing_bs4_client.bing_search(self.query)
         return bing_bs4_client.extract_components(results)
+    
+    def _bocha_launcher(self):
+        bocha_client = BochaClient(self.web_api_key)
+        bocha_results = bocha_client.bocha(self.query)
+        return bocha_client.extract_components(bocha_results)
+
+    def _searxng_launcher(self, searxng_url):
+        # Function to launch the SearXNG client and get search results
+        searxng_client = searXNGClient(searxng_url)
+        searxng_results = searxng_client.searxng(self.query)
+        return searxng_client.extract_components(searxng_results)
 
     def _crawl_threads_launcher(self, url_list):
         # Create and start threads for each URL in the list
@@ -79,12 +93,16 @@ class WebContentFetcher:
         for thread in threads:
             thread.join()
 
-    def fetch(self, style_search):
+    def fetch(self, style_search, searxng_url=None):
         # Main method to fetch web content based on the query
         if style_search == "serper":
             search_response = self._serper_launcher()
         elif style_search == "bing_api":
             search_response = {}
+        elif style_search == "bocha":
+            search_response = self._bocha_launcher()
+        elif style_search == "searxng":
+            search_response = self._searxng_launcher(searxng_url)
         else:
             search_response = self._bing_bs4_launcher()
             if search_response.get("search_response").get("organic", []) == []:

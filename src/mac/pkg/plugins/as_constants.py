@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict, List
+from typing import List
 from pkg.plugins.knowledge_base.consts import DEFAULT_PROMPT_TEMPATE
 
 this_dir = os.path.dirname(__file__)
@@ -19,6 +19,7 @@ setting = {"do_sample":True, "response_length":512, "top_p":0.8, "temperature":1
            "web_retrieve_args":{ #web检索相关参数
                "retrieve_topk":3, "template":"说明：您是一位认真的研究者。使用提供的网络搜索结果，对给定的问题写一个全面而详细的回复。", "embedding_model_path":"", "web_api_key":"",  #UI设置
                "style_search":"serper",
+                "searxng_url":"",  #UI设置
                "formatted_relevant_docs":"", "relevant_docs_list":"", "web_response":{}   #中间插件产生
                 },
            "knowledge_base_args": {  # 知识库相关参数
