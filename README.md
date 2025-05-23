@@ -74,7 +74,7 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 
 - [更新日志](#更新日志)
   - [OpenChat v1.0.2](#openchat-v102)
-    - 《[OpenChat_v1.0.2 新功能指南](./doc/intro/v1.0.2.md)》
+    - [OpenChat_v1.0.2 新功能指南](./doc/intro/v1.0.2.md)
   - [模型支持更新](#模型支持更新)
   - [智能体系统](#智能体系统agent-system)
   - [沉浸式翻译模块](#ai沉浸式翻译模块immersive-translation)
@@ -83,14 +83,14 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 - [配置与使用](#配置与使用)
   - [1. 配置要求](#1-配置要求)
   - [2. 安装与使用](#2-安装)  
-    - 《<a href="./doc/intro/使用指南.md">OpenChat使用指南</a>》
+    - <a href="./doc/intro/使用指南.md">OpenChat使用指南</a>
 
 - [打包与部署](#打包与部署)
   - [macOS 打包指南](#macos-打包指南)
   - [Windows 打包指南](#windows-打包指南)
   - [说明](#说明)
 
-- 《[MacOS 安全机制拦截修复说明](doc/intro/MAC运行.md)》👈 打开应用出现“无法打开”或“文件已损坏”提示时，请点击
+- [MacOS 安全机制拦截修复说明](doc/intro/MAC运行.md)👈 打开应用出现“无法打开”或“文件已损坏”提示时，请点击
 
 ---
 
