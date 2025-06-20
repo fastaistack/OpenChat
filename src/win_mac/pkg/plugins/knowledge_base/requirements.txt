@@ -1,0 +1,26 @@
+langchain==0.1.13
+transformers==4.37.2
+sentence-transformers==2.6.1
+chromadb==0.4.24
+tiktoken==0.5.2
+tqdm==4.66.1
+websockets==12.0
+numpy==1.24.4
+pandas==2.0.3
+einops==0.7.0
+accelerate==0.24.1
+requests==2.31.0
+pathlib==1.0.1
+pytest==7.4.3
+pypdf==4.1.0
+unstructured[all-docs]==0.13.2
+docx2txt==0.8
+pymilvus==2.4.0
+pymupdf
+beautifulsoup4
+html2text
+mobi==0.3.3
+pypandoc-binary
+pandoc
+# jq # conda install jq 安装有问题，windows不支持安装jq，所以win暂不支持json/jsonl
+# yum install libreoffice / apt-get install libreoffice
