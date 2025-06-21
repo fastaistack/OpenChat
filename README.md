@@ -41,14 +41,14 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 
 ### <img src="./data/images/microsoft.png" alt="Logo" width="28" height="28"> Download Windows Installer 
 
-- [OpenChat_windows.exe](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.2_win.exe) (Installer)
+- [OpenChat_windows.exe](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.3_win.exe) (Installer)
 
 
 
 ### <img src="./data/images/apple.png" alt="Logo" width="28" height="28"> Download MacOS Installer
 
-- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.2_apple.dmg) (Apple Silicon)
-- [OpenChat_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.2_intel.dmg) (Intel chips)
+- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.3_apple.dmg) (Apple Silicon)
+- [OpenChat_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.3_intel.dmg) (Intel chips)
 
 
 <br>
@@ -68,7 +68,7 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 - [更新日志](#更新日志)
   - [OpenChat v1.0.3](#openchat-v103)
   - [OpenChat v1.0.2](#openchat-v102)
-  - [新功能亮点](#模型支持更新)
+  - [新功能亮点](#新功能亮点)
 - [配置与使用](#配置与使用)
   - [1. 配置要求](#1-配置要求)
   - [2. 安装](#2-安装)
@@ -83,22 +83,26 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 
 ## 功能亮点
 
+<a name="智能-ai-助手平台"></a>
 ### 🚀 **智能 AI 助手平台**  
 
 - 🌐 **兼容主流云端大模型**：如 OpenAI、Deepseek、硅基流动等  
 - 🔗 **集成热门 AI 平台**：腾讯云、百度千帆云、Kimi Ai、智谱清言等  
-- 🖥 **支持本地化模型部署**：适配 Ollama，服务器部署等本地运行方案  
+- 🖥 **支持本地化模型部署**：适配 Ollama，服务器部署等本地运行方案
 
+<a name="多功能智能助手"></a>
 ### 🧠 **多功能智能助手**  
 - 🤖 **智能助手应用**：集成Kimi，秘塔AI搜索，文心一言，豆包等应用，让你一站式访问国内多个大模型平台
 - 🔍 **敏感词检测**：精准识别敏感内容，确保文本合规  
 - 📚 **知识问答**：智能解析各类文件，快速提供可靠解答  
 
+<a name="信息检索与知识管理"></a>
 ### 🌍 **强大信息检索与知识管理**  
 - 🔗 **网络信息检索**：实时查找最新数据，助力决策分析  
 - 📖 **智能知识库**：个性化知识存储，便捷管理、随时调用  
 - 📝 **文档对话**：支持文本、PDF、word、ppt交互式问答，高效阅读  
 
+<a name="实用工具与扩展功能"></a>
 ###  🧩 **实用工具与扩展功能**  
 - 🔎 **智能搜索**：快速定位信息，提高工作效率  
 - 🌐 **多模态支持**：文本、图片、文档等多类型输入处理  
@@ -114,7 +118,7 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 <br>
 
 
-
+<a name="即将实现的功能"></a>
 ### 📃 即将实现的功能
 
 - [x] 多模型结果对比
@@ -136,6 +140,7 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 
 ---
 
+<a name="更新日志"></a>
 ### 📝 更新日志
 
 #### OpenChat v1.0.3
@@ -155,7 +160,7 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 这是一次重要更新，新增三大核心功能：**智能体系统**、**沉浸式翻译模块** 和 **自动更新支持**，并加入了最新发布的 “Qwen3” 模型支持，显著提升了 OpenChat 的个性化能力、多语言处理能力以及整体使用体验。
 
 ---
-
+<a name="新功能亮点"></a>
 ### ✨ 新功能亮点
 
 ####  🌌 模型支持更新
@@ -260,7 +265,7 @@ OpenChat 现已支持自动更新，无需手动下载新版本：
 
 ---
 
-
+<a name="配置与使用"></a>
 ## 💻  配置与使用
 
 ### 1. 配置要求
@@ -284,11 +289,12 @@ Mac版OpenChat.dmg打开后将看到OpenChat.app，将其拖动到应用文件�
 <br>
 
 ---
-
+<a name="打包与部署"></a>
 ## 📦 打包与部署
 
 本项目支持 **macOS** 和 **Windows** 的打包与分发，以下是基本的打包步骤。
 
+<a name="macos-打包指南"></a>
 ### 🍎 macOS 打包指南
 
 1. **环境准备**：确保 Python 3.10 及必要依赖已安装。
@@ -311,7 +317,7 @@ Mac版OpenChat.dmg打开后将看到OpenChat.app，将其拖动到应用文件�
 📄 **详细 macOS 版本适配和打包指南** 👉 [Mac 版打包指南](doc/packaging/mac适配打包指南.md)
 
 
-
+<a name="windows-打包指南"></a>
 ### 💻 Windows 打包指南
 
 1. **安装 Python 及依赖环境**（推荐 3.10.11/3.10.12 版本）。
