@@ -21,9 +21,9 @@
 
 ---
 
+-  **[📅 OpenChat v1.0.3 更新日志（2025-06-20）👉](#-更新日志)**
 
 -  **[📅 OpenChat v1.0.2 更新日志（2025-05-15）👉](#-更新日志)**
-
 
 
 <br>
@@ -41,14 +41,14 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 
 ### <img src="./data/images/microsoft.png" alt="Logo" width="28" height="28"> Download Windows Installer 
 
-- [OpenChat_windows.exe](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.2_win.exe) (Installer)
+- [OpenChat_windows.exe](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.3_win.exe) (Installer)
 
 
 
 ### <img src="./data/images/apple.png" alt="Logo" width="28" height="28"> Download MacOS Installer
 
-- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.2_apple.dmg) (Apple Silicon)
-- [OpenChat_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.2_intel.dmg) (Intel chips)
+- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.3_apple.dmg) (Apple Silicon)
+- [OpenChat_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.3_intel.dmg) (Intel chips)
 
 
 <br>
@@ -57,61 +57,52 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 ![](./data/images/intro/主页.png)
 
 
-
-## 目录导航
-
----
-
+## 📑 目录导航
 
 - [功能亮点](#功能亮点)
-
   - [智能 AI 助手平台](#智能-ai-助手平台)
   - [多功能智能助手](#多功能智能助手)
   - [信息检索与知识管理](#信息检索与知识管理)
   - [实用工具与扩展功能](#实用工具与扩展功能)
-
 - [即将实现的功能](#即将实现的功能)
-
 - [更新日志](#更新日志)
+  - [OpenChat v1.0.3](#openchat-v103)
   - [OpenChat v1.0.2](#openchat-v102)
-    - [OpenChat_v1.0.2 新功能指南](./doc/intro/v1.0.2.md)
-  - [模型支持更新](#模型支持更新)
-  - [智能体系统](#智能体系统agent-system)
-  - [沉浸式翻译模块](#ai沉浸式翻译模块immersive-translation)
-  - [自动更新功能](#自动更新功能)
-
+  - [新功能亮点](#新功能亮点)
 - [配置与使用](#配置与使用)
   - [1. 配置要求](#1-配置要求)
-  - [2. 安装与使用](#2-安装)  
-    - <a href="./doc/intro/使用指南.md">OpenChat使用指南</a>
-
+  - [2. 安装](#2-安装)
+  - [3. 使用](#3-使用)
 - [打包与部署](#打包与部署)
   - [macOS 打包指南](#macos-打包指南)
   - [Windows 打包指南](#windows-打包指南)
   - [说明](#说明)
-
-- [MacOS 安全机制拦截修复说明](doc/intro/MAC运行.md)👈 打开应用出现“无法打开”或“文件已损坏”提示时，请点击
-
+- 《[MacOS 安全机制拦截修复说明](doc/intro/MAC运行.md)》👈 MacOS系统打开应用出现“无法打开”或“文件已损坏”提示时，请点击
+- 《[常见问题解答 FAQ](doc/intro/FAQ.md)》 👈 如在使用 OpenChat 的过程中遇到问题，请点击
 ---
 
 ## 功能亮点
 
+<a name="智能-ai-助手平台"></a>
 ### 🚀 **智能 AI 助手平台**  
 
 - 🌐 **兼容主流云端大模型**：如 OpenAI、Deepseek、硅基流动等  
 - 🔗 **集成热门 AI 平台**：腾讯云、百度千帆云、Kimi Ai、智谱清言等  
-- 🖥 **支持本地化模型部署**：适配 Ollama，服务器部署等本地运行方案  
+- 🖥 **支持本地化模型部署**：适配 Ollama，服务器部署等本地运行方案
 
+<a name="多功能智能助手"></a>
 ### 🧠 **多功能智能助手**  
 - 🤖 **智能助手应用**：集成Kimi，秘塔AI搜索，文心一言，豆包等应用，让你一站式访问国内多个大模型平台
 - 🔍 **敏感词检测**：精准识别敏感内容，确保文本合规  
 - 📚 **知识问答**：智能解析各类文件，快速提供可靠解答  
 
+<a name="信息检索与知识管理"></a>
 ### 🌍 **强大信息检索与知识管理**  
 - 🔗 **网络信息检索**：实时查找最新数据，助力决策分析  
 - 📖 **智能知识库**：个性化知识存储，便捷管理、随时调用  
 - 📝 **文档对话**：支持文本、PDF、word、ppt交互式问答，高效阅读  
 
+<a name="实用工具与扩展功能"></a>
 ###  🧩 **实用工具与扩展功能**  
 - 🔎 **智能搜索**：快速定位信息，提高工作效率  
 - 🌐 **多模态支持**：文本、图片、文档等多类型输入处理  
@@ -127,7 +118,7 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 <br>
 
 
-
+<a name="即将实现的功能"></a>
 ### 📃 即将实现的功能
 
 - [x] 多模型结果对比
@@ -138,17 +129,28 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 - [x] 知识库与文档对话功能更新
 - [x] 首个正式版本发布
 - [x] 持续改进与性能优化
-- [ ] 自定义提示词
-- [ ] 沉浸式翻译
-- [ ] AI代码辅助
-- [ ] 个性化智能体
-
+- [x] 个性化智能体
+- [x] 自定义提示词
+- [x] 沉浸式翻译
+- [x] AI代码辅助
+- [ ] 知识库/网络检索等插件并行
+- [ ] MCP功能支持
 
 更多功能敬请期待........
 
 ---
 
+<a name="更新日志"></a>
 ### 📝 更新日志
+
+#### OpenChat v1.0.3
+
+> 发布日期：2025年6月20日  
+> 版本代号：v1.0.3
+
+这是一次跨时代的更新，我们在意用户体验并听取了用户反馈，对OpenChat进行了全新升级，包含了全新设计的界面和以用户为本的功能体验改进，并加入了全新的模型支持！
+
+---
 
 #### OpenChat v1.0.2
 
@@ -158,7 +160,7 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 这是一次重要更新，新增三大核心功能：**智能体系统**、**沉浸式翻译模块** 和 **自动更新支持**，并加入了最新发布的 “Qwen3” 模型支持，显著提升了 OpenChat 的个性化能力、多语言处理能力以及整体使用体验。
 
 ---
-
+<a name="新功能亮点"></a>
 ### ✨ 新功能亮点
 
 ####  🌌 模型支持更新
@@ -170,7 +172,39 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
     -  **无问芯穹**
   - 🖥️ 本地部署支持：
     - 使用 **Ollama** 快速运行 Qwen3 模型
-    - 详见：**设置 → Ollama选项** 页面查看部署说明
+    - 详见：**设置 → 模型设置 → Ollama选项** 页面查看部署说明
+
+V1.0.3版本新增了对专注嵌入式模型的平台 - **Jina** 的支持，用户可以在模型设置中添加API—KEY后，在网络检索/知识库功能中使用。
+
+#### 🌐 全局参数设置（V1.0.3更新）
+
+OpenChat 支持对多项系统行为进行统一管理和配置，通过 **全局设置 > 参数设置** 页面，您可以集中设置以下模块的默认参数，提升使用效率与一致性：
+
+##### 🧠 模型参数设置
+可设定默认使用的大模型参数，包括：
+- **温度（temperature）**：控制回答的随机性。
+- **最大长度（max tokens）**：限制回复的最大长度。
+- **Top-p / Top-k 等采样策略**：影响生成内容的多样性。
+
+设置后将自动作用于所有未单独设置模型参数的会话和插件。
+
+##### 🌍 网络检索设置
+默认选择Searxng进行网络检索功能，无需在设置中进行参数设置，在对话功能中点击即可使用。
+
+如需使用其他检索方式，可在 **设置 → 参数设置 → 网络检索** 设置中进行配置，系统会保存用户最后一次的配置信息并应用到所有对话。
+
+##### 🛡️ 敏感词检测设置
+用于对聊天内容进行安全把控：
+- 启用或禁用敏感词过滤。
+- 自定义敏感词词库（支持上传或手动输入）。
+- 选择检测强度（宽松 / 严格）。
+
+有助于内容安全管理，适用于内网部署和教育等敏感环境。
+
+---
+
+⚙ 全局参数设置一旦修改，将作用于所有相关功能的默认行为。若某会话/插件中有单独设置，局部设置将覆盖全局参数。
+
 
 #### 🤖 智能体系统（Agent System）
 
@@ -221,16 +255,17 @@ OpenChat 现已支持自动更新，无需手动下载新版本：
 - 智能体与翻译模块现已支持状态记忆
 - 修复了多平台下模型切换异常问题
 - 提升了多语言界面提示与组件适配稳定性
+- V1.0.3版本对沉浸式翻译功能进行了性能升级，翻译效果增强。
 
 ---
 
-### 📌 如何查看更新日志
+## ❓ 常见问题解答（FAQ）
 
-- 查看完整版本内容与操作指南 👉 [查看更新日志](./doc/intro/v1.0.2.md)
+如在使用 OpenChat 的过程中遇到问题，可参考我们整理的 [常见问题解答 FAQ](doc/intro/FAQ.md)，涵盖安装、配置、模型调用、功能使用等多个方面。
 
 ---
 
-
+<a name="配置与使用"></a>
 ## 💻  配置与使用
 
 ### 1. 配置要求
@@ -254,11 +289,12 @@ Mac版OpenChat.dmg打开后将看到OpenChat.app，将其拖动到应用文件�
 <br>
 
 ---
-
+<a name="打包与部署"></a>
 ## 📦 打包与部署
 
 本项目支持 **macOS** 和 **Windows** 的打包与分发，以下是基本的打包步骤。
 
+<a name="macos-打包指南"></a>
 ### 🍎 macOS 打包指南
 
 1. **环境准备**：确保 Python 3.10 及必要依赖已安装。
@@ -281,7 +317,7 @@ Mac版OpenChat.dmg打开后将看到OpenChat.app，将其拖动到应用文件�
 📄 **详细 macOS 版本适配和打包指南** 👉 [Mac 版打包指南](doc/packaging/mac适配打包指南.md)
 
 
-
+<a name="windows-打包指南"></a>
 ### 💻 Windows 打包指南
 
 1. **安装 Python 及依赖环境**（推荐 3.10.11/3.10.12 版本）。

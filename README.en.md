@@ -17,6 +17,7 @@
 
 ---
 
+- ####  [📅 OpenChat v1.0.3 Changelog (June 20, 2025)👉](#-changelog--openchat-v102)
 - ####  [📅 OpenChat v1.0.2 Changelog (May 8, 2025)👉](#-changelog--openchat-v102)
 
 <br>
@@ -118,6 +119,15 @@ More features coming soon...
 
 ---
 
+## 📝 Changelog | OpenChat v1.0.3
+
+> Release Date: June 20, 2025  
+> Version: v1.0.3
+
+This is a groundbreaking update. We value user experience and have taken user feedback into account. OpenChat has been completely upgraded with a newly designed interface and improvements focused on user-centric features, along with support for new models!
+
+---
+
 ## 📝 Changelog | OpenChat v1.0.2
 
 > Release Date: May 8, 2025  
@@ -141,6 +151,43 @@ This is a major update that introduces three core features: **Agent System**, **
     - Easily run **Qwen3** using [**Ollama**](https://ollama.com)
     - See: **Settings → Ollama Options** for configuration
 
+#### V1.0.3 Update — Jina Support
+
+OpenChat now supports **Jina**, a platform focused on embedding-centric models.  
+After adding your API key in **Model Settings**, you can leverage Jina models in both Web Search and Knowledge Base workflows.
+
+---
+
+#### 🌐 Global Parameter Settings (updated in V1.0.3)
+
+Through **Global Settings → Parameters** you can centrally manage default behavior for several subsystems, ensuring consistency and efficiency across the app.
+
+##### 🧠 Model Parameters
+Define the default generation parameters applied to any model unless a specific conversation or plugin overrides them:
+
+- **Temperature** – Controls randomness in responses.  
+- **Max Tokens** – Sets an upper bound on reply length.  
+- **Top-p / Top-k** – Sampling strategies that influence diversity.
+
+##### 🌍 Web Search
+SearxNG is used as the default search backend and works out-of-the-box—simply click the search button during a chat.
+
+To switch engines or tweak search behavior, go to **Settings → Parameters → Web Search**.  
+Your last configuration is saved and applied to all conversations.
+
+##### 🛡️ Sensitive-Word Filtering
+Keep conversations safe with configurable content filtering:
+
+- Enable or disable the filter.  
+- Upload or edit custom word lists.  
+- Choose a detection level (Lenient / Strict).
+
+Ideal for enterprise, on-prem, or educational deployments where content control is required.
+
+> **⚙ Note:** Changes in Global Settings act as **defaults** for the entire application.  
+> When a conversation or plugin defines its own parameters, those local settings take precedence.
+
+---
 
 #### 🤖 Agent System
 
