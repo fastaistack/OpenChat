@@ -26,6 +26,7 @@ from pkg.plugins.knowledge_base.consts import (
     DEFAULT_DISTANCE_STRATEGY,
 )
 from pkg.server.process import process_setting
+from pkg.is_embedding_model_utils import is_embedding_model
 
 logger = Log()
 
@@ -107,7 +108,7 @@ class KBService(ABC):
                                                 'shaw/dmeta-embedding-zh',
                                                 ]
         
-        if self.embed_model.split(':')[0] in ollama_support_embedding_model_list:
+        if is_embedding_model(self.embed_model):
             embedding_model = OllamaEmbeddings(model=self.embed_model.split(':')[0])
         else:
             try:

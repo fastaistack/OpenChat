@@ -144,7 +144,7 @@ class searXNGClient:
 
 # Usage example
 if __name__ == "__main__":
-    client = searXNGClient("https://search.cloakpanda.com/")
+    client = searXNGClient("https://searx.foobar.vip/")
     query = "deepseek"
     response = client.searxng(query) 
     components = client.extract_components(response)

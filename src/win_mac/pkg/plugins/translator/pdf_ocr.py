@@ -12,6 +12,13 @@ from pkg.plugins.translator.pdf2zh.doclayout import DocLayoutModel
 from pkg.projectvar import Projectvar
 from pkg.server.process import process_translate
 from pkg.projectvar import constants as consts
+from pkg.plugins.translator.pdf2zh import download_remote_fonts
+from pkg.logger import Log
+import concurrent.futures
+from tenacity import retry, wait_fixed, stop_after_attempt
+import re
+
+logger = Log()
 
 # try:
 #     from paddleocr import PaddleOCR
@@ -125,6 +132,54 @@ def do_rectangles_overlap(texts_box,page_box):
                 texts_box[i] = None
     return texts_box
 
+def assign_if_external_neighbors_leq1(box, y0, y1, x0, x1, value):
+    """
+    在赋值前检查子区域外部直接邻域是否存在大于1的值
+    
+    参数:
+    box: 二维数组
+    y0, y1: 子区域的行范围（不包含y1）
+    x0, x1: 子区域的列范围（不包含x1）
+    value: 要赋的值
+    """
+    rows, cols = box.shape
+    
+    # 初始化标志，表示外部邻域是否存在>1的值
+    has_larger_than_1 = False
+    
+    # 检查左侧邻域（如果存在）
+    if x0 > 0:
+        left_neighbor = box[y0:y1, x0-1]
+        if np.any(left_neighbor > 1):
+            has_larger_than_1 = True
+    
+    # 检查右侧邻域（如果存在）
+    if x1 < cols:
+        right_neighbor = box[y0:y1, x1]
+        if np.any(right_neighbor > 1):
+            has_larger_than_1 = True
+    
+    # 检查上侧邻域（如果存在）
+    if y0 > 0:
+        top_neighbor = box[y0-1, x0:x1]
+        if np.any(top_neighbor > 1):
+            has_larger_than_1 = True
+    
+    # 检查下侧邻域（如果存在）
+    if y1 < rows:
+        bottom_neighbor = box[y1, x0:x1]
+        if np.any(bottom_neighbor > 1):
+            has_larger_than_1 = True
+    
+    # 根据检查结果决定是否赋值
+    if has_larger_than_1:
+        # 外部邻域存在>1的值，不进行赋值
+        return box
+    else:
+        # 赋值
+        box[y0:y1, x0:x1] = value
+        return box
+
 def doclayout_yolo(image,pix,page_num):
     c_list = []
     t_list = [None] * (100 + 1)
@@ -155,7 +210,8 @@ def doclayout_yolo(image,pix,page_num):
             draw.rectangle([(x0, y0), (x1, y1)], outline='green')
             draw.text((x0, y0, i+2), f"{x0, y0 , i+2}", fill="blue")
             draw.text((x1-8, y1-8, i+2), f"{x1, y1 , i+2}", fill="blue")
-            box[y0:y1, x0:x1] = i + 2
+            # box[y0:y1, x0:x1] = i + 2
+            box = assign_if_external_neighbors_leq1(box, y0, y1, x0, x1, i + 2)
             global max_cls
             if max_cls <= i + 2:
                 max_cls = i + 2
@@ -185,20 +241,63 @@ def doclayout_yolo(image,pix,page_num):
 
 
 def calculate_fontsize(text, w, h, line):
-    # line = 0 
-    if line != 0:
-        area = w * h
-        area_line = area / line
-        word_line = len(text) / line
-        per_pix = area_line / word_line
-        log.info(f"area:{area},area_line:{area_line},word_line:{word_line},per_pix:{per_pix}") 
-        fontsize = int(per_pix /72 * 1.3) 
-        log.info(f"fontsize:{fontsize}")
-    else:
-        fontsize = 10
-    return 10
+    # 段落行间距倍数
+    fontsize = 5
+    if line == 0:
+        return fontsize
+    default_line_height = 1.3
+    while line * fontsize * default_line_height < (h / zoom) and default_line_height >= 1:
+        # 字号放大
+        fontsize += 0.2
+        if fontsize >= 100:
+            return 8
+    if line != 1:
+        return fontsize
+    return fontsize
 
+def ensure_tesseract_installed():
+    import subprocess
+    import sys
+    import shutil
+    
+    """
+    检查 tesseract 是否已安装。如果未安装，则执行 update.sh 启动终端安装。
+    """
+    # ✅ 优先用 shutil.which() 检查
+    if shutil.which("tesseract"):
+        print("✅ 检测到 Tesseract 已安装，无需处理。")
+        return  # 已经存在，直接退出函数
+
+    print("🚫 检测到系统未安装 Tesseract，准备启动安装脚本...")
+
+    # 获取当前运行目录（打包后是 MacOS/）
+    base_path = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.getcwd()
+
+    # 脚本路径（与可执行文件同级）
+    script_path = os.path.join(base_path, 'install_tesseract.sh')
+
+    # ✅ 先确认脚本是否存在
+    if not os.path.exists(script_path):
+        print(f"⚠️ 安装脚本不存在: {script_path}")
+        return  # 没脚本就退出，避免出错
+
+    # ✅ 给脚本加执行权限（冗余但安全）
+    subprocess.run(['chmod', '+x', script_path], check=False)
+
+    # ✅ 启动脚本，在独立会话中运行
+    try:
+        subprocess.Popen(
+            ['bash', script_path],
+            cwd=base_path,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True  # ✅ 脱离当前 app 控制
+        )
+    except Exception as e:
+        print(f"🚨 启动安装脚本失败: {e}")
 def tesseractocr(db,img_path_list,lang,file_id):
+    if consts.SYSTEM == consts.MACOS :
+        ensure_tesseract_installed()
     ocr_result_list = []
     count = 0 # 用于计数
     for img_path in img_path_list:
@@ -234,6 +333,14 @@ def tesseractocr(db,img_path_list,lang,file_id):
         count = count + 1
     return ocr_result_list
 
+ocr_language_map ={
+    'eng':'en',
+    "chi_sim":'zh',
+    "jpn":'ja',
+    "kor":'ko',
+    "fra": "fr",
+}
+
 def trans_(pdf_path,lang,translated_origin_path,file_id,db):
     global translated_path
     if translated_origin_path:
@@ -248,15 +355,24 @@ def trans_(pdf_path,lang,translated_origin_path,file_id,db):
         # 判断是否需要终止此线程
         if stop_ocr_process(file_id):
             return ''
-        page = pdf_document.new_page()
         h , w = page_box.shape
+        page = pdf_document.new_page(width = w/zoom, height = h/zoom)
+        
+        # 插入字体
+        from pymupdf import Font
+        font_path = download_remote_fonts(ocr_language_map[lang])
+        # font = Font(lang, font_path)
+        page.insert_font(lang,font_path)
+        
         log.info(f"page_box height:{h},width:{w}")
         tesseractocr_result = tesseractocr_result_list[page_num]
         global texts_list
         texts = texts_list[page_num]
-        texts = do_rectangles_overlap(texts,page_box)
+        # texts = do_rectangles_overlap(texts,page_box)
         
         l_x1 = 10000
+        l_y0 = 0
+        cur_cls = 0
         for result in tesseractocr_result: # 按单词排列
             x0,y0,x1,y1 = result['boxes']
             text = result['text']
@@ -266,10 +382,16 @@ def trans_(pdf_path,lang,translated_origin_path,file_id,db):
             if texts[int(cls)] is None:
                 continue
             else:
+                if cur_cls != cls: # 存在换行
+                    l_x1 = 10000
+                    l_y0 = 0
+                    cur_cls = cls
                 texts[int(cls)]["text"] += (" " + text)
-                if l_x1 > x0: # 统计行数，
+                if l_x1 > x1 and l_y0 < y0: # 统计行数，行数+1
                     texts[int(cls)]['lf'] = texts[int(cls)]['lf'] + 1
-                    l_x1 = x1
+                    # print(f"换行，当前类别:{cls},当前行数：{texts[int(cls)]['lf']}，当前文段为：{texts[int(cls)]['text'][-10:]}")
+                l_x1 = x1
+                l_y0 = y0
 
         # 插入图片
         global crop_img_list
@@ -291,6 +413,42 @@ def trans_(pdf_path,lang,translated_origin_path,file_id,db):
                 rect,
                 filename=crop_img_path,
             )
+        # from pkg.plugins.translator.base_translator import (
+        #     BaseTranslator,
+        #     OllamaPDFTranslator,
+        #     OpenAIPDFTranslator,
+        # )
+        # translator = OpenAIPDFTranslator(
+        #     lang_in = 'en', 
+        #     lang_out = 'ch', 
+        #     model = 'Qwen/Qwen2.5-7B-Instruct' , 
+        #     service = None, 
+        #     base_url = 'https://api.siliconflow.cn/v1', 
+        #     api_key = ''
+        # )
+        # lang_to = 'zh'
+        # font_path = download_remote_fonts(lang_to)
+        # page.insert_font(lang_to,font_path)
+        # @retry(wait=wait_fixed(1),stop=stop_after_attempt(2))
+        # def worker(text):  # 多线程翻译
+        #     if text is None or not text['text'] :
+        #         return
+        #     try:
+        #         import time
+        #         start_time = time.time()
+        #         new = translator.translate(text['text'])
+        #         logger.info(f"翻译耗时:{time.time()-start_time}，翻译:{new} ")
+        #         text['text'] = new
+        #         return text
+        #     except BaseException as e:
+        #         raise e
+        # tol_start_time = time.time()
+        # with concurrent.futures.ThreadPoolExecutor(
+        #     max_workers=8
+        # ) as executor:
+        #     news = list(executor.map(worker, texts))
+        # logger.info(f"翻译总耗时:{time.time()-tol_start_time}")
+        
         # 插入文字
         for txt in texts:
             if txt is not None:
@@ -303,15 +461,7 @@ def trans_(pdf_path,lang,translated_origin_path,file_id,db):
                 insert_text ='  '  + insert_text
                 fontsize = calculate_fontsize(insert_text, int(x1-x0), int(y1-y0), line=txt['lf'])
                 log.info(f"current  insert fontsize：{fontsize}")
-                # insert_text = ''
-                # html_text = f"""
-                # <html>
-                #     <body style="background-color: transparent;">
-                #         <!-- 设置段落文本左对齐，从左上角开始布局 -->
-                #         <p style="font-size:{fontsize}pt; line-height:1.2; text-align: left; background-color: transparent; height: 100%;"> {insert_text} </p> 
-                #     </body>
-                # </html>
-                # """ 
+                
                 html_text = f"""
                 <html>
                     <head>
@@ -345,11 +495,24 @@ def trans_(pdf_path,lang,translated_origin_path,file_id,db):
                 else:
                     # rect = fitz.Rect(int(x0 / zoom - zoom/2 ) , int(y0 / zoom - zoom*2) , int(x1 / zoom + zoom/2) , int(y1 / zoom + zoom*2) )
                     rect = fitz.Rect(int(x0 / zoom) , int(y0 / zoom) , int(x1 / zoom ) , int(y1 / zoom) )
-                log.info(f"写入区域: {rect},\n文本内容:{insert_text},\n字号大小:{fontsize}\n")
+                log.info(f"\n--写入区域: {rect},\n--文本内容:{insert_text},\n--字号大小:{fontsize}\n--行数：{txt['lf']}\n")
 
                 # 用 insert_htmlbox 替换 insert_textbox
                 page.insert_htmlbox(rect, html_text,overlay=True) # overlay将文本放在前景True
-                # page.insert_textbox(rect, insert_text, fontsize = fontsize, fontname="china-ss")
+                # while fontsize >= 1: # 避免行统计错误导致的插入失败
+                #     print(f"fontsize:{fontsize}")
+                #     n = page.insert_textbox( # n标识剩余面积
+                #         rect, 
+                #         insert_text, 
+                #         fontsize = fontsize, 
+                #         align=3, 
+                #         lineheight = 1.3,
+                #         fontname = lang
+                #     )
+                #     if n > 0:
+                #         break
+                #     else:
+                #         fontsize = fontsize - 1
                 # import random
                 # page.draw_rect(rect, color=(random.randint(0,255) / 255, random.randint(0,255) / 255, random.randint(0,255) / 255), width=1)
         
@@ -369,6 +532,9 @@ def trans_(pdf_path,lang,translated_origin_path,file_id,db):
     pdf_document.save(ocr_output_path)
     pdf_document.close()
     return ocr_output_path
+
+
+
 
 # def paddleocr(db,img_path_list,lang,file_id):
 #     ocr_result_list = []

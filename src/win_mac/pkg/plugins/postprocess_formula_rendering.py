@@ -34,7 +34,7 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
     if len(check_str) - len(check_str_fli) < 4:  # 若是公式意图（缺少代码标识符），在公式前后添加$符号
         output_answer = add_dollor_to_formula(output_answer)
     output_answer = output_answer.strip()
-    log.info('\npostprocess formula rendering answer:{0}'.format(output_answer))
+    # log.info('\npostprocess formula rendering answer:{0}'.format(output_answer))
 
     out_dict = {"content": output_answer, "refs": [], "recommend_question": []}
     content_setting["output_answer"] = output_answer

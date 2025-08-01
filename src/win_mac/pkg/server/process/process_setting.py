@@ -15,7 +15,9 @@ def get_system_default_path():
             system_path_info = db.query(models.Setting).filter(models.Setting.config_key == 'system.default.path').first()
             if system_path_info is None:
                 if const.SYSTEM == const.WINDOWS:
-                    system_default_info = models.Setting(user_id="", config_key="system.default.path", config_value="")
+                    user_basepath = os.path.expanduser("~")
+                    data_path = os.path.join(user_basepath, const.OPENCHAT_CACHEPATH)
+                    system_default_info = models.Setting(user_id="", config_key="system.default.path", config_value = data_path)
                 else:
                     path = os.path.join(os.path.expanduser('~'),'openchat')
                     system_default_info = models.Setting(user_id="", config_key="system.default.path", config_value=path)
@@ -32,6 +34,25 @@ def get_system_default_path():
     except Exception as ex:
         log.error(f"get_system_default_path error：{str(ex)}")
         raise Exception("获取系统默认路径失败，请重试")
+    
+def init_file_move():
+    # v1.0.3版本增加文件迁移，默认在C盘
+    with SessionLocal() as db:
+        system_path_info = db.query(models.Setting).filter(models.Setting.config_key == 'system.default.path').first()
+        if system_path_info.config_value == '':
+            log.info("v1.0.3版本后执行且仅执行一次文件迁移")
+            # 默认迁移到c盘
+            old_path = system_path_info.config_value
+            user_basepath = os.path.expanduser("~")
+            from pkg.projectvar import constants as const
+            os.path.join(user_basepath, const.OPENCHAT_CACHEPATH)
+            new_path = os.path.join(user_basepath, const.OPENCHAT_CACHEPATH)
+            update_system_default_path(new_path) # 同时更新current和new
+            # 执行迁移
+            from pkg.server.router import knowledge
+            knowledge.mv_knowledge_file(old_path,new_path)
+        else:
+            return
 
 
 def update_system_default_path(config_value: str):

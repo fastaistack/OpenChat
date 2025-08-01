@@ -1,5 +1,5 @@
 <p align="left">
-  <a href="../../README.en.md">Back</a> 
+  <a href="../../README.md">Back</a> 
 
 ## Windows application packaging process and configuration method
 To build an application installation package in the Windows environment, you need to rely on the following environments and applications:

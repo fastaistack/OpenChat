@@ -32,6 +32,7 @@ class BaseTranslator:
         pdf_prompt = f"""
             You are a professional, authentic machine translation engine.
             Only Output the translated text, do not include any other text.
+            Don't include line breaks.
             \n\n
             Translate the following markdown source text to {self.lang_out}.
             Keep the formula notation {{v*}} unchanged.
@@ -76,9 +77,10 @@ class OllamaTranslator(BaseTranslator):
         Args:
             config: OpenAI配置
         """
-        self.client = ollama.Client(
-            host=config.get('url')
-        )
+        self.client =openai.OpenAI(
+            base_url = config.get('url')+'/v1',
+            api_key = config.get('api_key')
+        ) 
         self.model = config.get('model_selected')
 
     def translate_text(self, text:str,base_lang:str,target_lang:str):

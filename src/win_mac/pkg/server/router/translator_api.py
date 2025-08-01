@@ -119,9 +119,11 @@ async def api_get_translate_file_history(req: Request,db: Session = Depends(crud
 
 @router.delete("/file/history/{fileid}/delete",response_model=TranslatedfileResponse)
 async def api_delete_translate_file_history(req: Request,fileid:str,db: Session = Depends(crud.get_db)):
+    global_path = process_setting.get_system_default_path().config_value
+    file_path = os.path.join(global_path,'translation',fileid)
     if process_translate.delete_translate_item(db,fileid):
-        if os.path.exists(os.path.join('translation',fileid)):
-            shutil.rmtree(os.path.join('translation',fileid))
+        if os.path.exists(file_path):
+            shutil.rmtree(file_path)
         return TranslatedfileResponse(
             flag = True,
             errMsg = status.OK.errmsg,
@@ -150,6 +152,7 @@ async def get_file_history_export(req: Request,fileid:str,db: Session = Depends(
         return StreamingResponse(io.BytesIO(file_data),
                                  headers={ "Content-Type": 'application/octet-stream',
                                            "Content-Disposition": f"attachment; filename={name.encode('utf-8')}"})
+        
 @router.get("/file/translated/{fileid}/status",response_model=TranslatedfileStatusResponse)
 async def api_get_translate_file_status(req: Request,fileid:str,db: Session = Depends(crud.get_db)):
     status_item = process_translate.get_translate_status_item(db,fileid)
@@ -160,8 +163,8 @@ async def api_get_translate_file_status(req: Request,fileid:str,db: Session = De
         resData = {"status":status_item.status,
                    "ocr_status":status_item.ocr_status}
     )
-## 翻译功能接口
-
+    
+# 翻译功能接口
 @router.post("/file/translate/{fileid}/stop",response_model=TranslatedfileResponse)
 async def api_stop_translate_file(req: Request,fileid:str,db: Session = Depends(crud.get_db)):
     db_item_status = process_translate.get_translate_status_item(db,fileid)
@@ -276,6 +279,8 @@ def process_file_upload(filetype:str, file_local_path:str, files: UploadFile, fi
                 image_base64 = image_to_base64(image_path)
                 process_translate.update_translate_item_img(db, file_id, image_base64)
 
+            # 将状态置为-1未翻译
+            process_translate.set_translate_status_item(db,file_id, -1)
             return TranslatedfileResponse(
                 flag = True,
                 errMsg = status.OK.errmsg,
@@ -301,6 +306,9 @@ def process_file_upload(filetype:str, file_local_path:str, files: UploadFile, fi
                 time.sleep(1) 
                 process_translate.update_translate_item_img(db, file_id, image_base64)
 
+            # 将状态置为-1未翻译
+            process_translate.set_translate_status_item(db,file_id, -1)
+            
             return TranslatedfileResponse(
                 flag = True,
                 errMsg = status.OK.errmsg,
@@ -335,7 +343,7 @@ async def upload_translated_file(req: Request,files: UploadFile = File(...),db: 
             file_name = files.filename,
             source_file_path = os.path.join(file_local_path, files.filename),
             upload_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            status = -1,
+            status = 3, # 状态为3表示上传中
             process = 0.0,
             image_base64 = image_base64
         )
@@ -409,6 +417,10 @@ async def translated_file_detail(req:Request,fileid:str,db:Session = Depends(cru
 
 def translated_callback(future,db,file_id,status,porcess,base_lang,target_lang):
     try:
+        # 获取全局变量，删除当前进行
+        # translating_files = gvar.get_complated_page_count()
+        # del translating_files[file_id]
+        # gvar.set_complated_page_count(translating_files)
         result = future.result()
         log.info(f"result:{result}")
     except Exception as e:
@@ -485,7 +497,8 @@ async def get_pdf_page_count(req:Request,file_id:str,page_count:str,db:Session =
         log.error(traceback.format_exc())
         return TranslatedfileResponse(
             flag = False,
-            errMsg = status.ERROR.errmsg,
+            # errMsg = status.ERROR.errmsg,
+            errMsg = traceback.format_exc(),
             errCode = status.ERROR.code,
             resData = ''
         )
@@ -525,16 +538,20 @@ async def get_pdf_page_count(req:Request,file_id:str,page_count:str,db:Session =
 @router.get("/file/{file_id}/pdf/completed_page_count")
 async def get_pdf_complated_page_count(req:Request,file_id:str):
     completed_page_count = gvar.get_complated_page_count()
+    print(f"--------------{completed_page_count}----------------")
     return {
         "flag" : True,
         "errMsg" : status.OK.errmsg,
         "errCode" : status.OK.code,
-        "resData" : completed_page_count
+        "resData" : completed_page_count[file_id]
     }
 
 @router.post("/file/{fileid}/translate")
 async def translate_allfile(req:Request,fileid:str,db:Session = Depends(crud.get_db)):
-    gvar.set_complated_page_count(-1)
+    # gvar.set_complated_page_count(-1)
+    translating_files = gvar.get_complated_page_count()
+    translating_files[fileid] = -1
+    gvar.set_complated_page_count(translating_files)
     try:
         db_translate_item = process_translate.get_translate_item(db,fileid)
         name = db_translate_item.file_name
@@ -542,6 +559,8 @@ async def translate_allfile(req:Request,fileid:str,db:Session = Depends(crud.get
         if not os.path.exists(file_local_path):
             return StreamingResponse(io.BytesIO("find file error"))
         else:
+            # file_id写入全局变量
+            
             ##根据文件类型判断使用哪个翻译器
             file_type = name.split('.')[-1]
             global base_lang,target_lang
@@ -842,12 +861,24 @@ async def glossary_word_update(req:Request, receive:dict,db:Session = Depends(cr
         )
     
 
-##进度条接口
-
+# 进度条接口
 @router.get("/file/progress/{fileid}",response_model=TranslatedfileProgressResponse)
 async def get_translate_progress(req:Request,fileid:str,db:Session = Depends(crud.get_db)):
     result = process_translate.get_translateitem_progress(db,fileid)
-    if result:
+    try:
+        translating_files = gvar.get_complated_page_count()
+        if result:
+            return TranslatedfileProgressResponse(
+                flag = True,
+                errMsg=status.OK.errmsg,
+                errCode=status.OK.code,
+                resData={
+                    "process":result.process,
+                    "ocr_process":result.ocr_process,
+                    "current_page":translating_files[fileid]
+                }
+            )
+    except Exception as e:
         return TranslatedfileProgressResponse(
             flag = True,
             errMsg=status.OK.errmsg,
@@ -855,13 +886,7 @@ async def get_translate_progress(req:Request,fileid:str,db:Session = Depends(cru
             resData={
                 "process":result.process,
                 "ocr_process":result.ocr_process,
-                "current_page":gvar.get_complated_page_count()
+                "current_page":-1
             }
         )
-    else :
-        return TranslatedfileProgressResponse(
-            flag = True,
-            errMsg=status.OK.errmsg,
-            errCode=status.OK.code,
-            resData=result
-        )
+    

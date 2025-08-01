@@ -24,6 +24,46 @@ from pkg.plugins.knowledge_base.utils import KnowledgeFile
 logger = Log()
 pj_vars = Projectvar()
 
+def ensure_tesseract_installed():
+    import subprocess
+    import sys
+    import shutil
+    
+    """
+    检查 tesseract 是否已安装。如果未安装，则执行 update.sh 启动终端安装。
+    """
+    # ✅ 优先用 shutil.which() 检查
+    if shutil.which("tesseract"):
+        print("✅ 检测到 Tesseract 已安装，无需处理。")
+        return  # 已经存在，直接退出函数
+
+    print("🚫 检测到系统未安装 Tesseract，准备启动安装脚本...")
+
+    # 获取当前运行目录（打包后是 MacOS/）
+    base_path = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.getcwd()
+
+    # 脚本路径（与可执行文件同级）
+    script_path = os.path.join(base_path, 'install_tesseract.sh')
+
+    # ✅ 先确认脚本是否存在
+    if not os.path.exists(script_path):
+        print(f"⚠️ 安装脚本不存在: {script_path}")
+        return  # 没脚本就退出，避免出错
+
+    # ✅ 给脚本加执行权限（冗余但安全）
+    subprocess.run(['chmod', '+x', script_path], check=False)
+
+    # ✅ 启动脚本，在独立会话中运行
+    try:
+        subprocess.Popen(
+            ['bash', script_path],
+            cwd=base_path,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True  # ✅ 脱离当前 app 控制
+        )
+    except Exception as e:
+        print(f"🚨 启动安装脚本失败: {e}")
 
 def _get_result_to_documents(get_result: GetResult) -> List[Document]:
     if not get_result['documents']:
@@ -132,7 +172,10 @@ class ChromaKBService(KBService):
                             from PIL import Image
                             from io import BytesIO
                             from PyPDF2 import PdfReader
+                            from pkg.projectvar import constants as consts
 
+                            if consts.SYSTEM == consts.MACOS :
+                                    ensure_tesseract_installed()
                             pdf_file = kb_file.file_name
                             # inputpdf = PdfReader(open(pdf_file, "rb"))
                             with open(pdf_file, "rb") as file: # 保证文件读写完毕后可以正常释放资源
@@ -203,12 +246,43 @@ class ChromaKBService(KBService):
         end_time2 = time.perf_counter()
         logger.debug(f"After split time: {end_time2 - start_time} seconds")
 
-        self.vs = Chroma.from_documents(
-            doc_infos,
-            embedding=self.embeding_fn,
-            collection_name=self.kb_name,
-            client=self.client,
-        )
+        # self.vs = Chroma.from_documents(
+        #     doc_infos,
+        #     embedding=self.embeding_fn,
+        #     collection_name=self.kb_name,
+        #     client=self.client,
+        # )
+        
+        # 分批处理文档
+        batch_size = 32
+        total_batches = (len(doc_infos) + batch_size - 1) // batch_size
+            
+        for i in range(total_batches):
+            start_idx = i * batch_size
+            end_idx = min((i + 1) * batch_size, len(doc_infos))
+            batch_docs = doc_infos[start_idx:end_idx]
+            
+            logger.debug(f"Processing batch {i+1}/{total_batches} with {len(batch_docs)} documents")
+            
+            # 对每个批次调用 from_documents
+            batch_vs = Chroma.from_documents(
+                batch_docs,
+                embedding=self.embeding_fn,
+                collection_name=self.kb_name,
+                client=self.client,
+            )
+            
+            # 如果是第一个批次，直接使用它作为最终的 vs
+            if i == 0:
+                self.vs = batch_vs
+            else:
+                # 对于后续批次，使用 add_texts 方法追加文档
+                self.vs.add_texts(
+                    texts=[doc.page_content for doc in batch_docs],
+                    metadatas=[doc.metadata for doc in batch_docs],
+                    ids=[f"batch_{i}_{j}" for j in range(len(batch_docs))]
+                )
+        
         print(self.vs)
         end_time3 = time.perf_counter()
         logger.debug(f"After add_documents [{len(doc_infos)}] docs, spent time: {end_time3 - start_time} seconds")

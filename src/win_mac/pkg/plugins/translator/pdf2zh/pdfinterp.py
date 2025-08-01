@@ -111,7 +111,6 @@ class PDFPageInterpreterEx(PDFPageInterpreter):
 
     def do_S(self) -> None:
         # 重载过滤非公式线条
-        # 负责在页面上绘制路径,水平线条黑色
         """Stroke path"""
 
         def is_black(color: Color) -> bool:
@@ -139,7 +138,6 @@ class PDFPageInterpreterEx(PDFPageInterpreter):
     # 重载过滤非公式线条（F/B）
     def do_f(self) -> None:
         """Fill path using nonzero winding number rule"""
-        # 填充路径
         # self.device.paint_path(self.graphicstate, False, True, False, self.curpath)
         self.curpath = []
 
@@ -164,7 +162,6 @@ class PDFPageInterpreterEx(PDFPageInterpreter):
     ############################################################
     # 重载返回调用参数（SCN）
     def do_SCN(self) -> None:
-        # 设置描边操作的颜色
         """Set color for stroking operations."""
         if self.scs:
             n = self.scs.ncomponents
@@ -177,7 +174,6 @@ class PDFPageInterpreterEx(PDFPageInterpreter):
         return args
 
     def do_scn(self) -> None:
-        # 设置非描边操作的颜色
         """Set color for nonstroking operations"""
         if self.ncs:
             n = self.ncs.ncomponents
@@ -228,13 +224,18 @@ class PDFPageInterpreterEx(PDFPageInterpreter):
                 [xobj],
                 ctm=ctm,
             )
+            self.ncs = interpreter.ncs
+            self.scs = interpreter.scs
             try:  # 有的时候 form 字体加不上这里会烂掉
-                # print(f"LITERAL_FORM:{LITERAL_FORM}:有的时候 form 字体加不上这里会烂掉")
                 self.device.fontid = interpreter.fontid
                 self.device.fontmap = interpreter.fontmap
                 ops_new = self.device.end_figure(xobjid)
                 ctm_inv = np.linalg.inv(np.array(ctm[:4]).reshape(2, 2))
-                pos_inv = -np.mat(ctm[4:]) * ctm_inv
+                np_version = np.__version__
+                if np_version.split(".")[0] >= "2":
+                    pos_inv = -np.asmatrix(ctm[4:]) * ctm_inv
+                else:
+                    pos_inv = -np.mat(ctm[4:]) * ctm_inv
                 a, b, c, d = ctm_inv.reshape(4).tolist()
                 e, f = pos_inv.tolist()[0]
                 self.obj_patch[self.xobjmap[xobjid].objid] = (
@@ -243,7 +244,6 @@ class PDFPageInterpreterEx(PDFPageInterpreter):
             except Exception:
                 pass
         elif subtype is LITERAL_IMAGE and "Width" in xobj and "Height" in xobj:
-            # print(f"LITERAL_IMAGE:{LITERAL_IMAGE}")
             self.device.begin_figure(xobjid, (0, 0, 1, 1), MATRIX_IDENTITY)
             self.device.render_image(xobjid, xobj)
             self.device.end_figure(xobjid)
@@ -266,14 +266,13 @@ class PDFPageInterpreterEx(PDFPageInterpreter):
         else:
             ctm = (1, 0, 0, 1, -x0, -y0)
         self.device.begin_page(page, ctm)
-        ops_base = self.render_contents(page.resources, page.contents, ctm=ctm) #渲染内容
+        ops_base = self.render_contents(page.resources, page.contents, ctm=ctm)
         self.device.fontid = self.fontid
         self.device.fontmap = self.fontmap
         ops_new = self.device.end_page(page)
         # 上面渲染的时候会根据 cropbox 减掉页面偏移得到真实坐标，这里输出的时候需要用 cm 把页面偏移加回来
         self.obj_patch[page.page_xref] = (
             f"q {ops_base}Q 1 0 0 1 {x0} {y0} cm {ops_new}"  # ops_base 里可能有图，需要让 ops_new 里的文字覆盖在上面，使用 q/Q 重置位置矩阵
-            # f"q {ops_base}"  # ops_base 里可能有图，需要让 ops_new 里的文字覆盖在上面，使用 q/Q 重置位置矩阵
         )
         for obj in page.contents:
             self.obj_patch[obj.objid] = ""
@@ -318,7 +317,6 @@ class PDFPageInterpreterEx(PDFPageInterpreter):
                     "'",
                     "_q",
                 )
-                # print(f"method:{method}")
                 if hasattr(self, method):
                     func = getattr(self, method)
                     nargs = func.__code__.co_argcount - 1
@@ -326,7 +324,6 @@ class PDFPageInterpreterEx(PDFPageInterpreter):
                         args = self.pop(nargs)
                         # log.debug("exec: %s %r", name, args)
                         if len(args) == nargs:
-                            # print(f"func method:{method}")
                             func(*args)
                             if not (
                                 name[0] == "T"

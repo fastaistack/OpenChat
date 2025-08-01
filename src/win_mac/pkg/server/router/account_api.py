@@ -105,9 +105,9 @@ async def account_user_login(user_name:str = "hello"):
         # 初始化setting
         global_setting_init()
         
-        # 数据库迁移
-        from pkg.server.router import update_api
-        update_api.data_migration_immediately()
+        # # 数据库迁移
+        # from pkg.server.router import update_api
+        # update_api.data_migration_immediately()
         
         return result.success(TokenBase(access_token=access_token, refresh_token=refresh_token))
     except Exception as ex:
@@ -144,9 +144,9 @@ async def account_login(form_data: OAuth2PasswordRequestForm = Depends()):
         # 初始化setting
         global_setting_init()
         
-        # 数据库迁移
-        from pkg.server.router import update_api
-        update_api.data_migration_immediately()
+        # # 数据库迁移
+        # from pkg.server.router import update_api
+        # update_api.data_migration_immediately()
         
         return result.success(TokenBase(access_token=access_token, refresh_token=refresh_token))
     except Exception as ex:

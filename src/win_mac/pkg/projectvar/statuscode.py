@@ -29,9 +29,10 @@ class StatusCodeEnum(Enum):
     SYSTEM_PATH_MOVE_FAIL = (15, "系统路径迁移失败，请检查")
     SYSTEM_PATH_SPACE_NOT_ENOUGH = (16, "系统路径空间不足，请检查")
     OPENCHAT_TRNASLATED_ERROR = (17, "翻译失败，是否配置模型或网络中断，请检查")
-    OLLAMA_LOAD_ERROR = (18, "OLLAMA连接失败，请先启动或安装OLLAMA")
+    OLLAMA_LOAD_ERROR = (18, "OLLAMA连接失败，请先配置OLLAMA")
     UPDATE_CHECK_ERROR = (19, "更新检查失败，请检查网络")
     UPDATE_DOWNLOAD_ERROR = (20, "下载失败")
+    OLLAMA_CHAT_MODLE_ERROR = (21, "OLLAMA不存在对话模型，请先配置OLLAMA")
 
     @property
     def code(self):

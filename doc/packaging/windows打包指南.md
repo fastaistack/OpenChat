@@ -1,5 +1,5 @@
 <p align="left">
-  <a href="../../README.md">返回</a> 
+  <a href="../../README.cn.md">返回</a> 
 
 ## Windows打包流程和配置方法
 构建windows环境下应用安装包需依赖以下环境和应用

@@ -943,26 +943,46 @@ def db_get_knowledge_files(id, page, pagesize, db):
     result = KnowledgeFileGetResponse
     result.flag = True
     try:
-        # 根据id查询知识库下的文件列表
-        knowledgelist = db.query(models.KnowledgeFile).filter(
-            and_(models.KnowledgeFile.knowledgeid == id)).order_by(
-            models.KnowledgeFile.createtime).limit(pagesize).offset(pagesize * (page - 1)).all()
-        Knowledgecount = db.query(models.KnowledgeFile).filter(
-            and_(models.KnowledgeFile.knowledgeid == id)).order_by(
-            models.KnowledgeFile.createtime).count()
+        if id == "all":
+            # 查所有 knowledge.name 以 tmp_ 开头的临时知识库
+            subquery = db.query(models.Knowledge.id).filter(
+                models.Knowledge.name.like("tmp_%")
+            ).subquery()
+
+            knowledgelist = db.query(models.KnowledgeFile).filter(
+                models.KnowledgeFile.knowledgeid.in_(subquery)
+            ).order_by(models.KnowledgeFile.createtime).limit(pagesize).offset(pagesize * (page - 1)).all()
+
+            Knowledgecount = db.query(models.KnowledgeFile).filter(
+                models.KnowledgeFile.knowledgeid.in_(subquery)
+            ).count()
+        else:
+            knowledgelist = db.query(models.KnowledgeFile).filter(
+                models.KnowledgeFile.knowledgeid == id
+            ).order_by(models.KnowledgeFile.createtime).limit(pagesize).offset(pagesize * (page - 1)).all()
+
+            Knowledgecount = db.query(models.KnowledgeFile).filter(
+                models.KnowledgeFile.knowledgeid == id
+            ).count()
+
         db.commit()
-        # print(knowledgelist)
         result.errCode = status.OK.code
         result.errMsg = status.OK.errmsg
-        result.resData = {"data": knowledgelist, "page": page, "pagesize": pagesize, "total": Knowledgecount}
+        result.resData = {
+            "data": knowledgelist,
+            "page": page,
+            "pagesize": pagesize,
+            "total": Knowledgecount
+        }
     except Exception as e:
-        log.error(('[knowledge management - db_get_knowledge_files] database knowledge delete error:{0}'.format(e)))
+        log.error(f'[knowledge management - db_get_knowledge_files] database knowledge query error: {e}')
         print(traceback.format_exc())
         result.flag = False
         result.errCode = status.ERROR.code
         result.errMsg = status.ERROR.errmsg
         result.resData = {}
     return result
+
 
 
 # 删除知识库中的文件
@@ -1230,10 +1250,11 @@ def mv_knowledge_file(oldpath, newpath):
             result["resData"] = {"status": True, "message": "知识库可以迁移"}
     else:
         result["resData"] = {"status": True, "message": "知识库未迁移过"}
-    # 创建 Thread 实例
-    t1 = Thread(target=cp_knowledge_file, args=(oldpath, newpath))
-    # 启动线程运行
-    t1.start()
+    # # 创建 Thread 实例
+    # t1 = Thread(target=cp_knowledge_file, args=(oldpath, newpath))
+    # # 启动线程运行
+    # t1.start()
+    cp_knowledge_file(oldpath,newpath)
     return result
 
 def cp_knowledge_file(oldpath, newpath):
@@ -1360,33 +1381,6 @@ async def api_get_knowledge_config_by_session(
             # None, init for next step.
             plugin_param_dict = {}
 
-        # if knowledge_id not in plugin_param_dict.keys():
-        #     # 插件管理中没有对应knowledge_id的配置，从知识库配置中获取
-        #     log.info(
-        #         f"No params found in plugin manager with knowledge_id: [{knowledge_id}], session_id: [{session_id}]."
-        #         f"Using default params while knowledge base created.")
-        #     knowledge_plugin_param_dict = get_knowledge_by_id(knowledge_id)
-        #     if not knowledge_plugin_param_dict:
-        #         log.error(f"No params found in knowledge base with knowledge_id: [{knowledge_id}]")
-        #     else:
-        #         log.info("Start update plugin params...")
-        #         # 更新
-        #         plugin_param_dict.setdefault(knowledge_id, knowledge_plugin_param_dict)
-        #         session_updates = {
-        #             "session_id": session_id,
-        #             "plugin_id": plugin_id,
-        #             "update_val": {
-        #                 "plugin_param": json.dumps(plugin_param_dict),
-        #             },
-        #         }
-        #         db_update = update_session_tool([SessionUpdateReq(**session_updates)])
-        #         if db_update[0] is None:
-        #             log.error("Error happened while update_session_tool, please check.")
-        #             return response.fail(status.ERROR.code, status.ERROR.errmsg)
-        #         else:
-        #             log.info("update plugin params succeeded.")
-        #               rr = db_get_knowledge_config(knowledge_id, db)
-        #               return rr
         if not plugin_param_dict or knowledge_id not in plugin_param_dict.keys():
             flag = set_knowledge_config(knowledge_id, session_id, plugin_id, plugin_param_dict)
             if flag != status.OK.code:
@@ -1404,6 +1398,44 @@ async def api_get_knowledge_config_by_session(
         result = response.fail(status.ERROR.code, status.ERROR.errmsg)
 
     return result
+
+@router.get("/session/{session_id}/knowledge_config", response_model=KnowledgeSessionResponse)
+async def get_knowledge_config_from_session(
+    session_id: str,
+    db: Session = Depends(crud.get_db),
+    headers=Depends(get_headers),
+):
+    response = KnowledgeSessionResponse
+    user_id = headers[const.HTTP_HEADER_USER_ID]
+
+    plugin_id = 4  # 知识库插件固定 ID
+    log.debug(f"Checking knowledge config for session_id: [{session_id}], plugin_id: [{plugin_id}]")
+
+    try:
+        plugin_record = query_session_plugin_by_id(session_id, plugin_id)
+
+        if not plugin_record:
+            return response.fail(code=404, errmsg="插件记录未找到")
+
+        plugin_param_raw = plugin_record.plugin_param
+        if not plugin_param_raw or not plugin_param_raw.strip():
+            return response.success({"knowledge_configs": {}})  # ✅ 不再返回404
+
+        try:
+            plugin_param_dict = json.loads(plugin_param_raw)
+        except Exception as e:
+            log.warning(f"插件参数 JSON 解析失败: {e}")
+            return response.fail(code=400, errmsg="插件参数 JSON 解析失败")
+
+        # 只接受 dict 类型
+        if not isinstance(plugin_param_dict, dict):
+            return response.success({"knowledge_configs": {}})
+
+        return response.success({"knowledge_configs": plugin_param_dict})
+
+    except Exception as e:
+        log.error(f"[get_knowledge_config_from_session] Error: {e}")
+        return response.fail(status.ERROR.code, f"查询失败: {str(e)}")
 
 
 def set_knowledge_config(knowledge_id, session_id, plugin_id, params_dict):

@@ -1,5 +1,5 @@
 import os
-import logging
+from pkg.logger import Log
 from typing import Optional
 from pkg.projectvar import Projectvar
 from pkg.plugins.translator.base_translator import TranslationClient,OllamaTranslator,BaseTranslator,OpenAITranslator
@@ -56,11 +56,7 @@ Language-specific guidelines:
 - Korean: Use appropriate honorific forms based on context
 - French: Maintain proper gender agreement and formal/informal distinctions
 - English: Use appropriate register and maintain natural flow"""
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+logger = Log()
 
 gvar = Projectvar()
 models.Base.metadata.create_all(bind=engine)
@@ -97,11 +93,12 @@ def clean_translation_result(text):
         text_before = text
         text = re.sub(pattern, '', text, flags=re.IGNORECASE | re.DOTALL)
         if text != text_before:
-            print(f"[强力清理] Pattern: {pattern}")
+            logger.info(f"[强力清理] Pattern: {pattern}")
+
     # 修改后的模式，更严格，确保以 "Translating to" 开头，后跟语言名称，然后是冒号
     main_text_pattern = r'^Translating to [A-Za-z\s]+:\s*.*?(?=\n|$)'
     text = re.sub(main_text_pattern, '', text, flags=re.MULTILINE | re.IGNORECASE | re.DOTALL)
-    print(f"清理后文本: {text}")
+    logger.info(f"清理后文本: {text}")
     # 仅压缩超过两个的连续空行，确保保留原始单个空行和换行符
     text = re.sub(r'\n{3,}', '\n\n', text)
     text = text.strip()
@@ -224,7 +221,7 @@ def should_translate(text, target_language):
                 # 检查中文内容占比，防止只有少量中文被忽略
                 chinese_ratio = len(re.findall(r'[\u4e00-\u9fff]', text)) / len(cleaned_text)
                 if chinese_ratio < 0.05:  # 如果中文占比很小，可能是英文中的术语解释
-                    print(f"混合文本中文占比小于5%，视为主要是英文内容")
+                    logger.info(f"混合文本中文占比小于5%，视为主要是英文内容")
                     return True
             return True
             
@@ -256,7 +253,7 @@ def should_translate(text, target_language):
             # 检查英文占比，确保实质内容被翻译
             english_ratio = len(re.findall(r'[a-zA-Z]', text)) / len(cleaned_text)
             if english_ratio < 0.05 and has_chinese:  # 如果英文占比很小且有中文，可能是中文中的术语
-                print(f"混合文本英文占比小于5%，视为主要是中文内容")
+                logger.info(f"混合文本英文占比小于5%，视为主要是中文内容")
                 return False
                 
             return True
@@ -340,20 +337,20 @@ def validate_translation_integrity(original_text, translated_text):
 
 def translate_part(text, target_language, is_mixed_language=False):
     """改进的文本翻译函数，针对多语种混合文本优化"""
-    print(f"翻译文本: 长度={len(text)}, 传入的is_mixed_language={is_mixed_language}, 目标语言={target_language}")
+    logger.info(f"翻译文本: 长度={len(text)}, 传入的is_mixed_language={is_mixed_language}, 目标语言={target_language}")
     if len(text) > 10:
-        print(f"文本前50字符: {text[:50]}...")
+        logger.info(f"文本前50字符: {text[:50]}...")
     # 检查文本是否有效
     if not text or len(text.strip()) <= 1:
-        print("文本为空或太短，跳过翻译")
+        logger.info("文本为空或太短，跳过翻译")
         return text
     # 检查是否全是保护标记
     if re.match(r'^(__[A-Z_]+_\d+(?:_\d+)?__\s*)+$', text):
-        print("文本全是保护标记，跳过翻译")
+        logger.info("文本全是保护标记，跳过翻译")
         return text
     lang_config = SUPPORTED_LANGUAGES.get(target_language)
     if not lang_config:
-        print(f"不支持的目标语言: {target_language}")
+        logger.info(f"不支持的目标语言: {target_language}")
         return text
     # 保存文本中的换行位置
     has_newlines = '\n' in text
@@ -367,10 +364,10 @@ def translate_part(text, target_language, is_mixed_language=False):
             current_pos += 1  # 加上换行符本身的长度
     # 根据内容类型和翻译方向构建优化的提示词
     if is_mixed_language:
-        print(f"处理混合文本（使用DEFAULT_ROLE_PROMPT），目标语言: {lang_config['name']}")
+        logger.info(f"处理混合文本（使用DEFAULT_ROLE_PROMPT），目标语言: {lang_config['name']}")
         system_prompt = DEFAULT_ROLE_PROMPT 
     else:
-        print(f"处理非混合文本，目标语言: {lang_config['name']}")
+        logger.info(f"处理非混合文本，目标语言: {lang_config['name']}")
         system_prompt = f"你是一位专业翻译，精通多种语言。你的任务是将文本翻译为{lang_config['name']}，同时严格遵循以下规则：\n1. 保留所有专业术语、缩写和特殊格式\n2. 保持数字、符号和特殊字符不变\n3. 不要在输出中包含任何翻译说明、注释或元数据\n4. 不要重复原文或添加额外解释，只输出翻译结果"
         if lang_config['code'] == 'zh':
             system_prompt = f"你是一位专业翻译，精通多种语言。你的任务是将文本翻译为{lang_config['name']}，同时严格遵循以下规则：\n1. 保留所有专业术语、缩写和特殊格式。\n2. 保持数字、符号和特殊字符不变。\n3. 不要在输出中包含任何翻译说明、注释或元数据。\n4. 不要重复原文或添加额外解释，只输出翻译结果。"
@@ -380,13 +377,17 @@ def translate_part(text, target_language, is_mixed_language=False):
     try:
         modelinfo = gvar.get_model_info()
         if modelinfo.get("api_key") == 'ollama':
-            client = ollama.Client(host=modelinfo.get('url'))
+            # client = ollama.Client(host=modelinfo.get('url'))
+            client = openai.OpenAI(
+                base_url= modelinfo.get('url')+ '/v1',
+                api_key = modelinfo.get('api_key'),
+            )
         else:
             client = openai.OpenAI(
                 api_key = modelinfo.get('api_key'),
                 base_url= modelinfo.get('url'),
             )
-        print("调用API进行翻译...")
+        logger.info("调用API进行翻译...")
         response = client.chat.completions.create(
             model=modelinfo.get('model_selected'),
             messages=[
@@ -401,17 +402,17 @@ def translate_part(text, target_language, is_mixed_language=False):
         )
         translated_text = re.sub(r"^<think>.+?</think>","",response.choices[0].message.content.strip(), count=1, flags=re.DOTALL).strip()
         if len(translated_text) > 10:
-            print(f"原始翻译结果前50字符: {translated_text[:50]}...")
+            logger.info(f"原始翻译结果前50字符: {translated_text[:50]}...")
         # 清理翻译结果
         result = clean_translation_result(translated_text)
         if len(result) > 10:
-            print(f"清理后翻译结果前50字符: {result[:50]}...")
+            logger.info(f"清理后翻译结果前50字符: {result[:50]}...")
         if not result.strip():
-            print("警告: 清理后的翻译结果为空，返回原文")
+            logger.info("警告: 清理后的翻译结果为空，返回原文")
             return text
         # 如果原文有换行，但翻译结果没有足够的换行，尝试恢复换行位置
         if has_newlines and newline_positions and '\n' not in result:
-            print("恢复原文换行位置...")
+            logger.info("恢复原文换行位置...")
             result_len = len(result)
             text_len = len(text)
             new_result = ""
@@ -433,7 +434,7 @@ def translate_part(text, target_language, is_mixed_language=False):
         original_length = len(text.strip())
         translated_length = len(result.strip())
         if original_length > 20 and translated_length < original_length * 0.5:
-            print(f"警告: 翻译结果明显短于原文 ({translated_length}/{original_length})，可能丢失了内容")
+            logger.info(f"警告: 翻译结果明显短于原文 ({translated_length}/{original_length})，可能丢失了内容")
         # 单轮漏翻补漏机制
         # 检测未翻译片段（以目标语言为准）
         if lang_config['code'] == 'zh':
@@ -478,13 +479,13 @@ def translate_part(text, target_language, is_mixed_language=False):
             sub_trans = re.sub(r"^<think>.+?</think>","",sub_response.choices[0].message.content.strip(), count=1, flags=re.DOTALL).strip()
             sub_trans = clean_translation_result(sub_trans)
             if sub_trans and sub_trans != phrase:
-                print(f"补漏翻译: '{phrase}' -> '{sub_trans}'")
+                logger.info(f"补漏翻译: '{phrase}' -> '{sub_trans}'")
                 result = result.replace(phrase, sub_trans)
             else:
-                print(f"补漏未变: '{phrase}' 保留原文")
+                logger.info(f"补漏未变: '{phrase}' 保留原文")
         return result
     except Exception as e:
-        print(f"翻译出错 ({target_language}): {str(e)}")
+        logger.error(f"翻译出错 ({target_language}): {str(e)}")
         return text
 
 def optimize_batch_division(parts, batch_size=5):
@@ -636,12 +637,12 @@ def paragraph_contains_image(paragraph):
             paragraph._p.xpath(".//w:drawing//pic:pic")
         )
     except Exception as e:
-        print(f"检测图片时出错：{str(e)}")
+        logger.error(f"检测图片时出错：{str(e)}")
         # 尝试更简单的查询
         try:
             return bool(paragraph._p.xpath(".//w:drawing"))
         except Exception as e2:
-            print(f"备用检测图片时出错：{str(e2)}")
+            logger.error(f"备用检测图片时出错：{str(e2)}")
             return False
 
 def run_contains_image(run):
@@ -652,12 +653,12 @@ def run_contains_image(run):
             run._r.xpath("./w:drawing//pic:pic")
         )
     except Exception as e:
-        print(f"检测run图片时出错：{str(e)}")
+        logger.error(f"检测run图片时出错：{str(e)}")
         # 尝试更简单的查询
         try:
             return bool(run._r.xpath("./w:drawing"))
         except Exception as e2:
-            print(f"备用检测run图片时出错：{str(e2)}")
+            logger.error(f"备用检测run图片时出错：{str(e2)}")
             return False
 
 def run_contains_text(run):
@@ -668,12 +669,12 @@ def run_contains_text(run):
             run._r.xpath("./w:t")
         )
     except Exception as e:
-        print(f"检测run文本时出错：{str(e)}")
+        logger.error(f"检测run文本时出错：{str(e)}")
         # 检查常规文本属性
         try:
             return bool(run.text)
         except Exception as e2:
-            print(f"备用检测run文本时出错：{str(e2)}")
+            logger.error(f"备用检测run文本时出错：{str(e2)}")
             return False
 
 def run_contains_text_and_image(run):
@@ -704,13 +705,13 @@ def update_run_text_preserve_image(run, new_text):
         
         return True
     except Exception as e:
-        print(f"更新run文本保留图片时出错：{str(e)}")
+        logger.error(f"更新run文本保留图片时出错：{str(e)}")
         # 如果上述方法失败，尝试简单地设置run.text
         try:
             run.text = new_text
             return True
         except Exception as e2:
-            print(f"备用更新run文本时出错：{str(e2)}")
+            logger.error(f"备用更新run文本时出错：{str(e2)}")
         return False
 
 def process_run_formatting(run):
@@ -940,7 +941,7 @@ def detect_formatted_runs(paragraph):
 
 def translate_paragraph(paragraph, base_lang, target_language, fileid):
     """改进后的段落翻译函数，优化混合文本处理和文本分配逻辑"""
-    print("翻译段落")
+    logger.info("翻译段落")
     # 保存原始格式
     paragraph_formatting = preserve_paragraph_formatting(paragraph)
     list_formatting = preserve_list_formatting(paragraph)
@@ -981,15 +982,15 @@ def translate_paragraph(paragraph, base_lang, target_language, fileid):
     has_english = bool(re.search(r'[a-zA-Z]', paragraph_text))
     is_mixed = has_chinese and has_english
     
-    print(f"文本内容: {paragraph_text[:50]}... 是否混合文本: {is_mixed}")
+    logger.info(f"文本内容: {paragraph_text[:50]}... 是否混合文本: {is_mixed}")
     
     # 直接调用translate_text翻译整个段落
     translated_text = translate_text(paragraph_text, base_lang, target_language)
-    print(f"翻译结果: {translated_text[:50]}...")
+    logger.info(f"翻译结果: {translated_text[:50]}...")
     
     # 检查翻译完整性
     if not check_translation_completeness(paragraph_text, translated_text, target_language):
-        print("翻译结果可能不完整，尝试再次翻译...")
+        logger.info("翻译结果可能不完整，尝试再次翻译...")
         # 确保混合文本标记为True，更明确的指导翻译
         translated_text = translate_part(paragraph_text, target_language, is_mixed_language=True)
     
@@ -1101,7 +1102,7 @@ def translate_paragraph(paragraph, base_lang, target_language, fileid):
         apply_list_formatting(paragraph, list_formatting)
 
 def translate_table(table, base_lang,target_language,fileid):
-    print("翻译表格")
+    logger.info("翻译表格")
     for row in table.rows:
         for cell in row.cells:
             for paragraph in cell.paragraphs:
@@ -1111,7 +1112,7 @@ def translate_table(table, base_lang,target_language,fileid):
                 translate_paragraph(paragraph, base_lang,target_language,fileid)
 
 def translate_header_footer(header_footer, base_lang,target_language,fileid):
-    print("翻译页眉页脚")
+    logger.info("翻译页眉页脚")
     for paragraph in header_footer.paragraphs:
         isneedstop = gvar.get_needstop()
         if fileid in isneedstop:
@@ -1188,7 +1189,7 @@ def translate_file(input_file: str, output_file: Optional[str] = None,
         doc.save(output_file)
         return output_file
     except Exception as e:
-        print(f"翻译文档时出错: {str(e)}")
+        logger.error(f"翻译文档时出错: {str(e)}")
         update_translate_finalpath(db=db,fileid=fileid,translated_path="",status=-1,translated_time='')
         set_translate_process_item(db,fileid,0)
         if fileid in gvar.get_needstop():
@@ -1235,7 +1236,7 @@ def check_translation_completeness(original, translated, target_language):
             # 保守估计：翻译后长度应该不低于原始中文字符数的1.5倍
             min_expected_length = len(''.join(chinese_chars)) * 1.5
             if len(translated) < min_expected_length:
-                print(f"警告: 翻译结果可能不完整。原中文字符数: {len(''.join(chinese_chars))}, 翻译结果长度: {len(translated)}")
+                logger.info(f"警告: 翻译结果可能不完整。原中文字符数: {len(''.join(chinese_chars))}, 翻译结果长度: {len(translated)}")
                 return False
                 
     # 针对英译中
@@ -1246,7 +1247,7 @@ def check_translation_completeness(original, translated, target_language):
             # 保守估计：翻译后长度不应该远低于原始英文单词数
             min_expected_length = len(english_words) * 0.5
             if len(translated) < min_expected_length:
-                print(f"警告: 翻译结果可能不完整。原英文单词数: {len(english_words)}, 翻译结果长度: {len(translated)}")
+                logger.info(f"警告: 翻译结果可能不完整。原英文单词数: {len(english_words)}, 翻译结果长度: {len(translated)}")
                 return False
     
     return True

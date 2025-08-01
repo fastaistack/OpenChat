@@ -204,9 +204,13 @@ def init():
     if not os.path.exists(db_filename):
         from pkg.database import crud
         crud.init_database()
-        from pkg.database.data_init import init_models
-        init_models()
-
+        # 执行数据迁移
+        from pkg.server.router import update_api
+        update_api.data_migration_immediately()
+        
+    from pkg.database.data_init import init_models
+    init_models()
+        
     if constants.SYSTEM == constants.MACOS:
         setup_runtime()
     
@@ -228,6 +232,11 @@ def init():
     knowledge.change_file_status()
     from pkg.plugins.translator.utils import checkout_translate_item
     checkout_translate_item()
+    
+    if constants.SYSTEM == constants.WINDOWS:
+        # v1.0.3版本向上升级时仅配置一次
+        from pkg.server.process import process_setting
+        process_setting.init_file_move()
     
 def main():
     #0. Init environment
