@@ -120,7 +120,7 @@ More features coming soon...
 
 ---
 
-## 📝 Changelog | OpenChat v1.0.3
+## 📝 Changelog | OpenChat v1.0.4
 
 > Release Date: August 1, 2025
 > Version Code: v1.0.4
