@@ -2,10 +2,23 @@ import abc
 import cv2
 import numpy as np
 import ast
-import onnx
-import onnxruntime
 from pkg.projectvar import constants as consts
 # from huggingface_hub import hf_hub_download
+
+try:
+    import onnx
+    import onnxruntime
+except ImportError as e:
+    if "DLL load failed" in str(e):
+        import subprocess
+        if consts.SYSTEM == consts.WINDOWS:
+            exe_path = './_internal/无法运行请安装vc_redist.x64.exe'
+            result = subprocess.run(exe_path)
+        raise OSError(
+            "Microsoft Visual C++ Redistributable is not installed. "
+            "Download it at https://aka.ms/vs/17/release/vc_redist.x64.exe"
+        ) from e
+    raise
 
 
 class DocLayoutModel(abc.ABC):

@@ -32,7 +32,7 @@ def call(reqeust:ChatMessageInfo, setting:dict, content_setting:dict):
     text = re.sub(r'(。{2,})', r'。', text)  # 两个以上的连续句号只保留一个
     text = re.sub(r'(_{8,})', r'________', text)  # _最多8个.
     text = text.strip()
-    log.info('\npostprocess clean special characters:{0}'.format(text))
+    # log.info('\npostprocess clean special characters:{0}'.format(text))
 
     out_dict = {"content": text, "refs": [], "recommend_question": []}
     content_setting["output_answer"] = text

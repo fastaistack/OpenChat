@@ -21,7 +21,7 @@ class Projectvar(object):
                     Projectvar._translator_model_info = {} # {"url":url, "api_key":api_key,"model_selected":precise_select}
                     Projectvar._needstop = []  #结束翻译线程
                     Projectvar._update_progress = ''
-                    Projectvar._complated_page_count = -1
+                    Projectvar._complated_page_count = {}
                     Projectvar._model_setting = ''
         return Projectvar._instance
     def set_db_filename(self, name):

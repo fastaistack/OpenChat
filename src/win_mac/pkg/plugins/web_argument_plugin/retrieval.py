@@ -6,6 +6,8 @@ import time
 # import torch
 from langchain_community.embeddings import OllamaEmbeddings,OpenAIEmbeddings
 from ...logger import Log
+from pkg.is_embedding_model_utils import is_embedding_model
+
 log = Log()
 
 embeddings_model = any
@@ -67,7 +69,7 @@ class EmbeddingRetriever:
             'shaw/dmeta-embedding-zh',
         ]
 
-        if self.embeddings_model_path in ollama_support_embedding_model_list:
+        if is_embedding_model(self.embeddings_model_path):
             embedding_model = OllamaEmbeddings(model=self.embeddings_model_path)
         else:
             try:

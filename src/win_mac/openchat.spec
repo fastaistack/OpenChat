@@ -4,8 +4,8 @@
 a = Analysis(
     ['openchat.py'],
     pathex=[],
-    binaries=[('libmagic/libexpat.1.dylib', 'Frameworks')],
-    datas=[('pkg', 'pkg'), ('/Users/xingchenhan/templates', 'docx/templates'), ('/Users/xingchenhan/YOLO', 'resources/models')],
+    binaries=[],
+    datas=[('pkg', 'pkg'), ('/Users/xingchenhan/YOLO', 'resources/models'), ('_internal/fonts', 'fonts')],
     hiddenimports=['imghdr'],
     hookspath=[],
     hooksconfig={},

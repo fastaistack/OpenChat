@@ -122,16 +122,16 @@ def preprocess_text(text):
     text = re.sub(code_pattern_block, code_block_replacer, text)
     
     # 保护Markdown列表（有序和无序）
-    list_pattern = r'^(\s*[-*+]\s+|\s*\d+\.\s+)(.+)$'
-    def list_replacer(match):
-        return f"{match.group(1)}{create_placeholder('LIST_CONTENT', match.group(2))}"
-    text = re.sub(list_pattern, list_replacer, text, flags=re.MULTILINE)
+    # list_pattern = r'^(\s*[-*+]\s+|\s*\d+\.\s+)(.+)$'
+    # def list_replacer(match):
+    #     return f"{match.group(1)}{create_placeholder('LIST_CONTENT', match.group(2))}"
+    # text = re.sub(list_pattern, list_replacer, text, flags=re.MULTILINE)
     
     # 保护Markdown标题
-    heading_pattern = r'^(#{1,6}\s+)(.+)$'
-    def heading_replacer(match):
-        return f"{match.group(1)}{create_placeholder('HEADING_CONTENT', match.group(2))}"
-    text = re.sub(heading_pattern, heading_replacer, text, flags=re.MULTILINE)
+    # heading_pattern = r'^(#{1,6}\s+)(.+)$'
+    # def heading_replacer(match):
+    #     return f"{match.group(1)}{create_placeholder('HEADING_CONTENT', match.group(2))}"
+    # text = re.sub(heading_pattern, heading_replacer, text, flags=re.MULTILINE)
     
     # 保护Markdown加粗和斜体
     bold_pattern = r'\*\*(.+?)\*\*'

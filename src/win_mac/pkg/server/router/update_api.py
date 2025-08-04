@@ -138,7 +138,6 @@ def scan_folder(folder: Path) -> dict:
 #             f.write(response.content)
 #         log.info("download complete...")
 #         return [file_path]
-    
 def download_files_from_server(server_url, path_list, download_dir="./download"):
     """
     从服务器下载文件到本地指定目录
@@ -348,33 +347,46 @@ async def exit_immediately():
     if constants.SYSTEM == constants.WINDOWS :
         # 清理一下服务器上压缩的文件
         db_query = alchemytool.select_user_by_name('hello')
-        response = requests.get(UPDATE_SERVER_URL + "/remove_file/" + db_query.user_id,verify=False)
+        try:
+            response = requests.get(UPDATE_SERVER_URL + "/remove_file/" + db_query.user_id,verify=False)
+        except Exception as e:
+            log.error(str(e))
         # 应用退出
         window.destroy()
         # 子进程启动文件迁移命令
-        username = os.getlogin()
-        subprocess.run(['icacls','move_files.bat','/grant',f"{username}:F"]) # 修改文件权限
+        # username = os.getlogin()
+        # subprocess.run(['icacls','move_files.bat','/grant',f"{username}:F"]) # 修改文件权限
+        import sys
+        path_list = [
+            r'%SystemRoot%\system32',
+            r'%SystemRoot%',
+            r'%SYSTEMROOT%\System32\WindowsPowerShell\v1.0',
+            r'%SystemRoot%\System32\Wbem'
+        ]
+        for path in path_list:
+            sys.path.append(path)
         subprocess.Popen('move_files.bat',stdout=subprocess.DEVNULL)
     else:
+        import sys
         # 获取当前运行目录（打包后就是 MacOS/）
         base_path = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.getcwd()
 
         # 脚本路径（与可执行文件同级）
         script_path = os.path.join(base_path, 'update.sh')
 
-        # ✅ 先给脚本加执行权限（冗余处理，也安全）
+        # 先给脚本加执行权限（冗余处理，也安全）
         subprocess.run(['chmod', '+x', script_path], check=False)
 
-        # ✅ 先启动更新脚本，在独立会话中运行（不受主进程关闭影响）
+        # 先启动更新脚本，在独立会话中运行（不受主进程关闭影响）
         subprocess.Popen(
             ['bash', script_path],
             cwd=base_path,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
-            start_new_session=True  # ✅ 脱离当前 app 控制
+            start_new_session=True  # 脱离当前 app 控制
         )
 
-        # ✅ 最后销毁窗口（退出主程序）
+        # 最后销毁窗口（退出主程序）
         window.destroy()
 
 
@@ -434,7 +446,7 @@ def data_migration_immediately():
                 # 将openchat_old.db 重命名
                 import time
                 date = time.strftime("%Y%m%d_%H-%M-%S")
-                os.rename(os.path.join(db_path,'openchat_old.db'), os.path.join(db_path,'openchat_old_' + str(date) + '.db'))
+                os.rename(os.path.join(db_path,'openchat_old.db'), os.path.join(db_path,'openchat_old_' + const.OPENCHAT_VERSION + '_' + str(date) + '.db'))
                 return True
             else:
                 log.error("迁移失败")

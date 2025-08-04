@@ -110,4 +110,4 @@ def run():
 
 
     # 启动 webview，并执行 expose_bridge 作为初始化
-    webview.start(func=expose_bridge)
+    webview.start(func=expose_bridge, debug=False)

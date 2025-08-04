@@ -33,6 +33,15 @@ class ModelUrlInfo(BaseModel):
 class ModelUrlInfoResponseInfo(server_schemas.CommonResponse):
     resData: Union[ModelUrlInfo, None]
 
+    @staticmethod
+    def error(msg: str):
+        return ModelUrlInfoResponseInfo(
+            flag=False,
+            errCode=500,
+            errMsg=msg,
+            resData=None
+        )
+
 
 class ModelBaseInfoResponseInfo(server_schemas.CommonResponse):
     resData: Union[ModelBaseInfo, None]
@@ -148,6 +157,23 @@ async def delete_model_from_list(id: int):
             return ModelUrlInfoResponseInfo.error("未找到对应模型，删除失败")
     except Exception as e:
         return ModelUrlInfoResponseInfo.error(f"删除失败: {str(e)}")
+
+@router.post("/deployment/add")
+async def add_deployment(item: dict):
+    try:
+        model = process_model.add_deployment_from_base(item)
+        return ModelUrlInfoResponseInfo.success({"id": model.id, "key": model.key, "name": model.name})
+    except Exception as e:
+        return ModelUrlInfoResponseInfo.error(f"添加部署失败: {str(e)}")
+
+@router.delete("/deployment/delete")
+async def delete_deployment(key: str):
+    result = server_schemas.CommonResponse
+    try:
+        process_model.delete_deployment_by_key(key)
+        return result.success(None)
+    except Exception as e:
+        return result.fail(status.ERROR.name, f"{status.ERROR.errmsg} {str(e)}")
 
 # 已下载（本地）embedding模型列表
 @router.get("/download/embedding/list")

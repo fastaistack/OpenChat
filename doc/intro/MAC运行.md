@@ -1,5 +1,5 @@
 <p align="left">
-  <a href="../../README.md">返回主页</a> 
+  <a href="../../README.cn.md">返回主页</a> 
 
 
 # 关于 OpenChat 安全性与MacOS系统设置说明

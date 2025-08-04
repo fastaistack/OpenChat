@@ -1,5 +1,5 @@
 <p align="left">
-  <a href="../../README.en.md">Back</a> 
+  <a href="../../README.md">Back</a> 
 
 # OpenChat Mac Version Packaging Guide
 

@@ -6,6 +6,7 @@ from pkg.server.process import process_translate
 from pkg.projectvar import Projectvar
 from pkg.projectvar import constants as consts
 from pkg.server.process import process_setting
+from pkg.plugins.translator.pdf2zh.doclayout import DocLayoutModel
 
 import fitz
 from pkg.plugins.translator import pdf_ocr
@@ -127,11 +128,9 @@ def translate_file(
     db = None,
     *envs,
 ):
-    if consts.SYSTEM == consts.WINDOWS:
-        output = Path(os.path.join("translation",file_id))
-    else:
-        global_path = process_setting.get_system_default_path().config_value
-        output = Path(os.path.join(global_path,"translation",file_id))
+
+    global_path = process_setting.get_system_default_path().config_value
+    output = Path(os.path.join(global_path,"translation",file_id))
     output.mkdir(parents=True, exist_ok=True)
     
     process_translate.update_translate_item(db, file_id,status=0,porcess=0,base_lang=lang_from,target_lang=lang_to)
@@ -195,20 +194,26 @@ def translate_file(
 
     log.info(f"Files before translation: {os.listdir(output)}")
 
+
+    onnx_model = DocLayoutModel.load_available()
     param = {
-        "files": [str(file_raw)],
-        "pages": selected_page,
-        "lang_in": lang_from,
-        "lang_out": lang_to,
-        "service": f"{translator.name}",
-        "output": output,
-        "thread": 4,
-        "callback": "",
-        "model":model,
-        "url":url,
-        "api_key":api_key,
-        "file_id":file_id,
-        "db":db,
+            "files": [str(file_raw)],
+            "output": output,
+            "pages": selected_page,
+            "lang_in": lang_from,
+            "lang_out": lang_to,
+            "service": f"{translator.name}",
+            "thread": 4,
+            "vfont": "",
+            "vchar": "",
+            "callback": '',
+            "compatible": False,
+            "model": onnx_model,
+            "use_model" : model,
+            "url":url,
+            "api_key":api_key,
+            "file_id":file_id,
+            "db":db,
     }
     log.info(f"param:{param}")
     process_translate.update_translate_item(db, file_id,status=0,porcess=0,translated_path=str(file_mono),base_lang=lang_from,target_lang=lang_to)
