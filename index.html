@@ -36,16 +36,34 @@
                     <button class="download-btn" onclick="event.preventDefault()">下载客户端</button>
                     <div class="download-menu">
                         <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe" class="download-option" target="_blank">
-                            <img src="images/icons/windows-icon.svg" alt="Windows">
-                            <span>Windows</span>
+                            <div class="">
+                                <img src="images/icons/windows-icon.svg" alt="Windows">
+                            </div>
+                            <div>Windows</div>
                         </a>
                         <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg" class="download-option" target="_blank">
-                            <img src="images/icons/mac-icon.svg" alt="Mac M1">
-                            <span>Mac M1</span>
+                            <div class="">
+                                <img src="images/icons/mac-icon.svg" alt="Mac M1">
+                            </div>
+                            <div>Mac M</div>
                         </a>
                         <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg" class="download-option" target="_blank">
-                            <img src="images/icons/mac-icon.svg" alt="Mac Intel">
-                            <span>Mac Intel</span>
+                            <div class="">
+                                <img src="images/icons/mac-icon.svg" alt="Mac Intel">
+                            </div>
+                            <div>Mac Intel</div>
+                        </a>
+                        <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_win.exe" class="download-option" target="_blank">
+                            <div class="">
+                                <img src="images/icons/windows-icon.svg" alt="Windows">
+                            </div>
+                            <div>Windows DS-OCR</div>
+                        </a>
+                        <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_mac.dmg" class="download-option" target="_blank">
+                            <div class="">
+                                <img src="images/icons/mac-icon.svg" alt="Mac Intel">
+                            </div>
+                            <div>Mac M DS-OCR</div>
                         </a>
                     </div>
                 </div>
@@ -66,21 +84,43 @@
                     无需注册!即可开启您的大模型体验!!
                 </p>
                 <div class="download-buttons">
-                    <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe" class="download-btn-platform" target="_blank">
-                        <img src="images/icons/windows-icon.svg" alt="Windows">
-                        <span>Windows 下载</span>
-                    </a>
-                    <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg" class="download-btn-platform" target="_blank">
-                        <img src="images/icons/mac-icon.svg" alt="Mac M1">
-                        <span>Mac M1 下载</span>
-                    </a>
+
+                    <div class="download-button-group">
+                        <div class="download-btn-platform">
+                            <img src="images/icons/windows-icon.svg" alt="Windows">
+                            <span>Windows 下载</span>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe">OpenChat V1.0.4</a>
+                            <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_win.exe">OpenChat DS-OCR 试用版</a>
+                        </div>
+                    </div>
+
+                    <div class="download-button-group">
+                        <div class="download-btn-platform">
+                            <img src="images/icons/mac-icon.svg" alt="Mac M1">
+                            <span>Mac M1 下载</span>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg">OpenChat V1.0.4</a>
+                            <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_mac.dmg">OpenChat DS-OCR 试用版</a>
+                        </div>
+                    </div>
+                    <!--                    <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe" class="download-btn-platform" target="_blank">-->
+                    <!--                        <img src="images/icons/windows-icon.svg" alt="Windows">-->
+                    <!--                        <span>Windows 下载</span>-->
+                    <!--                    </a>-->
+                    <!--                    <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg" class="download-btn-platform" target="_blank">-->
+                    <!--                        <img src="images/icons/mac-icon.svg" alt="Mac M1">-->
+                    <!--                        <span>Mac M1 下载</span>-->
+                    <!--                    </a>-->
                     <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg" class="download-btn-platform" target="_blank">
                         <img src="images/icons/mac-icon.svg" alt="Mac Intel">
                         <span>Mac Intel 下载</span>
                     </a>
                 </div>
             </div>
-            
+
             <!-- 产品展示区域 -->
             <div class="product-showcase">
                 <div class="laptop-mockup">
@@ -199,7 +239,7 @@
                     OpenChat面相社会开源开放,您不仅可以免费使用本软件,也能在开源网站上看到我们的开发进度,若您有任何疑问和建议,欢迎通过社群与我们联系!
                 </p>
             </div>
-            
+
             <div class="opensource-grid">
                 <div class="grid-section">
                     <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe" class="grid-item" target="_blank">
