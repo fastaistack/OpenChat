@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 检查是否在FAQ页面
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     
-    if (currentPage === 'faq.html' || currentPage === 'single-page.html') {
+    if (currentPage === 'faq.html' || currentPage === 'index.html') {
         // 可选功能
         // initFAQSearch();
         // initFAQStats();
