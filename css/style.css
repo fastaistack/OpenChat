@@ -211,7 +211,7 @@ button.nav-link {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     padding: 10px 0;
-    min-width: 220px;
+    min-width: 250px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
