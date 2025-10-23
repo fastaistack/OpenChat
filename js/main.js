@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 根据当前页面初始化特定功能
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     
-    if (currentPage === 'compatibility.html' || currentPage === 'single-page.html') {
+    if (currentPage === 'compatibility.html' || currentPage === 'index.html') {
         initFeatureNavigation();
     } else if (currentPage === 'opensource.html') {
         initGridItems();

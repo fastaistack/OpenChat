@@ -6,7 +6,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 @app.route('/')
 def index():
-    idx = os.path.join(BASE_DIR, 'single-page.html')
+    idx = os.path.join(BASE_DIR, 'index.html')
     if not os.path.exists(idx):
         return '<h3>No reports generated yet.</h3>', 200
     return send_file(idx)
