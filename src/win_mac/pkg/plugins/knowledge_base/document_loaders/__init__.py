@@ -1,2 +1,0 @@
-from pkg.plugins.knowledge_base.document_loaders.custom_mobi_loader import CustomMobiLoader
-from pkg.plugins.knowledge_base.document_loaders.custom_json_loader import CustomJSONLoader
