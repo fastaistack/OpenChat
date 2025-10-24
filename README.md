@@ -17,6 +17,7 @@
 
 ---
 
+- ####  [📅 OpenChat Deepseek-OCR Beta Version (Oct 24, 2025)👉](#-changelog--openchat-v102)
 - ####  [📅 OpenChat v1.0.4 Changelog (Aug 1, 2025)👉](#-changelog--openchat-v102)
 - ####  [📅 OpenChat v1.0.3 Changelog (June 20, 2025)👉](#-changelog--openchat-v102)
 - ####  [📅 OpenChat v1.0.2 Changelog (May 8, 2025)👉](#-changelog--openchat-v102)
@@ -48,12 +49,12 @@ You can select the installation package suitable for your device in the link bel
 
 ### <img src="./data/images/microsoft.png" alt="Logo" width="28" height="28"> Download Windows Installer 
 
+- [OpenChat_Deepseek_OCR.exe](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_win.exe) (Beta Version)
 - [OpenChat_windows.exe](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe) (Installer)
-
-
 
 ### <img src="./data/images/apple.png" alt="Logo" width="28" height="28"> Download MacOS Installer
 
+- [OpenChat_Deepseek_OCR.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_mac.dmg) (Apple Silicon Beta Version)
 - [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg) (Apple Silicon)
 - [OpenChat_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg) (Intel chips)
 
@@ -119,11 +120,35 @@ You can select the installation package suitable for your device in the link bel
 More features coming soon...
 
 ---
+## 📝 Changelog | OpenChat Deepseek‑OCR (Beta)
+
+> Release Date: October 24, 2025
+> Version Code: Deepseek‑OCR
+
+This is a **test (demo) release**. It builds on **v1.0.4** and adds DeepSeek’s newly released **DeepSeek‑OCR** for users to try out.
+
+### How to Try the New Features
+
+1. **Upload an Image**
+   Use the upload field to select and upload your image.
+
+2. **Choose a Task Type**
+
+   * **Free OCR:** Extract raw text from the image.
+   * **Convert to Markdown:** Transform documents into Markdown while preserving structure.
+   * **Chart Parsing:** Extract structured data from charts and graphs.
+   * **Image Description:** Generate a detailed description of the image.
+
+3. **Run OCR & View Results**
+   Click **Process Image**, then review the OCR output in the right‑hand results panel.
+
 
 ## 📝 Changelog | OpenChat v1.0.4
 
+
 > Release Date: August 1, 2025
 > Version Code: v1.0.4
+
 
 This update focuses on **practical enhancements**, continuing to expand our model ecosystem, improve deployment flexibility, and refine frequently used features. We’ve added support for new models such as **Kimi-k2** and **Step-2**, and integrated platforms like **OpenRouter** and **Volcengine**, broadening usage scenarios. New capabilities like **server deployment cloning** and **custom cache directory** significantly improve multi-instance management and resource control. PDF translation layout has been further optimized, and UI details like text selection and model jump settings are smoother than ever. OpenChat is becoming more stable, controllable, and powerful.
 

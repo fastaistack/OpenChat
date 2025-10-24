@@ -20,6 +20,8 @@
 ## 🎉 最近更新
 
 ---
+-  **[📅 OpenChat Deepseek-OCR 测试版 更新日志（2025-10-24）👉](#-更新日志)**
+
 -  **[📅 OpenChat v1.0.4 更新日志（2025-08-01）👉](#-更新日志)**
 
 -  **[📅 OpenChat v1.0.3 更新日志（2025-06-20）👉](#-更新日志)**
@@ -42,11 +44,12 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 
 ### <img src="./data/images/microsoft.png" alt="Logo" width="28" height="28"> Download Windows Installer 
 
+- [OpenChat_Deepseek_OCR.exe](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_win.exe) (Beta Version)
 - [OpenChat_windows.exe](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe) (Installer)
-
 
 ### <img src="./data/images/apple.png" alt="Logo" width="28" height="28"> Download MacOS Installer
 
+- [OpenChat_Deepseek_OCR.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_mac.dmg) (Apple Silicon Beta Version)
 - [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg) (Apple Silicon)
 - [OpenChat_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg) (Intel chips)
 
@@ -142,6 +145,28 @@ OpenChat 声明不会收录您的任何个人信息，源码基于MIT协议开�
 
 <a name="更新日志"></a>
 ### 📝 更新日志
+
+#### OpenChat Deepseek-OCR (测试版本)
+
+> 发布日期：2025年10月24日  
+> 版本代号：Deepseek-OCR
+
+这是一个测试版本，在v1.0.4的基础上添加了深度求索最新推出的 **DeepSeek—OCR** 供用户体验，用户可以参照以下步骤体验最新功能：
+
+1.上传图片: 使用上传框上传图片
+
+2.选择任务类型:
+
+* 自由OCR: 从图片中提取原始文本
+* 转换为Markdown: 将文档转换为Markdown格式，保留结构
+
+* 解析图表: 从图表和图形中提取结构化数据
+
+* 图像描述: 生成图像的详细描述
+
+
+3.OCR处理：点击处理图片，并从右侧查看OCR处理结果
+
 
 #### OpenChat v1.0.4
 
@@ -393,7 +418,6 @@ Mac版OpenChat.dmg打开后将看到OpenChat.app，将其拖动到应用文件�
 - **如果打包后缺少依赖，请检查 `site-packages` 并手动补充**。
 - **Windows 版本建议使用 Inno Setup 进行安装包封装**。
 - **对于 Mac 和 Windows，可使用代码签名提升安全性**。
-
 
 
 
