@@ -2,9 +2,8 @@
   const STORAGE_KEY = 'openchat_lang'; // 'zh' | 'en'
   const $ = (sel) => document.querySelector(sel);
 
-  // 智能设置文本：有 \n 时用 innerHTML 并替换为 <br>，否则用 textContent
-  function setSmartText(sel, val) {
-    const el = $(sel);
+  // 智能设置文本：有 \n 时用 <br>，否则纯文本
+  function applyTextToEl(el, val) {
     if (!el) return;
     if (typeof val !== 'string') {
       el.textContent = val == null ? '' : String(val);
@@ -17,9 +16,22 @@
     }
   }
 
+  // 按选择器设置（单个）
+  function setBySelector(selector, val) {
+    const el = $(selector);
+    applyTextToEl(el, val);
+  }
+
+  // 按 data-key 设置（可多个）
+  function setByDataKey(key, val) {
+    const list = document.querySelectorAll(`[data-key="${key}"]`);
+    if (list.length === 0) return false; // 告诉上层没命中
+    list.forEach((el) => applyTextToEl(el, val));
+    return true;
+  }
+
   const MAP = {
     zh: {
-      // 文档级
       __lang: 'zh-CN',
       __title: 'OpenChat - 开源免费AI解决方案',
 
@@ -30,7 +42,11 @@
       '.nav-menu a.nav-link[href="#faq"]': 'FAQ',
       '.download-dropdown .download-btn': '下载客户端',
 
-      // 下载菜单项
+      // 首页顶部下载（按钮文本，使用 data-key 或兜底）
+      download_windows: 'Windows 下载',
+      download_mac_m: 'Mac M芯片 下载',
+
+      // 旧的下载菜单（右侧“下载客户端”里的三项）
       '.download-menu a:nth-child(1) span': 'Windows',
       '.download-menu a:nth-child(2) span': 'Mac M1',
       '.download-menu a:nth-child(3) span': 'Mac Intel',
@@ -39,8 +55,6 @@
       '.hero-title h1': 'OpenChat',
       '.hero-description':
         '开源免费的AI解决方案,保护您的数据安全,提供强大的文档处理和智能助手功能\n无需注册!即可开启您的大模型体验!!',
-      '.download-buttons a:nth-child(1) span': 'Windows 下载',
-      '.download-buttons a:nth-child(2) span': 'Mac M1 下载',
       '.download-buttons a:nth-child(3) span': 'Mac Intel 下载',
 
       // 第二屏 tabs
@@ -113,6 +127,10 @@
       __lang: 'en',
       __title: 'OpenChat - Free & Open-Source AI Suite',
 
+      // 首页顶部下载（按钮文本，使用 data-key 或兜底）
+      download_windows: 'Download for Windows',
+      download_mac_m: 'Download for Mac (M Chip)',
+
       // Top nav
       '.nav-logo .logo-text': 'OpenChat',
       '.nav-menu .nav-link:nth-child(1)': 'Docs',
@@ -120,7 +138,7 @@
       '.nav-menu a.nav-link[href="#faq"]': 'FAQ',
       '.download-dropdown .download-btn': 'Download',
 
-      // Download menu items
+      // 旧的下载菜单（右侧“下载客户端”里的三项）
       '.download-menu a:nth-child(1) span': 'Windows',
       '.download-menu a:nth-child(2) span': 'Mac (Apple Silicon)',
       '.download-menu a:nth-child(3) span': 'Mac (Intel)',
@@ -129,8 +147,6 @@
       '.hero-title h1': 'OpenChat',
       '.hero-description':
         'Free & open-source AI suite focused on data privacy, powerful document workflows, and smart assistants.\nNo sign-up required—start your LLM journey now!',
-      '.download-buttons a:nth-child(1) span': 'Download for Windows',
-      '.download-buttons a:nth-child(2) span': 'Download for Mac (Apple Silicon)',
       '.download-buttons a:nth-child(3) span': 'Download for Mac (Intel)',
 
       // Tabs
@@ -168,7 +184,6 @@
       '.opensource-grid .grid-section:nth-child(1) a:nth-child(3) span': 'Mac (Intel)',
       '.opensource-grid .grid-section:nth-child(2) a:nth-child(1) span': 'GitHub',
       '.opensource-grid .grid-section:nth-child(2) a:nth-child(2) span': 'Gitee',
-      // ✅ 按你的要求，将“小红书/Xiaohongshu”翻译为 “Red Book”
       '.opensource-grid .grid-section:nth-child(2) a:nth-child(3) span': 'Red Book',
 
       // FAQ
@@ -204,14 +219,31 @@
   function applyLang(lang) {
     const dict = MAP[lang] || MAP.zh;
 
-    // 文档级属性
+    // 文档级
     document.documentElement.setAttribute('lang', dict.__lang);
     document.title = dict.__title;
 
-    // 批量替换文本
-    Object.entries(dict).forEach(([sel, val]) => {
-      if (sel.startsWith('__')) return;
-      setSmartText(sel, val);
+    // 遍历键：选择器 or data-key
+    Object.entries(dict).forEach(([key, val]) => {
+      if (key.startsWith('__')) return;
+
+      if (key.startsWith('.') || key.startsWith('#')) {
+        // 选择器键
+        setBySelector(key, val);
+      } else {
+        // 数据键（优先 data-key 渲染）
+        const hit = setByDataKey(key, val);
+        if (!hit) {
+          // —— 兜底：适配你现在的 DOM 结构（无需改 HTML）——
+          // 顶部两个下拉按钮文本：.download-button-group 内第 1、2 个 <span>
+          if (key === 'download_windows' || key === 'download_mac_m') {
+            const spans = document.querySelectorAll('.download-button-group .download-btn-platform span');
+            // 0 -> Windows, 1 -> Mac M 芯片
+            if (spans[0] && key === 'download_windows') applyTextToEl(spans[0], dict.download_windows);
+            if (spans[1] && key === 'download_mac_m') applyTextToEl(spans[1], dict.download_mac_m);
+          }
+        }
+      }
     });
 
     // 滑块按钮状态（#lang-toggle 是一个 div）
@@ -222,11 +254,11 @@
     }
   }
 
-  // 初始化：从存储读取语言
+  // 初始化
   const current = localStorage.getItem(STORAGE_KEY) || 'zh';
   applyLang(current);
 
-  // 绑定切换事件
+  // 切换事件
   const toggle = $('#lang-toggle');
   if (toggle) {
     toggle.addEventListener('click', function () {
