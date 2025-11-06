@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  visitor_counter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: visitor_counter
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./visitor_count.json:/app/visitor_count.json
+    restart: unless-stopped
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8081
+
