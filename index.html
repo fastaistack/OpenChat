@@ -14,23 +14,25 @@
     <!-- 固定导航栏 -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
+            <div class="nav-logo" id="nav-logo" style="cursor:pointer;">
                 <img src="images/icons/robot-icon.svg" alt="OpenChat" class="logo-icon">
                 <span class="logo-text">OpenChat</span>
             </div>
             <div class="nav-menu">
-                <button type="button" class="nav-link" onclick="window.open('https://github.com/fastaistack/OpenChat/blob/main/README.md', '_blank'); return false;">文档</button>
+                <!-- 改为站内切换：data-target="docs" -->
+                <button type="button" class="nav-link" data-target="docs">文档</button>
+
                 <button type="button" class="nav-link community-btn" onclick="document.getElementById('qr-modal').style.display='flex'; return false;">社群</button>
                 <a href="#faq" class="nav-link">FAQ</a>
                 <button type="button" class="nav-link github-link" onclick="window.open('https://github.com/fastaistack/OpenChat', '_blank'); return false;">
                     <img src="images/icons/github-icon.svg" alt="GitHub" class="nav-icon">
                 </button>
-                <div id="lang-toggle" class="lang-toggle nav-link" aria-label="Switch language">
-                <div class="lang-track">
-                    <div class="lang-slider"></div>
-                    <span class="lang-option zh">中</span>
-                    <span class="lang-option en">EN</span>
-                </div>
+                <div id="lang-toggle" class="lang-toggle" aria-label="Switch language">
+                  <div class="lang-track">
+                      <div class="lang-slider"></div>
+                      <span class="lang-option zh">中</span>
+                      <span class="lang-option en">EN</span>
+                  </div>
                 </div>
                 <div class="download-dropdown">
                     <button class="download-btn" onclick="event.preventDefault()">下载客户端</button>
@@ -71,277 +73,286 @@
         </div>
     </nav>
 
-    <!-- 页面1: 首页 -->
-    <section id="home" class="page-section home-page">
-        <div class="hero-section">
-            <div class="hero-content">
-                <div class="hero-title">
-                    <img src="images/icons/robot-icon.svg" alt="OpenChat" class="title-icon">
-                    <h1>OpenChat</h1>
-                </div>
-                <p class="hero-description">
-                    开源免费的AI解决方案,保护您的数据安全,提供强大的文档处理和智能助手功能<br>
-                    无需注册!即可开启您的大模型体验!!
-                </p>
-                <div class="download-buttons">
+    <!-- ✅ 把“非文档”的页面统一包在 #main-sections -->
+    <div id="main-sections">
+      <!-- 页面1: 首页 -->
+      <section id="home" class="page-section home-page">
+          <div class="hero-section">
+              <div class="hero-content">
+                  <div class="hero-title">
+                      <img src="images/icons/robot-icon.svg" alt="OpenChat" class="title-icon">
+                      <h1>OpenChat</h1>
+                  </div>
+                  <p class="hero-description">
+                      开源免费的AI解决方案,保护您的数据安全,提供强大的文档处理和智能助手功能<br>
+                      无需注册!即可开启您的大模型体验!!
+                  </p>
+                  <div class="download-buttons">
+                      <div class="download-button-group">
+                          <div class="download-btn-platform">
+                              <img src="images/icons/windows-icon.svg" alt="Windows">
+                              <span data-key="download_windows">Windows 下载</span>
+                          </div>
+                          <div class="dropdown-menu">
+                              <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe">OpenChat V1.0.4</a>
+                              <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_win.exe">OpenChat DS-OCR 试用版</a>
+                          </div>
+                      </div>
 
-                    <div class="download-button-group">
-                        <div class="download-btn-platform">
-                            <img src="images/icons/windows-icon.svg" alt="Windows">
-                            <span data-key="download_windows">Windows 下载</span>
-                        </div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe">OpenChat V1.0.4</a>
-                            <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_win.exe">OpenChat DS-OCR 试用版</a>
-                        </div>
+                      <div class="download-button-group">
+                          <div class="download-btn-platform">
+                              <img src="images/icons/mac-icon.svg" alt="Mac M1">
+                              <span data-key="download_mac_m">Mac M芯片 下载</span>
+                          </div>
+                          <div class="dropdown-menu">
+                              <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg">OpenChat V1.0.4</a>
+                              <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_OCR.zip">OpenChat DS-OCR 试用版</a>
+                          </div>
+                      </div>
+
+                      <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg" class="download-btn-platform" target="_blank">
+                          <img src="images/icons/mac-icon.svg" alt="Mac Intel">
+                          <span>Mac Intel 下载</span>
+                      </a>
+                  </div>
+              </div>
+
+              <div class="product-showcase">
+                  <div class="laptop-mockup">
+                      <img src="images/mockups/laptop-interface.svg" alt="OpenChat界面展示" class="laptop-image">
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- 页面2: 多元兼容 -->
+      <section id="compatibility" class="page-section compatibility-page">
+          <div class="compatibility-container">
+              <div class="feature-nav">
+                  <div class="feature-nav-item active" data-tab="compatibility" style="gap: 10px !important;">
+                      <img src="images/icons/compatibility-icon.svg" alt="多元兼容" class="feature-icon">
+                      <span>多元兼容</span>
+                  </div>
+                  <div class="feature-nav-item" data-tab="security" style="gap: 10px !important;">
+                      <img src="images/icons/security-icon.svg" alt="安全部署" class="feature-icon">
+                      <span>安全部署</span>
+                  </div>
+                  <div class="feature-nav-item" data-tab="plugins" style="gap: 10px !important;">
+                      <img src="images/icons/plugin-icon.svg" alt="实用插件" class="feature-icon">
+                      <span>实用插件</span>
+                  </div>
+                  <div class="feature-nav-item" data-tab="models" style="gap: 10px !important;">
+                      <img src="images/icons/model-icon.svg" alt="模型应用" class="feature-icon">
+                      <span>模型应用</span>
+                  </div>
+              </div>
+
+              <div class="tab-content active" id="compatibility-content">
+                  <div class="compatibility-content">
+                    <div class="content-title" style="gap: 10px !important;">
+                        <img src="images/icons/hexagon-icon.svg" alt="兼容" class="title-icon">
+                        <h1>OpenChat兼容主流云端大模型</h1>
                     </div>
-
-                    <div class="download-button-group">
-                        <div class="download-btn-platform">
-                            <img src="images/icons/mac-icon.svg" alt="Mac M1">
-                            <span data-key="download_mac_m">Mac M芯片 下载</span>
-                        </div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg">OpenChat V1.0.4</a>
-                            <a class="dropdown-item" target="_blank" href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_OCR.zip">OpenChat DS-OCR 试用版</a>
-                        </div>
-                    </div>
-                    <!--                    <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe" class="download-btn-platform" target="_blank">-->
-                    <!--                        <img src="images/icons/windows-icon.svg" alt="Windows">-->
-                    <!--                        <span>Windows 下载</span>-->
-                    <!--                    </a>-->
-                    <!--                    <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg" class="download-btn-platform" target="_blank">-->
-                    <!--                        <img src="images/icons/mac-icon.svg" alt="Mac M1">-->
-                    <!--                        <span>Mac M1 下载</span>-->
-                    <!--                    </a>-->
-                    <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg" class="download-btn-platform" target="_blank">
-                        <img src="images/icons/mac-icon.svg" alt="Mac Intel">
-                        <span>Mac Intel 下载</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- 产品展示区域 -->
-            <div class="product-showcase">
-                <div class="laptop-mockup">
-                    <img src="images/mockups/laptop-interface.svg" alt="OpenChat界面展示" class="laptop-image">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 页面2: 多元兼容 -->
-    <section id="compatibility" class="page-section compatibility-page">
-        <div class="compatibility-container">
-            <!-- 功能导航 -->
-            <div class="feature-nav">
-                <div class="feature-nav-item active" data-tab="compatibility" style="gap: 10px !important;">
-                    <img src="images/icons/compatibility-icon.svg" alt="多元兼容" class="feature-icon">
-                    <span>多元兼容</span>
-                </div>
-                <div class="feature-nav-item" data-tab="security" style="gap: 10px !important;">
-                    <img src="images/icons/security-icon.svg" alt="安全部署" class="feature-icon">
-                    <span>安全部署</span>
-                </div>
-                <div class="feature-nav-item" data-tab="plugins" style="gap: 10px !important;">
-                    <img src="images/icons/plugin-icon.svg" alt="实用插件" class="feature-icon">
-                    <span>实用插件</span>
-                </div>
-                <div class="feature-nav-item" data-tab="models" style="gap: 10px !important;">
-                    <img src="images/icons/model-icon.svg" alt="模型应用" class="feature-icon">
-                    <span>模型应用</span>
-                </div>
-            </div>
-
-            <!-- 多元兼容内容 -->
-            <div class="tab-content active" id="compatibility-content">
-                <div class="compatibility-content">
-                <div class="content-title" style="gap: 10px !important;">
-                    <img src="images/icons/hexagon-icon.svg" alt="兼容" class="title-icon">
-                    <h1>OpenChat兼容主流云端大模型</h1>
-                </div>
                     <p class="content-description">
                         无论是 OpenAI 的强大语言理解能力,还是 Deepseek 的高效推理性能,亦或是硅基流动的创新技术,都能无缝接入;无需在不同平台间切换便能享体验所有模型服务
                     </p>
-                </div>
-                <div class="product-showcase">
-                    <div class="laptop-mockup">
-                        <img src="images/mockups/dyjr.svg" alt="多元兼容界面展示" class="laptop-image">
-                    </div>
-                </div>
-            </div>
+                  </div>
+                  <div class="product-showcase">
+                      <div class="laptop-mockup">
+                          <img src="images/mockups/dyjr.svg" alt="多元兼容界面展示" class="laptop-image">
+                      </div>
+                  </div>
+              </div>
 
-            <!-- 安全部署内容 -->
-            <div class="tab-content" id="security-content">
-                <div class="compatibility-content">
-                    <div class="content-title" style="gap: 10px !important;">
-                        <img src="images/icons/security-icon.svg" alt="安全" class="title-icon">
-                        <h1>OpenChat安全部署解决方案</h1>
-                    </div>
-                    <p class="content-description">
-                        采用企业级安全架构设计,支持本地化部署和私有云部署;数据全程加密传输,确保用户隐私安全;提供完整的权限管理和审计日志,满足企业合规要求
-                    </p>
-                </div>
-                <div class="product-showcase">
-                    <div class="laptop-mockup">
-                        <img src="images/mockups/aqbs.svg" alt="安全部署界面展示" class="laptop-image">
-                    </div>
-                </div>
-            </div>
+              <div class="tab-content" id="security-content">
+                  <div class="compatibility-content">
+                      <div class="content-title" style="gap: 10px !important;">
+                          <img src="images/icons/security-icon.svg" alt="安全" class="title-icon">
+                          <h1>OpenChat安全部署解决方案</h1>
+                      </div>
+                      <p class="content-description">
+                          采用企业级安全架构设计,支持本地化部署和私有云部署;数据全程加密传输,确保用户隐私安全;提供完整的权限管理和审计日志,满足企业合规要求
+                      </p>
+                  </div>
+                  <div class="product-showcase">
+                      <div class="laptop-mockup">
+                          <img src="images/mockups/aqbs.svg" alt="安全部署界面展示" class="laptop-image">
+                      </div>
+                  </div>
+              </div>
 
-            <!-- 实用插件内容 -->
-            <div class="tab-content" id="plugins-content">
-                <div class="compatibility-content">
-                    <div class="content-title" style="gap: 10px !important;">
-                        <img src="images/icons/plugin-icon.svg" alt="插件" class="title-icon">
-                        <h1>OpenChat实用插件生态</h1>
-                    </div>
-                    <p class="content-description">
-                        丰富的插件生态支持,涵盖文档处理、代码生成、数据分析等多个领域;支持自定义插件开发,满足个性化需求;插件市场提供海量优质插件,一键安装即可使用
-                    </p>
-                </div>
-                <div class="product-showcase">
-                    <div class="laptop-mockup">
-                        <img src="images/mockups/sycj.svg" alt="实用插件界面展示" class="laptop-image">
-                    </div>
-                </div>
-            </div>
+              <div class="tab-content" id="plugins-content">
+                  <div class="compatibility-content">
+                      <div class="content-title" style="gap: 10px !important;">
+                          <img src="images/icons/plugin-icon.svg" alt="插件" class="title-icon">
+                          <h1>OpenChat实用插件生态</h1>
+                      </div>
+                      <p class="content-description">
+                          丰富的插件生态支持,涵盖文档处理、代码生成、数据分析等多个领域;支持自定义插件开发,满足个性化需求;插件市场提供海量优质插件,一键安装即可使用
+                      </p>
+                  </div>
+                  <div class="product-showcase">
+                      <div class="laptop-mockup">
+                          <img src="images/mockups/sycj.svg" alt="实用插件界面展示" class="laptop-image">
+                      </div>
+                  </div>
+              </div>
 
-            <!-- 模型应用内容 -->
-            <div class="tab-content" id="models-content">
-                <div class="compatibility-content">
-                    <div class="content-title" style="gap: 10px !important;">
-                        <img src="images/icons/model-icon.svg" alt="模型" class="title-icon">
-                        <h1>OpenChat智能模型应用</h1>
-                    </div>
-                    <p class="content-description">
-                        集成多种先进AI模型,支持文本生成、图像识别、语音处理等智能应用;模型自动优化和调参,确保最佳性能表现;支持模型微调和定制训练,满足专业应用需求
-                    </p>
-                </div>
-                <div class="product-showcase">
-                    <div class="laptop-mockup">
-                        <img src="images/mockups/mxyy.svg" alt="模型应用界面展示" class="laptop-image">
-                    </div>
-                </div>
-            </div>
+              <div class="tab-content" id="models-content">
+                  <div class="compatibility-content">
+                      <div class="content-title" style="gap: 10px !important;">
+                          <img src="images/icons/model-icon.svg" alt="模型" class="title-icon">
+                          <h1>OpenChat智能模型应用</h1>
+                      </div>
+                      <p class="content-description">
+                          集成多种先进AI模型,支持文本生成、图像识别、语音处理等智能应用;模型自动优化和调参,确保最佳性能表现;支持模型微调和定制训练,满足专业应用需求
+                      </p>
+                  </div>
+                  <div class="product-showcase">
+                      <div class="laptop-mockup">
+                          <img src="images/mockups/mxyy.svg" alt="模型应用界面展示" class="laptop-image">
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- 页面3: 免费开源 -->
+      <section id="opensource" class="page-section opensource-page">
+          <div class="opensource-container">
+              <div class="opensource-content">
+                  <div class="opensource-title">
+                      <img src="images/icons/cloud-icon.svg" alt="开源" class="title-icon">
+                      <h1>免费开源</h1>
+                  </div>
+                  <p class="opensource-description">
+                      OpenChat面相社会开源开放,您不仅可以免费使用本软件,也能在开源网站上看到我们的开发进度,若您有任何疑问和建议,欢迎通过社群与我们联系!
+                  </p>
+              </div>
+
+              <div class="opensource-grid">
+                  <div class="grid-section">
+                      <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe" class="grid-item" target="_blank">
+                          <img src="images/icons/windows-icon.svg" alt="Windows" class="grid-icon">
+                          <span>Windows</span>
+                      </a>
+                      <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg" class="grid-item" target="_blank">
+                          <img src="images/icons/mac-icon.svg" alt="Mac M1" class="grid-icon">
+                          <span>Mac M1</span>
+                      </a>
+                      <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg" class="grid-item" target="_blank">
+                          <img src="images/icons/mac-icon.svg" alt="Mac Intel" class="grid-icon">
+                          <span>Mac Intel</span>
+                      </a>
+                  </div>
+                  <div class="grid-section">
+                      <a href="https://github.com/fastaistack/OpenChat" class="grid-item" target="_blank">
+                          <img src="images/icons/github-icon.svg" alt="GitHub" class="grid-icon">
+                          <span>GitHub</span>
+                      </a>
+                      <a href="https://gitee.com/fastaistack/openchat" class="grid-item" target="_blank">
+                          <img src="images/icons/gitee-icon.svg" alt="Gitee" class="grid-icon">
+                          <span>Gitee</span>
+                      </a>
+                      <a href="https://xhslink.com/m/4lPKv7h0rkW" class="grid-item" target="_blank">
+                          <img src="images/icons/xiaohongshu-icon.svg" alt="小红书" class="grid-icon">
+                          <span>小红书</span>
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- 页面4: FAQ -->
+      <section id="faq" class="page-section faq-page">
+          <div class="faq-container">
+              <div class="faq-title">
+                  <img src="images/icons/question-icon.svg" alt="常见问题" class="title-icon">
+                  <h1>常见问题</h1>
+              </div>
+
+              <div class="faq-list">
+                  <div class="faq-item active">
+                      <div class="faq-question">
+                          <span>OpenChat会收集我的数据吗？</span>
+                          <img src="images/icons/chevron-down-icon.svg" alt="展开" class="faq-icon">
+                      </div>
+                      <div class="faq-answer">
+                          <p>我们仅会收集下载次数用于统计，您使用中形成的任何数据我们不会进行收集。</p>
+                      </div>
+                  </div>
+
+                  <div class="faq-item">
+                      <div class="faq-question">
+                          <span>我的电脑需要什么配置才能使用OpenChat？</span>
+                          <img src="images/icons/chevron-down-icon.svg" alt="折叠" class="faq-icon">
+                      </div>
+                      <div class="faq-answer">
+                          <p>Windows版OpenChat适用于安装了64位Windows10与11系统的电脑并拥有8GB以上内存空间。</p>
+                          <p>Mac版OpenChat适用于任何系统版本的MAC（M芯片），以及MACOS在12.5以上的MAC（Intel芯片）</p>
+                      </div>
+                  </div>
+
+                  <div class="faq-item">
+                      <div class="faq-question">
+                          <span>如何反馈使用中的问题？</span>
+                          <img src="images/icons/chevron-down-icon.svg" alt="折叠" class="faq-icon">
+                      </div>
+                      <div class="faq-answer">
+                          <p>您可以通过在开源社区留言、私信我们的小红书账号，或通过扫描二维码进入我们的粉丝群与我们取得联系。</p>
+                      </div>
+                  </div>
+
+                  <div class="faq-item">
+                      <div class="faq-question">
+                          <span>OpenChat如何收取费用？</span>
+                          <img src="images/icons/chevron-down-icon.svg" alt="折叠" class="faq-icon">
+                      </div>
+                      <div class="faq-answer">
+                          <p>OpenChat本身无需注册且不收取任何费用，但部分服务通过第三方API提供（例如使用云端模型或第三方搜索引擎），使用时您可能需要向API提供者支付费用。</p>
+                      </div>
+                  </div>
+
+                  <div class="faq-item">
+                      <div class="faq-question">
+                          <span>OpenChat适用于哪些场景？</span>
+                          <img src="images/icons/chevron-down-icon.svg" alt="折叠" class="faq-icon">
+                      </div>
+                      <div class="faq-answer">
+                          <p>OpenChat支持使用接入不同大模型解决各类问题，支持在本地部署0.5B-7B的小参数模型在私密的场景完成简单任务，也可以接入云端的万亿参数模型解决复杂问款，或使用智能助手来生成特定风格的内容，亦或者使用AI翻译功能翻译您的文件。</p>
+                      </div>
+                  </div>
+              </div>
+
+              <footer class="copyright">
+                  <p>© 2025 OpenChat - 开源私有AI助手</p>
+              </footer>
+          </div>
+      </section>
+    </div><!-- /#main-sections -->
+
+    <section id="docs" class="docs-layout" style="display:none;">
+    <div class="docs-layout">
+        <!-- 左侧导航栏 -->
+        <aside class="docs-sidebar">
+        <button class="back-home-btn" data-key="back_home" onclick="window.location.href='index.html'">返回首页</button>
+        <h2 data-key="docs_nav_title">文档导航</h2>
+        <ul class="docs-nav">
+            <li><a href="#" class="docs-link active" data-file="docs/readme.md" data-key="doc_intro">项目简介</a></li>
+            <li><a href="#" class="docs-link" data-file="docs/使用指南.md" data-key="user_guide">使用手册</a></li>
+            <li><a href="#" class="docs-link" data-file="docs/MAC运行.md" data-key="mac_fix">MacOS拦截修复指南</a></li>
+        </ul>
+        </aside>
+
+
+
+        <!-- 右侧内容 -->
+        <div id="markdown-viewer" class="docs-container">
+        <div v-html="renderedContent" class="markdown-content">加载中...</div>
         </div>
+    </div>
     </section>
 
-    <!-- 页面3: 免费开源 -->
-    <section id="opensource" class="page-section opensource-page">
-        <div class="opensource-container">
-            <div class="opensource-content">
-                <div class="opensource-title">
-                    <img src="images/icons/cloud-icon.svg" alt="开源" class="title-icon">
-                    <h1>免费开源</h1>
-                </div>
-                <p class="opensource-description">
-                    OpenChat面相社会开源开放,您不仅可以免费使用本软件,也能在开源网站上看到我们的开发进度,若您有任何疑问和建议,欢迎通过社群与我们联系!
-                </p>
-            </div>
-
-            <div class="opensource-grid">
-                <div class="grid-section">
-                    <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe" class="grid-item" target="_blank">
-                        <img src="images/icons/windows-icon.svg" alt="Windows" class="grid-icon">
-                        <span>Windows</span>
-                    </a>
-                    <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg" class="grid-item" target="_blank">
-                        <img src="images/icons/mac-icon.svg" alt="Mac M1" class="grid-icon">
-                        <span>Mac M1</span>
-                    </a>
-                    <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg" class="grid-item" target="_blank">
-                        <img src="images/icons/mac-icon.svg" alt="Mac Intel" class="grid-icon">
-                        <span>Mac Intel</span>
-                    </a>
-                </div>
-                <div class="grid-section">
-                    <a href="https://github.com/fastaistack/OpenChat" class="grid-item" target="_blank">
-                        <img src="images/icons/github-icon.svg" alt="GitHub" class="grid-icon">
-                        <span>GitHub</span>
-                    </a>
-                    <a href="https://gitee.com/fastaistack/openchat" class="grid-item" target="_blank">
-                        <img src="images/icons/gitee-icon.svg" alt="Gitee" class="grid-icon">
-                        <span>Gitee</span>
-                    </a>
-                    <a href="https://xhslink.com/m/4lPKv7h0rkW" class="grid-item" target="_blank">
-                        <img src="images/icons/xiaohongshu-icon.svg" alt="小红书" class="grid-icon">
-                        <span>小红书</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 页面4: FAQ -->
-    <section id="faq" class="page-section faq-page">
-        <div class="faq-container">
-            <!-- 标题 -->
-            <div class="faq-title">
-                <img src="images/icons/question-icon.svg" alt="常见问题" class="title-icon">
-                <h1>常见问题</h1>
-            </div>
-
-            <!-- FAQ列表 -->
-            <div class="faq-list">
-                <div class="faq-item active">
-                    <div class="faq-question">
-                        <span>OpenChat会收集我的数据吗？</span>
-                        <img src="images/icons/chevron-down-icon.svg" alt="展开" class="faq-icon">
-                    </div>
-                    <div class="faq-answer">
-                        <p>我们仅会收集下载次数用于统计，您使用中形成的任何数据我们不会进行收集。</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>我的电脑需要什么配置才能使用OpenChat？</span>
-                        <img src="images/icons/chevron-down-icon.svg" alt="折叠" class="faq-icon">
-                    </div>
-                    <div class="faq-answer">
-                        <p>Windows版OpenChat适用于安装了64位Windows10与11系统的电脑并拥有8GB以上内存空间。</p>
-                        <p>Mac版OpenChat适用于任何系统版本的MAC（M芯片），以及MACOS在12.5以上的MAC（Intel芯片）</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>如何反馈使用中的问题？</span>
-                        <img src="images/icons/chevron-down-icon.svg" alt="折叠" class="faq-icon">
-                    </div>
-                    <div class="faq-answer">
-                        <p>您可以通过在开源社区留言、私信我们的小红书账号，或通过扫描二维码进入我们的粉丝群与我们取得联系。</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>OpenChat如何收取费用？</span>
-                        <img src="images/icons/chevron-down-icon.svg" alt="折叠" class="faq-icon">
-                    </div>
-                    <div class="faq-answer">
-                        <p>OpenChat本身无需注册且不收取任何费用，但部分服务通过第三方API提供（例如使用云端模型或第三方搜索引擎），使用时您可能需要向API提供者支付费用。</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>OpenChat适用于哪些场景？</span>
-                        <img src="images/icons/chevron-down-icon.svg" alt="折叠" class="faq-icon">
-                    </div>
-                    <div class="faq-answer">
-                        <p>OpenChat支持使用接入不同大模型解决各类问题，支持在本地部署0.5B-7B的小参数模型在私密的场景完成简单任务，也可以接入云端的万亿参数模型解决复杂问款，或使用智能助手来生成特定风格的内容，亦或者使用AI翻译功能翻译您的文件。</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 版权信息 -->
-            <footer class="copyright">
-                <p>© 2025 OpenChat - 开源私有AI助手</p>
-            </footer>
-        </div>
-    </section>
 
     <!-- 二维码模态框 -->
     <div id="qr-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 2000;">
@@ -356,10 +367,145 @@
         </div>
     </div>
 
-    <!-- 新增：确保先加载 i18n，再加载其它脚本（仅此处为调整） -->
+    <!-- 脚本顺序保持一致 -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/faq.js"></script>
-</body>
+    <!-- ✅ Vue + Marked -->
+    <script src="https://unpkg.com/vue@3.4.0/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+    <script>
+    /* ===================== 🔹 marked 初始化配置 ===================== */
+    marked.setOptions({
+    gfm: true,
+    breaks: true,
+    smartLists: true
+    });
+
+    /* 自动生成标题 id（支持中文、避免重复） */
+    const headingIdCounter = new Map();
+    function slugify(text) {
+    const base = String(text)
+        .toLowerCase()
+        .replace(/<\/?[^>]+(>|$)/g, '')          // 去掉标签
+        .replace(/[^\w\u4e00-\u9fa5\s-]/g, '')   // 只保留中英文和数字
+        .trim()
+        .replace(/\s+/g, '-')                    // 空格转-
+        .replace(/-+/g, '-');
+    const n = headingIdCounter.get(base) || 0;
+    headingIdCounter.set(base, n + 1);
+    return n ? `${base}-${n}` : base;
+    }
+
+    /* 给解析出的 HTML 自动补标题 id */
+    function addHeadingIds(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    doc.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(h => {
+        if (!h.id || !h.id.trim()) h.id = slugify(h.textContent || '');
+    });
+    return doc.body.innerHTML;
+    }
+
+    /* ===================== 🔹 Vue 初始化 ===================== */
+    const { createApp, ref, onMounted } = Vue;
+    const app = createApp({
+    setup() {
+        const renderedContent = ref('加载中...');
+        const currentFile = ref('docs/readme.md');
+
+        // ✅ 根据当前语言生成对应的 md 文件路径
+        function getLangFilePath(baseFile) {
+        const lang = localStorage.getItem('openchat_lang') || 'zh';
+        if (lang === 'en') {
+            const dot = baseFile.lastIndexOf('.');
+            if (dot === -1) return baseFile + '_en';
+            return baseFile.slice(0, dot) + '_en' + baseFile.slice(dot);
+        }
+        return baseFile;
+        }
+
+        async function loadMarkdown(file) {
+        try {
+            const path = getLangFilePath(file); // ✅ 语言适配路径
+            const res = await fetch(path, { cache: 'no-cache' });
+            if (!res.ok) throw new Error('加载失败');
+            const md = await res.text();
+            const html = marked.parse(md);
+            renderedContent.value = addHeadingIds(html);
+
+            // 左侧导航高亮
+            document.querySelectorAll('.docs-link').forEach(el => {
+            el.classList.toggle('active', el.dataset.file === file);
+            });
+
+            // 如果地址栏带锚点，加载后跳转
+            if (location.hash) {
+            const id = decodeURIComponent(location.hash.slice(1));
+            requestAnimationFrame(() => scrollToAnchorInContainer(id));
+            }
+
+            currentFile.value = file;
+        } catch (err) {
+            console.error('加载 markdown 失败:', err);
+            renderedContent.value = `<p style="color:red;">❌ 无法加载 ${file}</p>`;
+        }
+        }
+
+        // ✅ 暴露给全局（供点击导航和语言切换调用）
+        window.loadMarkdown = loadMarkdown;
+
+        // ✅ 提供给 i18n.js 调用的语言更新函数
+        window.updateDocsForLang = function(lang) {
+        loadMarkdown(currentFile.value);
+        };
+
+        onMounted(() => loadMarkdown(currentFile.value));
+        return { renderedContent, loadMarkdown };
+    }
+    }).mount('#markdown-viewer');
+
+    /* ===================== 🔹 侧边栏点击切换 ===================== */
+    document.addEventListener('click', (e) => {
+    const a = e.target.closest('.docs-link');
+    if (a) {
+        e.preventDefault();
+        const file = a.dataset.file;
+        if (file) window.loadMarkdown(file);
+    }
+    });
+
+    /* ===================== 🔹 锚点滚动逻辑（右侧容器内滚动） ===================== */
+    const DOCS_SCROLL_CONTAINER = document.querySelector('#markdown-viewer');
+
+    /* 在文档容器内滚动到指定 id */
+    function scrollToAnchorInContainer(id) {
+    if (!id || !DOCS_SCROLL_CONTAINER) return;
+    const target = DOCS_SCROLL_CONTAINER.querySelector(`#${CSS.escape(id)}`);
+    if (!target) return;
+    const cRect = DOCS_SCROLL_CONTAINER.getBoundingClientRect();
+    const tRect = target.getBoundingClientRect();
+    const top = DOCS_SCROLL_CONTAINER.scrollTop + (tRect.top - cRect.top) - 12;
+    DOCS_SCROLL_CONTAINER.scrollTo({ top, behavior: 'smooth' });
+    }
+
+    /* 处理点击锚点链接 */
+    document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    // 只处理右侧文档区域的锚点
+    if (!DOCS_SCROLL_CONTAINER.contains(a)) return;
+
+    const id = decodeURIComponent(a.getAttribute('href').slice(1));
+    if (!id) return;
+    e.preventDefault();
+    scrollToAnchorInContainer(id);
+    history.replaceState(null, '', `#${id}`);
+    });
+    </script>
+
+
+
+</body>
 </html>

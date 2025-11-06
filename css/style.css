@@ -1220,3 +1220,458 @@ button.nav-link.community-btn {
 .lang-toggle.nav-link::after {
   content: none !important;
 }
+/* =========================================================
+   🟣 OpenChat 文档页完整样式（整合优化版）
+   ========================================================= */
+
+/* === 页面整体布局 === */
+.docs-layout {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(180deg, #1a1a3a 0%, #3a1a5a 100%) !important;
+  overflow: hidden;
+}
+
+/* === 左侧侧边栏 === */
+.docs-sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #19133a, #241352);
+  border-right: 1px solid rgba(255,255,255,0.1);
+  padding: 20px 16px;
+  color: #fff;
+  overflow-y: auto;
+  backdrop-filter: blur(8px);
+}
+
+.docs-sidebar h2 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #c4b5fd;
+}
+
+/* === 返回首页按钮 === */
+.docs-sidebar .back-home-btn {
+  display: block;
+  width: 85%;
+  margin: 5px auto 15px;
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+  color: #fff;
+  border: none;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.docs-sidebar .back-home-btn:hover {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  transform: scale(1.03);
+}
+
+/* === 文档导航 === */
+.docs-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.docs-link {
+  display: block;
+  color: #d1d5db;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  transition: all 0.2s;
+}
+.docs-link:hover {
+  background: rgba(139,92,246,0.2);
+  color: #c4b5fd;
+}
+.docs-link.active {
+  background: rgba(139,92,246,0.3);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* === 右侧主内容容器 === */
+.docs-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 40px 48px;
+  background: linear-gradient(180deg, #1a1438, #2a1658);
+  color: #e5e7eb;
+  scroll-behavior: smooth;
+}
+
+/* =========================================================
+   📖 Markdown 内容渲染区
+   ========================================================= */
+
+.docs-content,
+.markdown-content {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 30px;
+  color: #E6E8F0;
+  font-size: 15px;
+  line-height: 1.8;
+  word-break: break-word;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 标题层次与间距 */
+.docs-content h1, .markdown-content h1 { font-size: 1.875rem; margin: 1.2em 0 0.6em; color: #F5F7FB; }
+.docs-content h2, .markdown-content h2 { font-size: 1.5rem;   margin: 1.1em 0 0.6em; color: #F1F4FA; }
+.docs-content h3, .markdown-content h3 { font-size: 1.25rem;  margin: 1.0em 0 0.5em; color: #EDEFF7; }
+
+/* 段落与行距 */
+.docs-content p, .markdown-content p {
+  margin: 0.85rem 0 1rem;
+  line-height: 1.85;
+}
+
+/* 列表与缩进 */
+.docs-content ul,
+.docs-content ol,
+.markdown-content ul,
+.markdown-content ol {
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+.docs-content li, .markdown-content li {
+  margin: 0.35rem 0;
+  line-height: 1.8;
+}
+
+/* 引用块 */
+.docs-content blockquote,
+.markdown-content blockquote {
+  margin: 1.2rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 4px solid #a78bfa;
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  color: #D5D9E6;
+}
+
+/* 代码块 */
+.docs-content pre, .markdown-content pre {
+  background: rgba(0,0,0,0.45);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  margin: 1.1rem 0;
+  overflow-x: auto;
+}
+.docs-content code, .markdown-content code {
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px;
+  padding: 0.15rem 0.35rem;
+  font-family: "JetBrains Mono", monospace;
+  color: #ffb4b4;
+}
+
+/* 链接颜色优化 */
+.docs-content a, .markdown-content a {
+  color: #93c5fd;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.docs-content a:hover, .markdown-content a:hover {
+  color: #bfdbfe;
+  text-decoration-thickness: 2px;
+}
+
+/* 分割线 */
+.docs-content hr, .markdown-content hr {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.18);
+  margin: 1.5rem 0;
+}
+
+/* 表格 */
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+}
+.markdown-content th, .markdown-content td {
+  border: 1px solid #4b5563;
+  padding: 0.5em 1em;
+}
+.markdown-content th {
+  background: rgba(255,255,255,0.05);
+  color: #e5e7eb;
+}
+
+/* =========================================================
+   🌈 滚动条样式（文档页 + 首页）
+   ========================================================= */
+
+/* 文档页滚动条 */
+body.docs-mode .docs-container::-webkit-scrollbar {
+  width: 10px;
+}
+body.docs-mode .docs-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #a78bfa, #7c3aed);
+  border-radius: 8px;
+  border: 2px solid #1a1438;
+}
+body.docs-mode .docs-container::-webkit-scrollbar-track {
+  background: #1a1438;
+}
+
+/* 左侧导航栏滚动条 */
+body.docs-mode .docs-sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+body.docs-mode .docs-sidebar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7c3aed, #8b5cf6);
+  border-radius: 8px;
+}
+body.docs-mode .docs-sidebar::-webkit-scrollbar-track {
+  background: #19133a;
+}
+
+/* Firefox 兼容 */
+body.docs-mode .docs-container {
+  scrollbar-width: thin;
+  scrollbar-color: #8b5cf6 #1a1438;
+}
+
+/* 全局滚动条（首页） */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 10px;
+}
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #a78bfa, #7c3aed);
+  border-radius: 10px;
+  border: 2px solid #1a1438;
+}
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #1a1438;
+}
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #c4b5fd, #8b5cf6);
+}
+
+/* =========================================================
+   🧭 文档模式布局逻辑
+   ========================================================= */
+
+/* 首页可滚动 */
+html, body {
+  height: auto;
+  overflow: auto;
+}
+
+/* 文档模式禁用主滚动条 */
+body.docs-mode {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* 文档页容器 */
+body.docs-mode .docs-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 返回顶部按钮层级 */
+.scroll-to-top {
+  z-index: 3000 !important;
+}
+
+/* =========================================================
+   📱 响应式布局
+   ========================================================= */
+@media (max-width: 768px) {
+  .docs-layout { flex-direction: column; }
+  .docs-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+}
+
+
+/* ✅ 强制文档模式布局接管 */
+body.docs-mode {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+body.docs-mode .docs-layout {
+  display: flex !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+body.docs-mode .docs-container {
+  overflow-y: auto !important;
+}
+
+body.docs-mode .docs-sidebar {
+  overflow-y: auto !important;
+}
+
+:root {
+  --navbar-h: 36px; /* 按你的导航实际高度改，56/64/72 */
+}
+
+/* 文档模式下整体往下错开导航的高度，并同步修正高度计算 */
+body.docs-mode .docs-layout {
+  /* ⬅︎ 关键：让文档区整体下移，避免被导航遮挡 */
+  margin-top: var(--navbar-h);
+  height: calc(100vh - var(--navbar-h));
+  overflow: hidden;
+}
+
+/* 左侧栏与右侧内容都以“导航高度”作为可视高度 */
+body.docs-mode .docs-sidebar,
+body.docs-mode .docs-container {
+  height: calc(100vh - var(--navbar-h));
+  overflow-y: auto;
+}
+
+/* 让左侧“返回首页”按钮不要贴边顶住导航，留一点上内边距即可 */
+body.docs-mode .docs-sidebar {
+  padding-top: 12px; /* 你可以调成 16/20 视视觉情况 */
+}
+
+/* 右侧内容也可微调上内边距，让第一行不贴边 */
+body.docs-mode .docs-container {
+  padding-top: 12px; /* 可按需调小/去掉 */
+}
+
+/* 统一所有顶部导航项的布局（a 与 button 都适用） */
+.navbar .nav-menu .nav-link{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;      /* 和现有保持一致即可 */
+  line-height: 1;         /* 关键：统一基线，避免下划线位置不一致 */
+}
+
+/* 统一的“下划线”效果（hover 或 active 才出现） */
+.navbar .nav-menu .nav-link::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;           /* 下划线与文字间距，想更近改为 -6px/-4px */
+  height: 2px;
+  background: transparent;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s ease, background .2s ease;
+}
+
+/* 显示下划线 */
+.navbar .nav-menu .nav-link:hover::after,
+.navbar .nav-menu .nav-link.active::after{
+  background: #a78bfa;
+  transform: scaleX(1);
+}
+
+/* 图标按钮不需要下划线 */
+.navbar .nav-menu .github-link::after{
+  display: none;
+}
+
+
+/* === 仅修两个问题：文档字号 & 下划线作用域 === */
+
+/* 1) 让 button.nav-link 的字号与 a.nav-link 完全一致（修复“文档”变小） */
+.navbar .nav-menu button.nav-link {
+  font-size: 1.4rem;           /* 与 .nav-link 保持一致 */
+  font-weight: inherit;        /* 不改粗细，跟随现有样式 */
+  line-height: inherit;        /* 跟随现有行高，避免与其它项不齐 */
+}
+
+/* 2) 下划线效果只给“真正的文本导航项”，不影响语言开关/图标按钮 */
+.navbar .nav-menu a.nav-link,
+.navbar .nav-menu button.nav-link[data-target] {   /* 只匹配像“文档”这类有 data-target 的按钮 */
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 统一的下划线（hover/active 才出现） */
+.navbar .nav-menu a.nav-link::after,
+.navbar .nav-menu button.nav-link[data-target]::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -8px;                /* 下划线与文字间距，想更近可调成 -6px/-5px */
+  height: 2px;
+  background: transparent;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s ease, background .2s ease;
+}
+.navbar .nav-menu a.nav-link:hover::after,
+.navbar .nav-menu a.nav-link.active::after,
+.navbar .nav-menu button.nav-link[data-target]:hover::after,
+.navbar .nav-menu button.nav-link[data-target].active::after {
+  background: #a78bfa;
+  transform: scaleX(1);
+}
+
+/* ======= 文档侧边栏样式优化：更简洁大方 ======= */
+
+/* “文档导航”标题 */
+.docs-sidebar h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #c4b5fd;
+  letter-spacing: 0.3px;
+  margin: 20px 0 14px;
+}
+
+/* 导航项整体放大一点 */
+.docs-nav .docs-link {
+  display: block;
+  font-size: 1rem;
+  color: #d1d5db;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;        /* ✅ 间距变大 */
+  transition: all 0.2s ease;
+}
+
+/* hover 效果轻柔一点，不改背景色 */
+.docs-nav .docs-link:hover {
+  color: #c4b5fd;
+  background: rgba(139, 92, 246, 0.15);
+  transform: translateX(3px);
+}
+
+/* 选中项保持统一风格，不再整块变紫 */
+.docs-nav .docs-link.active {
+  background: rgba(139, 92, 246, 0.1);
+  color: #c4b5fd;
+  font-weight: 600;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 让 markdown 第一行标题顶格，不留白 */
+.markdown-content h1:first-child,
+.markdown-content h2:first-child,
+.markdown-content h3:first-child {
+  margin-top: 0 !important;
+}
+
+/* 同时去掉 markdown 容器默认上内边距 */
+.docs-container,
+.markdown-content {
+  padding-top: 5 !important;
+  margin-top: 5 !important;
+}
