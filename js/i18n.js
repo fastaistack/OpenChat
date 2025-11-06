@@ -120,7 +120,13 @@
       // 二维码弹窗
       '#qr-modal h3': '扫码加入社群',
       '#qr-modal p': '扫描二维码加入我们的社群\n获取最新资讯和技术支持',
-      '#qr-modal button': '关闭'
+      '#qr-modal button': '关闭',
+
+      back_home: '返回首页',
+      docs_nav_title: '文档导航',
+      doc_intro: '项目简介',
+      user_guide: '使用手册',
+      mac_fix: 'MacOS拦截修复指南',
     },
 
     en: {
@@ -212,7 +218,13 @@
       // QR modal
       '#qr-modal h3': 'Join the Community',
       '#qr-modal p': 'Scan the QR code to join\nGet the latest news and support',
-      '#qr-modal button': 'Close'
+      '#qr-modal button': 'Close',
+
+      back_home: 'Back to Home',
+      docs_nav_title: 'Documentation',
+      doc_intro: 'Project Overview',
+      user_guide: 'User Guide',
+      mac_fix: 'macOS Security & Fix Guide',
     }
   };
 
@@ -235,7 +247,7 @@
         const hit = setByDataKey(key, val);
         if (!hit) {
           // —— 兜底：适配你现在的 DOM 结构（无需改 HTML）——
-          // 顶部两个下拉按钮文本：.download-button-group 内第 1、2 个 <span>
+          // 顶部两个下载大按钮：.download-button-group 内第 1、2 个 <span>
           if (key === 'download_windows' || key === 'download_mac_m') {
             const spans = document.querySelectorAll('.download-button-group .download-btn-platform span');
             // 0 -> Windows, 1 -> Mac M 芯片
@@ -252,7 +264,14 @@
       if (lang === 'en') btn.classList.add('active');
       else btn.classList.remove('active');
     }
+
+    // ✅ 通知文档区：当前语言变了，重载当前 md
+    if (typeof window.updateDocsForLang === 'function') {
+      window.updateDocsForLang(lang);
+    }
   }
+
+
 
   // 初始化
   const current = localStorage.getItem(STORAGE_KEY) || 'zh';
