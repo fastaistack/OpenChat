@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.git/
+.gitignore
+README.md
+*.md
+启动说明.md
+

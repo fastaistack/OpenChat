@@ -6,9 +6,9 @@
     <title>OpenChat - 开源免费AI解决方案</title>
     <link rel="icon" type="image/svg+xml" href="images/icons/robot-icon.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="images/icons/robot-icon.svg">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/style.css?v=1.1">
+    <link rel="stylesheet" href="css/responsive.css?v=1.1">
+    <link rel="stylesheet" href="css/animations.css?v=1.1">
 </head>
 <body>
     <!-- 固定导航栏 -->
@@ -231,7 +231,7 @@
               </div>
 
               <div class="opensource-grid">
-                  <div class="grid-section">
+                  <!-- <div class="grid-section">
                       <a href="https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_win.exe" class="grid-item" target="_blank">
                           <img src="images/icons/windows-icon.svg" alt="Windows" class="grid-icon">
                           <span>Windows</span>
@@ -244,7 +244,7 @@
                           <img src="images/icons/mac-icon.svg" alt="Mac Intel" class="grid-icon">
                           <span>Mac Intel</span>
                       </a>
-                  </div>
+                  </div> -->
                   <div class="grid-section">
                       <a href="https://github.com/fastaistack/OpenChat" class="grid-item" target="_blank">
                           <img src="images/icons/github-icon.svg" alt="GitHub" class="grid-icon">
@@ -502,6 +502,31 @@
     e.preventDefault();
     scrollToAnchorInContainer(id);
     history.replaceState(null, '', `#${id}`);
+    });
+
+    // 访客计数器功能
+    async function updateVisitorCount() {
+        try {
+            // 使用FastAPI服务进行后台统计
+            const response = await fetch('http://47.245.62.127:8081/api/visitor', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            
+            // 后台统计，不显示在页面上
+            console.log('访客计数更新成功:', data.count);
+        } catch (error) {
+            // 静默处理错误，不影响页面正常显示
+            console.log('访客计数失败:', error);
+        }
+    }
+    
+    // 页面加载完成后更新访客计数
+    document.addEventListener('DOMContentLoaded', function() {
+        updateVisitorCount();
     });
     </script>
 

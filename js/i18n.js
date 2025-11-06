@@ -44,11 +44,11 @@
 
       // 首页顶部下载（按钮文本，使用 data-key 或兜底）
       download_windows: 'Windows 下载',
-      download_mac_m: 'Mac M芯片 下载',
+      download_mac_m: 'Mac M系列 下载',
 
       // 旧的下载菜单（右侧“下载客户端”里的三项）
       '.download-menu a:nth-child(1) span': 'Windows',
-      '.download-menu a:nth-child(2) span': 'Mac M1',
+      '.download-menu a:nth-child(2) span': 'Mac M系列',
       '.download-menu a:nth-child(3) span': 'Mac Intel',
 
       // 首页 hero
@@ -87,12 +87,9 @@
       '.opensource-title h1': '免费开源',
       '.opensource-description':
         'OpenChat面相社会开源开放,您不仅可以免费使用本软件,也能在开源网站上看到我们的开发进度,若您有任何疑问和建议,欢迎通过社群与我们联系!',
-      '.opensource-grid .grid-section:nth-child(1) a:nth-child(1) span': 'Windows',
-      '.opensource-grid .grid-section:nth-child(1) a:nth-child(2) span': 'Mac M1',
-      '.opensource-grid .grid-section:nth-child(1) a:nth-child(3) span': 'Mac Intel',
-      '.opensource-grid .grid-section:nth-child(2) a:nth-child(1) span': 'GitHub',
-      '.opensource-grid .grid-section:nth-child(2) a:nth-child(2) span': 'Gitee',
-      '.opensource-grid .grid-section:nth-child(2) a:nth-child(3) span': '小红书',
+      '.opensource-grid .grid-section a:nth-child(1) span': 'GitHub',
+      '.opensource-grid .grid-section a:nth-child(2) span': 'Gitee',
+      '.opensource-grid .grid-section a:nth-child(3) span': '小红书',
 
       // FAQ
       '#faq .faq-title h1': '常见问题',
@@ -135,7 +132,7 @@
 
       // 首页顶部下载（按钮文本，使用 data-key 或兜底）
       download_windows: 'Download for Windows',
-      download_mac_m: 'Download for Mac (M Chip)',
+      download_mac_m: 'Download for Mac  M series',
 
       // Top nav
       '.nav-logo .logo-text': 'OpenChat',
@@ -146,7 +143,7 @@
 
       // 旧的下载菜单（右侧“下载客户端”里的三项）
       '.download-menu a:nth-child(1) span': 'Windows',
-      '.download-menu a:nth-child(2) span': 'Mac (Apple Silicon)',
+      '.download-menu a:nth-child(2) span': 'Mac M series',
       '.download-menu a:nth-child(3) span': 'Mac (Intel)',
 
       // Hero
@@ -185,12 +182,9 @@
       '.opensource-title h1': 'Open Source & Free',
       '.opensource-description':
         'OpenChat is open to the community. Use it for free, track progress on our repos, and reach us via community channels for support.',
-      '.opensource-grid .grid-section:nth-child(1) a:nth-child(1) span': 'Windows',
-      '.opensource-grid .grid-section:nth-child(1) a:nth-child(2) span': 'Mac (Apple Silicon)',
-      '.opensource-grid .grid-section:nth-child(1) a:nth-child(3) span': 'Mac (Intel)',
-      '.opensource-grid .grid-section:nth-child(2) a:nth-child(1) span': 'GitHub',
-      '.opensource-grid .grid-section:nth-child(2) a:nth-child(2) span': 'Gitee',
-      '.opensource-grid .grid-section:nth-child(2) a:nth-child(3) span': 'Red Book',
+      '.opensource-grid .grid-section a:nth-child(1) span': 'GitHub',
+      '.opensource-grid .grid-section a:nth-child(2) span': 'Gitee',
+      '.opensource-grid .grid-section a:nth-child(3) span': 'Red Book',
 
       // FAQ
       '#faq .faq-title h1': 'FAQ',
