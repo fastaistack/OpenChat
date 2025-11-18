@@ -54,9 +54,10 @@ You can select the installation package suitable for your device in the link bel
 
 ### <img src="./data/images/apple.png" alt="Logo" width="28" height="28"> Download MacOS Installer
 
-- [OpenChat_Deepseek_OCR.zip](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_OCR.zip) (Apple Silicon Beta Version)
-- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg) (Apple Silicon)
-- [OpenChat_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg) (Intel chips)
+- [OpenChat_Deepseek_OCR.zip](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_OCR.zip) (Apple M Series Chips Beta Version)
+- [Openchat_DeepSeek_OCR_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_intel.dmg) (Apple Intel Chips Beta Version)
+- [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg) (Apple M Series Chip)
+- [OpenChat_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg) (Apple Intel chips)
 
 
 <br>
