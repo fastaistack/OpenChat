@@ -35,9 +35,10 @@ If you encounter macOS security warnings like **“cannot open because it is fro
 
 ### Download for macOS
 
-* [OpenChat_Deepseek_OCR.zip](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_OCR.zip) (Apple Silicon Beta)
-* [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg) (Apple Silicon)
-* [OpenChat_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg) (Intel)
+* [OpenChat_Deepseek_OCR.zip](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_OCR.zip) (Apple M Series Chips Beta Version)
+* [Openchat_DeepSeek_OCR_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/Openchat_DeepSeek_OCR_intel.dmg) (Apple Intel Chips Beta Version)
+* [OpenChat_apple.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_apple.dmg) (Apple M Series Chip)
+* [OpenChat_intel.dmg](https://fastaistack.oss-cn-beijing.aliyuncs.com/openchat/OpenChatSetup_v1.0.4_intel.dmg) (Apple Intel chips)
 
 ## 📑 Table of Contents
 
