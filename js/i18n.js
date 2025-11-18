@@ -45,6 +45,7 @@
       // 首页顶部下载（按钮文本，使用 data-key 或兜底）
       download_windows: 'Windows 下载',
       download_mac_m: 'Mac M系列 下载',
+      download_mac_intel: 'Mac Intel 下载',
 
       // 旧的下载菜单（右侧“下载客户端”里的三项）
       '.download-menu a:nth-child(1) span': 'Windows',
@@ -132,7 +133,8 @@
 
       // 首页顶部下载（按钮文本，使用 data-key 或兜底）
       download_windows: 'Download for Windows',
-      download_mac_m: 'Download for Mac  M series',
+      download_mac_m: 'Download for Mac M series',
+      download_mac_intel: 'Download for Mac Intel',
 
       // Top nav
       '.nav-logo .logo-text': 'OpenChat',
